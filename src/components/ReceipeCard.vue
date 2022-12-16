@@ -1,28 +1,35 @@
 <template>
   <v-card elevation="3">
-    <v-card-title>rezept {{ title }}</v-card-title>
-    <v-card-text>recipe: {{ recipe}}</v-card-text>
-    <v-text-field label="beschreibung" :value="modelValue" @input="$emit('update:modelValue', $event.target.value)"></v-text-field>
+    <v-card-title>Rezept Name: {{ recipeName }}</v-card-title>
+    <v-card-text>createdBy: {{ createdBy }}</v-card-text>
+    <v-text-field label="beschreibung" v-model="suchValue"></v-text-field>
   </v-card>
 </template>
 
-<script lang=ts setup>
-import {computed} from "vue";
+<script lang="ts" setup>
+import { computed } from "vue";
 
 interface Recipe {
-  recipeName: string
+  recipeName: string;
+  createdBy: string;
 }
 
-defineProps({
-  title: { type: String, default: "Der Standard Titel" },
-  recipe: String,
-  modelValue: String
+const props = defineProps({
+  recipeName: { type: String, default: "Der Standard Titel" },
+  createdBy: String,
+  modelValue: String,
 });
 
-defineEmits(["update:modelValue"]);
+const emitValue = defineEmits(["update:modelValue"]);
 
+const suchValue = computed({
+  get() {
+    return props.modelValue;
+  },
+  set(value) {
+    emitValue("update:modelValue", value);
+  },
+});
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

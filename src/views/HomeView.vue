@@ -7,13 +7,14 @@
       </v-col>
     </v-row>
     <v-row justify="center" v-if="state.recipesLoaded">
+      <!-- https://vuejs.org/guide/components/props.html#prop-passing-details -->
       <v-col cols="6" v-for="recipe of state.recipesList" :key="recipe.id">
-        <receipe-card :recipe="recipe" :title="recipe.recipeName" />
+        <receipe-card v-bind="recipe" v-model="state.searchText" />
       </v-col>
     </v-row>
     <div v-else>nichts geladen...</div>
     v-model = {{ state.beispiel }}, suchtext: {{ state.searchText }}
-    <receipe-card v-model="state.beispiel" :title="state.beispiel"></receipe-card>
+    <receipe-card v-bind="state.dummyRecipe"></receipe-card>
     <div class="ma-3">suchfeld: <custom-input v-model="state.searchText" /></div>
   </v-container>
 </template>
@@ -28,14 +29,20 @@ import CustomInput from "@/components/CustomInput.vue";
 interface State {
   recipesLoaded: boolean;
   recipesList: any[];
+  dummyRecipe: Recipe
 }
 
+interface Recipe {
+  recipeName: string,
+  createdBy: string
+}
 //Der State mit Typdeclaration aus dem Interface
 const state: State = reactive({
   recipesLoaded: false,
   recipesList: [],
   beispiel: "Beispielwurst",
-  searchText: "suche..."
+  searchText: "suche",
+  dummyRecipe: { recipeName: "Dummy Rezept", createdBy: "Petziferum"}
 });
 
 function fetchRecipes(): void {
