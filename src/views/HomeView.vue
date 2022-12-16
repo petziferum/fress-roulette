@@ -14,7 +14,7 @@
     <div v-else>nichts geladen...</div>
     v-model = {{ state.beispiel }}, suchtext: {{ state.searchText }}
     <receipe-card v-model="state.beispiel" :title="state.beispiel"></receipe-card>
-    suchfeld: <custom-input v-model="state.searchText" />
+    <div class="ma-3">suchfeld: <custom-input v-model="state.searchText" /></div>
   </v-container>
 </template>
 

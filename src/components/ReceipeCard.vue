@@ -2,7 +2,7 @@
   <v-card elevation="3">
     <v-card-title>rezept {{ title }}</v-card-title>
     <v-card-text>recipe: {{ recipe}}</v-card-text>
-    <v-text-field label="beschreibung" :value="modelValue" @input="$emit('update:modelValue')"></v-text-field>
+    <v-text-field label="beschreibung" :value="modelValue" @input="$emit('update:modelValue', $event.target.value)"></v-text-field>
   </v-card>
 </template>
 
@@ -19,7 +19,7 @@ defineProps({
   modelValue: String
 });
 
-defineEmits(['update:modelValue'])
+defineEmits(["update:modelValue"]);
 
 </script>
 

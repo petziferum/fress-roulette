@@ -1,11 +1,22 @@
-<script setup>
-defineProps(["modelValue"]);
-defineEmits(["update:modelValue"]);
-</script>
-
 <template>
-  <input
-    :value="modelValue"
-    @input="$emit('update:modelValue', $event.target.value)"
+  <v-text-field
+    v-model="value"
   />
 </template>
+
+<script setup>
+import {computed} from "vue";
+
+const props = defineProps(["modelValue"]);
+const emitValue = defineEmits(["update:modelValue"]);
+
+const value = computed({
+  get() {
+    return props.modelValue;
+  },
+  set(value) {
+    emitValue('update:modelValue', value)
+  }
+})
+
+</script>
