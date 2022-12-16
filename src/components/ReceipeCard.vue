@@ -2,11 +2,13 @@
   <v-card elevation="3">
     <v-card-title>rezept {{ title }}</v-card-title>
     <v-card-text>recipe: {{ recipe}}</v-card-text>
-    <v-card-text>modelValue: {{ modelValue }}</v-card-text>
+    <v-text-field label="beschreibung" :value="modelValue" @input="$emit('update:modelValue')"></v-text-field>
   </v-card>
 </template>
 
 <script lang=ts setup>
+import {computed} from "vue";
+
 interface Recipe {
   recipeName: string
 }

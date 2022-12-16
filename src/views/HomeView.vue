@@ -12,14 +12,17 @@
       </v-col>
     </v-row>
     <div v-else>nichts geladen...</div>
-    <receipe-card v-model="beispiel" title="beispiel"></receipe-card>
+    v-model = {{ state.beispiel }}, suchtext: {{ state.searchText }}
+    <receipe-card v-model="state.beispiel" :title="state.beispiel"></receipe-card>
+    suchfeld: <custom-input v-model="state.searchText" />
   </v-container>
 </template>
 
 <script lang="ts" setup>
 import ReceipeCard from "@/components/ReceipeCard.vue";
 import { getCollection } from "@/plugins/firebase";
-import { reactive } from "vue";
+import {onMounted, reactive} from "vue";
+import CustomInput from "@/components/CustomInput.vue";
 
 //Interface für den State
 interface State {
@@ -31,7 +34,8 @@ interface State {
 const state: State = reactive({
   recipesLoaded: false,
   recipesList: [],
-  beispiel: "Beispielrezept",
+  beispiel: "Beispielwurst",
+  searchText: "suche..."
 });
 
 function fetchRecipes(): void {
@@ -45,4 +49,8 @@ function fetchRecipes(): void {
     });
   });
 }
+
+onMounted(() => {
+  console.log("mounted")
+})
 </script>
