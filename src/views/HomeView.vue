@@ -3,12 +3,13 @@
     <v-row>
       <v-col>
         geladen? {{ state.recipesLoaded }}
-        <v-btn @click="fetchRecipes">Lade Rezepte</v-btn>
+        <v-btn @click="fetchRecipes" v-if="!state.recipesLoaded">Lade Rezepte</v-btn>
+        <v-btn v-else @click="removeRecipes">Rezepte entfernen</v-btn>
       </v-col>
     </v-row>
-    <v-row justify="center" v-if="state.recipesLoaded">
+    <v-row justify="left" v-if="state.recipesLoaded">
       <!-- https://vuejs.org/guide/components/props.html#prop-passing-details -->
-      <v-col cols="6" v-for="recipe of state.recipesList" :key="recipe.id">
+      <v-col cols="1" v-for="recipe of state.recipesList" :key="recipe.id">
         <receipe-card v-bind="recipe" v-model="state.searchText" />
       </v-col>
     </v-row>
@@ -21,6 +22,7 @@
 
 <script lang="ts" setup>
 import ReceipeCard from "@/components/ReceipeCard.vue";
+import Recipe from "@/components/Models/Recipe.class";
 import { getCollection } from "@/plugins/firebase";
 import {onMounted, reactive} from "vue";
 import CustomInput from "@/components/CustomInput.vue";
@@ -32,18 +34,19 @@ interface State {
   dummyRecipe: Recipe
 }
 
-interface Recipe {
-  recipeName: string,
-  createdBy: string
-}
-//Der State mit Typdeclaration aus dem Interface
+//Der State mit Typ-declaration aus dem Interface
 const state: State = reactive({
   recipesLoaded: false,
   recipesList: [],
   beispiel: "Beispielwurst",
   searchText: "suche",
-  dummyRecipe: { recipeName: "Dummy Rezept", createdBy: "Petziferum"}
+  dummyRecipe: { recipeName: "Dummy Rezept", createdBy: "Petziferum", tags: ["dummy", "test"]}
 });
+
+function removeRecipes(): void {
+  state.recipesList = [];
+  state.recipesLoaded = false;
+}
 
 function fetchRecipes(): void {
   console.info("fetch");
