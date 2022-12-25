@@ -50,7 +50,11 @@ const state: State = reactive({
     .withRecipeName("Dummy Rezept")
     .withCreatedBy("Petzi")
     .withTags(["dummy", "lecker"])
-      .withIngredients([{nr: 1, menge: "1Tl", name: "Zucker"}]),
+    .withIngredients([{ nr: 1, menge: "1Tl", name: "Zucker" }, { nr: 2, menge: "100g", name: "Butter"}])
+    .withRecipeDescription([
+      { nr: 1, text: "kochen und backen", img: "no Image" },
+      { nr: 2, text: "Dann Backen und schneiden", img: "no Image" },
+    ]),
 });
 
 function removeRecipes(): void {

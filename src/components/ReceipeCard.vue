@@ -10,7 +10,7 @@
     <v-row class="mx-5">
       <v-col cols="12" md="6">
         Zutaten:
-        <v-list>
+        <v-list variant="elevated">
           <v-list-item v-for="zutat in recipe.ingredients" :key="zutat.name">
             <v-list-item-title>{{ zutat.menge}}  {{ zutat.name }}</v-list-item-title>
           </v-list-item>
@@ -18,6 +18,11 @@
       </v-col>
       <v-col cols="12" md="6">
         Beschreibung:
+        <v-list variant="elevated">
+          <v-list-item v-for="text in recipe.recipeDescription" :key="text.nr">
+            <div>{{ text.text }}</div>
+          </v-list-item>
+        </v-list>
       </v-col>
     </v-row>
   </v-card>
