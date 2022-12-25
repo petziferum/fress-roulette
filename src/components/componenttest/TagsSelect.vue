@@ -7,21 +7,28 @@
         @submit.prevent="addTagToRecipe"
         @keydown.tab="addTagToRecipe"
       >
-        <v-autocomplete
-          id="searchField"
-          multiple
-          chips
-          closable-chips
-          :items="tagItems"
-          v-model="recipe.tags"
-          v-model:search="searchValue"
-          return-object
-          hide-selected
-          label="Tags"
-          @click="getTagItems"
-        ></v-autocomplete>
-        <v-spacer />
-        <v-btn type="submit">speichern</v-btn>
+        <v-row no-gutters>
+          <v-col cols="12" md="5">
+            <v-text-field variant="outlined" v-model="recipe.recipeName" label="Rezept Name" />
+          </v-col>
+          <v-col cols="12"
+                 md="5"
+            ><v-autocomplete
+              variant="outlined"
+              id="searchField"
+              multiple
+              chips
+              closable-chips
+              :items="tagItems"
+              v-model="recipe.tags"
+              v-model:search="searchValue"
+              hide-selected
+              label="Tags"
+              @click="getTagItems"
+            ></v-autocomplete
+          ></v-col>
+          <v-col cols="2"><v-btn block variant="outlined" height="70%" rounded="0" type="submit">speichern</v-btn></v-col>
+        </v-row>
       </v-form>
     </v-card-text>
     <v-card-text>
@@ -30,6 +37,7 @@
         <li>model: {{ model }}</li>
         <li>rezept: {{ recipe }}</li>
       </ul>
+      log: {{ message() }}
     </v-card-text>
   </v-card>
 </template>
@@ -54,6 +62,13 @@ const recipe = computed({
   },
 });
 
+function message(value: string): string {
+  setTimeout(() => {
+    value = "asdfa"
+  }, 1000)
+  return "laksjdöflkjasdf";
+}
+
 function getTagItems(): void {
   console.log("getTagItems");
   getCollection("tags").then((res) => {
@@ -67,8 +82,9 @@ function getTagItems(): void {
 
 function addTagToRecipe(): void {
   console.log("add ", searchValue.value);
-  if(!searchValue.value){
-    console.info("leerer String")
+  if (!searchValue.value) {
+    message("leerer String");
+    console.info("leerer String");
   } else {
     recipe.value.tags.push(searchValue.value);
   }
