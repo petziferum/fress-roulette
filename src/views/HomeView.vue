@@ -51,7 +51,7 @@ function removeRecipes(): void {
 function fetchRecipes(): void {
   console.info("fetch");
   state.recipesList = [];
-  getCollection().then((res) => {
+  getCollection("test").then((res) => {
     state.recipesLoaded = true;
     res.forEach((doc) => {
       console.info("r", doc.data());

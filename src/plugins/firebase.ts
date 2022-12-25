@@ -17,8 +17,8 @@ const firebaseApp = initializeApp(firebaseConfig);
 const fireBucket = getStorage(firebaseApp);
 const fireAuth = getAuth(firebaseApp);
 const db = getFirestore(firebaseApp);
-const getCollection = async () => {
-  const docRef = query(collection(db, "test")); // hier stand recipes
+const getCollection = async (name: string) => {
+  const docRef = query(collection(db, name)); // hier stand recipes
   return await getDocs(docRef);
 };
 
