@@ -5,6 +5,9 @@
     </v-row>
     <v-row>
       <v-col>
+        <recipe-preview-card :recipe="recipe" />
+      </v-col>
+      <v-col cols="12">
         <recipes-view :recipes="recipeArray" />
       </v-col>
     </v-row>
@@ -22,6 +25,7 @@ import TagsSelect from "@/components/componenttest/TagsSelect.vue";
 import { ref } from "vue";
 import RecipesView from "@/components/componenttest/RecipesView.vue";
 import Recipe from "@/components/Models/Recipe.class";
+import RecipePreviewCard from "@/components/RecipePreviewCard.vue";
 
 
 const recipe = ref({

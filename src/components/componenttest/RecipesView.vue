@@ -1,6 +1,7 @@
 <template>
-  <v-row>
-    <v-col cols="12" md="3" v-for="recipe in recipes" :key="recipe.recipeName">
+  <v-row justify="center">
+    <v-col cols="12" md="6" v-for="recipe in recipes" :key="recipe.recipeName">
+      Rezept Details
       <receipe-card :recipe="recipe" />
     </v-col>
   </v-row>
@@ -8,7 +9,7 @@
 
 <script setup lang="ts">
 //import { ref } from "vue";
-import ReceipeCard from "@/components/ReceipeCard.vue";
+import ReceipeCard from "@/components/ReceipeDetailsCard.vue";
 
 const props = defineProps(["recipes"]);
 const emitValue = defineEmits(["update:recipe"]);

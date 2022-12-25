@@ -25,7 +25,7 @@
 </template>
 
 <script lang="ts" setup>
-import ReceipeCard from "@/components/ReceipeCard.vue";
+import ReceipeCard from "@/components/ReceipeDetailsCard.vue";
 import Recipe from "@/components/Models/Recipe.class";
 import { getCollection } from "@/plugins/firebase";
 import { onMounted, reactive } from "vue";
