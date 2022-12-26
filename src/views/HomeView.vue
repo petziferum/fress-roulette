@@ -11,7 +11,7 @@
     </v-row>
     <v-row justify="left" v-if="state.recipesLoaded">
       <!-- https://vuejs.org/guide/components/props.html#prop-passing-details -->
-      <v-col cols="1" v-for="recipe of state.recipesList" :key="recipe.id">
+      <v-col cols="4" v-for="recipe of state.recipesList" :key="recipe.id">
         <receipe-card :recipe="recipe" v-model="state.searchText" />
       </v-col>
     </v-row>
@@ -27,9 +27,9 @@
 <script lang="ts" setup>
 import ReceipeCard from "@/components/ReceipeDetailsCard.vue";
 import Recipe from "@/components/Models/Recipe.class";
-import { getCollection } from "@/plugins/firebase";
 import { onMounted, reactive } from "vue";
 import CustomInput from "@/components/CustomInput.vue";
+import { recipeStore } from "@/stores/recipeStore";
 
 //Interface für den State
 interface State {
@@ -39,6 +39,7 @@ interface State {
   beispiel: string;
   searchText: string;
 }
+const store = recipeStore();
 
 //Der State mit Typ-declaration aus dem Interface
 const state: State = reactive({
@@ -65,13 +66,21 @@ function removeRecipes(): void {
 function fetchRecipes(): void {
   console.info("fetch");
   state.recipesList = [];
-  getCollection("test").then((res) => {
+  /*getCollection("test").then((res) => {
     state.recipesLoaded = true;
     res.forEach((doc) => {
       console.info("r", doc.data());
       state.recipesList.push(doc.data());
     });
   });
+   */
+  store.loadAllRecipes();
+  console.log("gett", store.allRecipes);
+  setTimeout(()=> {
+    state.recipesList = store.allRecipes
+    state.recipesLoaded = true;
+  }, 1000);
+
 }
 
 onMounted(() => {
