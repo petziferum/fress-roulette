@@ -64,7 +64,7 @@ function removeRecipes(): void {
 }
 
 function fetchRecipes(): void {
-  console.info("fetch");
+  console.clear()
   state.recipesList = [];
   /*getCollection("test").then((res) => {
     state.recipesLoaded = true;
@@ -75,7 +75,7 @@ function fetchRecipes(): void {
   });
    */
   store.loadAllRecipes();
-  console.log("gett", store.allRecipes);
+  console.log("fetchRecipes", store.allRecipes);
   setTimeout(()=> {
     state.recipesList = store.allRecipes
     state.recipesLoaded = true;

@@ -1,20 +1,27 @@
 import { defineStore } from "pinia";
-import { ref } from "vue";
 import { getCollection } from "@/plugins/firebase";
-import Recipe from "@/components/Models/Recipe.class";
+import type Recipe from "@/components/Models/Recipe.class";
+import {recipeConverter} from "@/components/Models/Recipe.class";
+
+export interface stateInterface {
+  allRecipes: Recipe[];
+}
 
 export const recipeStore = defineStore("recipeStore", {
-  state: () => ({
-    allRecipes: [],
-  }),
+  state: () =>
+    ({
+      allRecipes: [],
+    } as stateInterface),
   actions: {
-    loadAllRecipes() {
+    loadAllRecipes: function () {
       console.info("store load All Recipes");
       this.allRecipes = [];
       getCollection("test").then((res) => {
         res.forEach((recipeData) => {
-          console.log(recipeData.data());
-          this.allRecipes.push(recipeData.data());
+          const data = recipeData;
+          //const r = recipeConverter.fromFirestore(data, null);
+          console.log("converter", data);
+          //this.allRecipes.push(recipeData.data);
         });
       });
     },
