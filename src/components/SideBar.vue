@@ -21,6 +21,7 @@ const listItems = ref([
   {title: "Rezepte", to:"/rezepte", icon: "mdi-food", subtitle: "friss du fette Sau!"},
   {title: "About", to:"/about", icon: "mdi-head", subtitle: "Über mich"},
   {title: "DevTest", to:"/dev/test", icon: "mdi-test-tube", subtitle: "Test"},
+  {title: "User Dashboard", to:"/user/dashboard", icon: "mdi-kangaroo", subtitle: "dashboard"},
 ])
 </script>
 

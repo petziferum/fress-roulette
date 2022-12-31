@@ -11,8 +11,13 @@ const router = createRouter({
       name: "home",
       component: HomeView,
       meta: {
-        requiresAuth: false,
+        requiresAuth: true,
       },
+    },
+    {
+      path: "/login",
+      name: "login",
+      component: () => import("@/views/LoginView.vue"),
     },
     {
       path: "/register",
@@ -33,6 +38,9 @@ const router = createRouter({
       path: "/user/dashboard",
       name: "userdashboard",
       component: UserDashboard,
+      meta: {
+        requiresAuth: true,
+      },
     },
     {
       path: "/about",
@@ -68,7 +76,7 @@ router.beforeEach(async (to, from, next) => {
       next();
     } else {
       alert("Nicht angemeldet");
-      next("/register");
+      next("/login");
     }
   } else next();
 });
