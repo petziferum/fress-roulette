@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
-import UserDashboard from "@/components/user/MainViewUserDashboard.vue";
+import UserDashboard from "@/views/MainViewUserDashboard.vue";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 const router = createRouter({
