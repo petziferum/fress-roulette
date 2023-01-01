@@ -7,7 +7,7 @@
       <v-col cols="6">
         <v-card elevation="6" color="secondary">
           <v-card-subtitle class="pa-5"
-            >{{ userName }} -
+            >{{ user.displayName }} - Eingelogged: {{ loggedIn }}
             <v-btn @click="checkIfTextfieldIsValid" variant="tonal"
               >Validate Textfield</v-btn
             >
@@ -44,7 +44,7 @@
                 >
               </div>
               <div v-else>
-                <v-alert height="50%">angemeldet als {{ fu }}</v-alert>
+                <v-alert height="50%">angemeldet als {{ user.email }}</v-alert>
               </div>
             </v-col>
           </v-row>
@@ -91,25 +91,24 @@
 <script lang="ts" setup>
 import { computed, onMounted, ref } from "vue";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { collection, getDocs, query, where } from "firebase/firestore";
-import { db, user, logOut } from "@/plugins/firebase";
-import Recipe, { recipeConverter } from "@/components/Models/Recipe.class";
-import firebase from "firebase/compat";
-import User = firebase.User;
+import { getUserRecipe, user, logOut } from "@/plugins/firebase";
+import Recipe from "@/components/Models/Recipe.class";
 
 // Todo: Typing ref Values
 const userName = ref<string | null>("Offline");
-const loggedIn = ref(false);
 const auth = getAuth();
 const password = ref("");
 const alert = ref(false);
 const alertMessage = ref<string | null>(null);
-let fu = ref<string | null>(null);
 const passField = ref();
 const userRecipes = ref<Recipe[]>([]);
 const required = computed(() => {
   return (v: string) => !!v || "Darf nicht leer sein";
 });
+
+const loggedIn = computed(() => {
+  return user.value ? true : false;
+})
 
 async function checkIfTextfieldIsValid() {
   const valid = await passField.value.validate();
@@ -121,44 +120,10 @@ async function checkIfTextfieldIsValid() {
   }
 }
 
-async function getUserRecipe(): Promise<void> {
-  if (user.value) {
-    const userid = user.value.uid;
-    const collectionRef = collection(db, "test");
-    console.info("get user recipes", userid, collectionRef);
-    const q = query(
-      collectionRef,
-      where("createdBy", "==", userid)
-    ).withConverter(recipeConverter);
-
-    const docSnap = await getDocs(q);
-    docSnap.forEach((doc) => {
-      if (doc.exists()) {
-        // Convert to City object
-        const r = doc.data();
-        // Use a City instance method
-        userRecipes.value.push(r);
-      } else {
-        console.log("No such document!");
-      }
-    });
-  } else {
-    console.info("noch kein user: ", user.value);
-  }
-}
-
 onMounted(() => {
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      console.log("Authstate angemeldet", user.uid);
-      fu.value = user.email;
-      userName.value = user.uid;
-      loggedIn.value = true;
-    } else {
-      userName.value = "Nicht angemeldet";
-      loggedIn.value = false;
-    }
-  });
+
+  getUserRecipe().then((recipes) => (userRecipes.value = recipes));
+
 });
 </script>
 
