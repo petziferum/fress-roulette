@@ -90,11 +90,12 @@
 
 <script lang="ts" setup>
 import { computed, onMounted, ref } from "vue";
-import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
-import router from "@/router";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { collection, getDocs, query, where } from "firebase/firestore";
-import { db } from "@/plugins/firebase";
+import { db, user, logOut } from "@/plugins/firebase";
 import Recipe, { recipeConverter } from "@/components/Models/Recipe.class";
+import firebase from "firebase/compat";
+import User = firebase.User;
 
 // Todo: Typing ref Values
 const userName = ref<string | null>("Offline");
@@ -110,25 +111,6 @@ const required = computed(() => {
   return (v: string) => !!v || "Darf nicht leer sein";
 });
 
-const user = computed(() => {
-  const user = getAuth().currentUser;
-  if (user) {
-    return user;
-  } else {
-    return onAuthStateChanged(getAuth(), (user) => {
-      return user;
-    });
-  }
-});
-
-function logOut() {
-  const auth = getAuth();
-  signOut(auth).then(() => {
-    loggedIn.value = false;
-    router.push("/");
-  });
-}
-
 async function checkIfTextfieldIsValid() {
   const valid = await passField.value.validate();
   console.log("valid?", valid[0]);
@@ -140,11 +122,10 @@ async function checkIfTextfieldIsValid() {
 }
 
 async function getUserRecipe(): Promise<void> {
-  console.log("UserDashboard | getUserRecipe user:", user.value);
-  if (user.value != null) {
-    const userid = user.value!;
+  if (user.value) {
+    const userid = user.value.uid;
     const collectionRef = collection(db, "test");
-
+    console.info("get user recipes", userid, collectionRef);
     const q = query(
       collectionRef,
       where("createdBy", "==", userid)

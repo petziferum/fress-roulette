@@ -1,7 +1,9 @@
 import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
+import {getAuth, onAuthStateChanged, signOut} from "firebase/auth";
 import { collection, getDocs, getFirestore, query } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
+import router from "@/router";
+import {computed} from "vue";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCPt03Bp5UBVXn72EVSWNAhvt4u0NI2m5M",
@@ -24,6 +26,23 @@ const getCollection = async (name: string) => {
   return await getDocs(docRef);
 };
 
+export function logOut() {
+  const auth = getAuth();
+  signOut(auth).then(() => {
+    router.push("/");
+  });
+}
+export const user = computed(() => {
+  let user = getAuth().currentUser;
+  if (user) {
+    return user;
+  } else {
+    onAuthStateChanged(getAuth(), (authUser) => {
+      user = authUser;
+    });
+    return user;
+  }
+});
 export { fireAuth, fireBucket, db, getCollection };
 
 export default firebaseApp;

@@ -27,26 +27,6 @@
   </div>
 </template>
 <script setup lang="ts">
-import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
-import { computed } from "vue";
-import router from "@/router";
-
-const user = computed(() => {
-  const user = getAuth().currentUser;
-  if (user) {
-    return user;
-  } else {
-    return onAuthStateChanged(getAuth(), (user) => {
-      return user;
-    });
-  }
-});
-
-function logOut() {
-  const auth = getAuth();
-  signOut(auth).then(() => {
-    router.push("/");
-  });
-}
+import { logOut, user } from "@/plugins/firebase";
 </script>
 <style></style>
