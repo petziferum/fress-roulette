@@ -11,7 +11,7 @@ const router = createRouter({
       name: "home",
       component: HomeView,
       meta: {
-        requiresAuth: true,
+        requiresAuth: false,
       },
     },
     {
@@ -23,6 +23,14 @@ const router = createRouter({
       path: "/register",
       name: "register",
       component: () => import("@/views/RegisterView.vue"),
+    },
+    {
+      path: "/recipe/new/:id",
+      name: "newRecipe",
+      component: () => import("@/views/CreateRecipeView.vue"),
+      meta: {
+        requiresAuth: true,
+      },
     },
     {
       path: "/dev/test",
@@ -48,7 +56,7 @@ const router = createRouter({
       // route level code-splitting
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      component: () => import("../views/AboutView.vue"),
+      component: () => import("@/views/AboutView.vue"),
       meta: {
         requiresAuth: true,
       },

@@ -1,7 +1,11 @@
 <template>
-  <v-container fluid>
+  <v-container fluid class="pa-0">
     <v-toolbar style="text-align: center">
       <v-toolbar-title>User Dashboard</v-toolbar-title>
+      <v-toolbar-items>
+        <v-spacer />
+        <add-recipe-dialog :user-id="user.uid" />
+      </v-toolbar-items>
     </v-toolbar>
     <v-row class="mt-12" justify="center">
       <v-col cols="6">
@@ -79,8 +83,11 @@
             <v-spacer />
             <v-btn @click="getUserRecipe">Lade Rezepte</v-btn></v-card-title
           >
-          <v-card-text>
-            {{ userRecipes }}
+          <v-card-text v-for="recipe of userRecipes" :key="recipe.id">
+            <ul>
+              <li>{{ recipe }}</li>
+              <li><v-btn @click="editRecipe(recipe.id)">Bearbeiten</v-btn></li>
+            </ul>
           </v-card-text>
         </v-card>
       </v-col>
@@ -89,12 +96,15 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, ref } from "vue";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { computed, onBeforeMount, ref } from "vue";
+import { getAuth } from "firebase/auth";
 import { getUserRecipe, user, logOut } from "@/plugins/firebase";
 import Recipe from "@/components/Models/Recipe.class";
+import { useRouter } from "vue-router";
+import AddRecipeDialog from "@/components/AddRecipeDialog.vue";
 
 // Todo: Typing ref Values
+const router = useRouter();
 const userName = ref<string | null>("Offline");
 const auth = getAuth();
 const password = ref("");
@@ -108,7 +118,7 @@ const required = computed(() => {
 
 const loggedIn = computed(() => {
   return user.value ? true : false;
-})
+});
 
 async function checkIfTextfieldIsValid() {
   const valid = await passField.value.validate();
@@ -120,10 +130,18 @@ async function checkIfTextfieldIsValid() {
   }
 }
 
-onMounted(() => {
+function createNewRecipe() {
+  const id = "1234";
+  const route = "/recipe/new/" + id;
+  router.push(route);
+}
 
+function editRecipe(id: string): void {
+  router.push("/recipe/new/" + id);
+}
+
+onBeforeMount(() => {
   getUserRecipe().then((recipes) => (userRecipes.value = recipes));
-
 });
 </script>
 

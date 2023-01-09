@@ -14,6 +14,7 @@ export default class Recipe {
   constructor(
     public id?: string,
     public createdBy?: string,
+    public time?: Date,
     public imageSrc?: string,
     public description?: string,
     public recipeName?: string,
@@ -25,6 +26,7 @@ export default class Recipe {
   ) {
     this.id = id;
     this.createdBy = createdBy;
+    this.time = time;
     this.imageSrc = imageSrc;
     this.description = description;
     this.type = type;
@@ -51,6 +53,11 @@ export default class Recipe {
 
   withCreatedBy(value: string): Recipe {
     this.createdBy = value;
+    return this;
+  }
+
+  withTime(value: Date): Recipe {
+    this.time = value;
     return this;
   }
 
@@ -136,6 +143,7 @@ export const recipeConverter = {
     return {
       recipeName: recipe.recipeName,
       createdBy: recipe.createdBy,
+      time: recipe.time,
       active: recipe.active,
       ingredients: ingredientsConverter(recipe.ingredients),
       recipeDescription: descriptionConverter(recipe.recipeDescription),
@@ -146,6 +154,7 @@ export const recipeConverter = {
     return new Recipe(
       snapshot.id,
       recipe.createdBy,
+      recipe.time,
       recipe.imageSrc,
       recipe.description,
       recipe.recipeName,

@@ -14,7 +14,7 @@
 </template>
 
 <script lang="ts" setup>
-import { defineComponent, onMounted, ref } from "vue";
+import { onMounted, ref } from "vue";
 import SideBar from "@/components/SideBar.vue";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
