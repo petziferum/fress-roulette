@@ -104,7 +104,6 @@ import AddRecipeDialog from "@/components/AddRecipeDialog.vue";
 
 // Todo: Typing ref Values
 const router = useRouter();
-
 const password = ref("");
 const alert = ref(false);
 const alertMessage = ref<string | null>(null);

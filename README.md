@@ -1,5 +1,12 @@
 # fress-roulette
 
+## ToDo's
+
+- Rezept bearbeiten Komponente erstellen mit allen Textfeldern die benötigt werden
+
+
+---------------------
+
 This template should help get you started developing with Vue 3 in Vite.
 
 ## Recommended IDE Setup
