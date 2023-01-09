@@ -97,7 +97,6 @@
 
 <script lang="ts" setup>
 import { computed, onBeforeMount, ref } from "vue";
-import { getAuth } from "firebase/auth";
 import { getUserRecipe, user, logOut } from "@/plugins/firebase";
 import Recipe from "@/components/Models/Recipe.class";
 import { useRouter } from "vue-router";
@@ -105,19 +104,20 @@ import AddRecipeDialog from "@/components/AddRecipeDialog.vue";
 
 // Todo: Typing ref Values
 const router = useRouter();
-const userName = ref<string | null>("Offline");
-const auth = getAuth();
+
 const password = ref("");
 const alert = ref(false);
 const alertMessage = ref<string | null>(null);
 const passField = ref();
 const userRecipes = ref<Recipe[]>([]);
+const editRoute = ref("/recipe/edit/");
+
 const required = computed(() => {
   return (v: string) => !!v || "Darf nicht leer sein";
 });
 
 const loggedIn = computed(() => {
-  return user.value ? true : false;
+  return !!user.value;
 });
 
 async function checkIfTextfieldIsValid() {
@@ -130,14 +130,8 @@ async function checkIfTextfieldIsValid() {
   }
 }
 
-function createNewRecipe() {
-  const id = "1234";
-  const route = "/recipe/new/" + id;
-  router.push(route);
-}
-
 function editRecipe(id: string): void {
-  router.push("/recipe/new/" + id);
+  router.push(editRoute.value + id);
 }
 
 onBeforeMount(() => {

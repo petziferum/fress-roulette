@@ -25,7 +25,7 @@ const router = createRouter({
       component: () => import("@/views/RegisterView.vue"),
     },
     {
-      path: "/recipe/new/:id",
+      path: "/recipe/edit/:id",
       name: "newRecipe",
       component: () => import("@/views/CreateRecipeView.vue"),
       meta: {

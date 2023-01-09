@@ -62,13 +62,14 @@ function createRecipe() {
   RecipeServiceApi.createNewEditRecipe(newRecipe.value)
     .then((id) => {
       newRecipe.value.id = id;
-      route = "/recipe/new/" + id;
+      route = "/recipe/edit/" + id;
     })
     .then(() => {
       router.push(route);
-    }).catch(error => {
+    })
+    .catch((error) => {
       console.log("Fehler: ", error);
-  });
+    });
 }
 </script>
 
