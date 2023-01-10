@@ -3,12 +3,16 @@
     <v-card>
       <v-card-title>{{ recipe.recipeName }}</v-card-title>
       <v-card-subtitle
-        >{{ recipe.id }} CreatedBy: {{ recipe.createdBy }}</v-card-subtitle
+        >{{ recipe.id }} CreatedBy: {{ recipe.createdBy }}
+        <div>Erstellt am: {{ recipe.time }}</div></v-card-subtitle
       >
       <v-card-actions>
         <v-spacer />
         <v-btn variant="outlined" color="success" @click="editMode = !editMode"
           >Bearbeiten</v-btn
+        >
+        <v-btn variant="outlined" color="blue" @click="saveUpdateRecipe"
+          >Speichern</v-btn
         >
       </v-card-actions>
       <template v-if="!editMode">
@@ -18,15 +22,49 @@
             <v-col cols="12" md="6">
               <v-table class="text-justify" density="comfortable">
                 <tr>
-                  <th>Menge</th>
-                  <th>Zutat</th>
+                  <th class="py-5">Menge</th>
+                  <th class="py-5">Zutat</th>
                 </tr>
                 <tr
-                  v-for="ingredient in recipe.ingredients"
+                  v-for="(ingredient, i) in recipe.ingredients"
                   :key="ingredient.nr"
                 >
                   <th>{{ ingredient.menge }}</th>
-                  <td>{{ ingredient.name }}</td>
+                  <td>
+                    <template v-if="editItem == i">
+                      <v-form
+                        ref="editIngredient"
+                        @submit.prevent="editItem = null"
+                      >
+                        <v-text-field
+                          label="Name"
+                          variant="outlined"
+                          density="compact"
+                          v-model="recipe.ingredients[i].name"
+                          @click:append.prevent="editItem = null"
+                          append-icon="mdi-content-save"
+                        />
+                      </v-form>
+                    </template>
+                    <template v-else>
+                      {{ ingredient.name }}
+                    </template>
+                  </td>
+                  <td>
+                    <template v-if="editItem != i">
+                      <v-btn variant="text" @click="editItem = i">
+                        <v-icon small>mdi-pencil</v-icon>
+                      </v-btn>
+                    </template>
+                    <template v-else>
+                      <v-btn
+                        variant="text"
+                        @click="editItem = null"
+                      >
+                        <v-icon small>mdi-cancel</v-icon>
+                      </v-btn>
+                    </template>
+                  </td>
                 </tr>
               </v-table>
               <!--<v-list>
@@ -86,45 +124,51 @@
             </v-col>
             <v-col cols="12" md="6">
               <v-form @submit.prevent="addIngredient" ref="zutatForm">
-                <v-row no-gutters>
+                <v-row>
                   <v-col cols="1">
                     <v-icon left>mdi-tag-plus</v-icon>
                   </v-col>
-                  <v-col cols="3">
+                  <v-col cols="2">
                     <v-text-field
                       id="menge"
                       variant="outlined"
                       label="Menge"
-                      style="width: 100px"
-                      name="menge"
+                      :rules="filledRule"
+                      name="quantity"
+                      :placeholder="$vuetify.display.mdAndDown ? '' : 'Menge'"
                     ></v-text-field>
                   </v-col>
-                  <v-col cols="8">
+                  <v-col cols="7">
                     <v-text-field
                       id="name"
                       variant="outlined"
                       label="Zutat"
                       class="mx-2"
-                      name="name"
+                      name="zutat"
+                      :rules="filledRule"
                       placeholder="Zutat"
+                    />
+                  </v-col>
+                  <v-col cols="2">
+                    <v-btn variant="outlined" type="submit" height="70%"
+                      ><v-icon>mdi-plus</v-icon></v-btn
                     >
-                      <template v-slot:clear>
-                        <v-btn
-                          variant="outlined"
-                          @click="addIngredient"
-                          style="top: -8px; height: 100%; width: 100%"
-                        >
-                          <v-icon>mdi-plus</v-icon>
-                        </v-btn>
-                      </template>
-                    </v-text-field>
                   </v-col>
                 </v-row>
               </v-form>
             </v-col>
           </v-row>
         </v-card-text>
-        {{ recipe }}
+        <v-card-text>
+          <v-list>
+            <v-list-item
+              v-for="item in recipe.recipeDescription"
+              :key="item.nr"
+            >
+              <v-list-item-title>{{ item }}</v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-card-text>
       </template>
       <template v-else>
         <v-form ref="recipeForm">
@@ -135,6 +179,7 @@
           </v-row>
         </v-form>
       </template>
+      {{ recipe }}
     </v-card>
   </v-container>
 </template>
@@ -144,12 +189,14 @@ import { onBeforeMount, ref } from "vue";
 import { useRoute } from "vue-router";
 import Recipe from "@/components/Models/Recipe.class";
 import RecipeServiceApi from "@/api/recipeServiceApi";
-import {VForm} from "vuetify/lib/components/index";
+import { VForm } from "vuetify/lib/components/index";
 
 const editMode = ref(false);
 const recipe = ref<Recipe>(Recipe.createEmtptyRecipe());
 const router = useRoute();
 const zutatForm = ref<typeof VForm>();
+const filledRule = ref([(v) => v != null || "Name muss ausgefüllt sein"]);
+const editItem = ref(null);
 
 function loadRecipe(): void {
   RecipeServiceApi.getSingleRecipe(useRoute().params.id as string).then(
@@ -169,26 +216,35 @@ function loadRecipe(): void {
   );
 }
 
-function addIngredient(event): void {
+async function addIngredient(): Promise<void> {
   console.clear();
-  console.log("Add Ingredient", zutatForm.value?.items);
-  let tempNr = 0;
-  if (recipe.value) {
-    recipe.value.ingredients!.forEach((element) => {
-      if (tempNr < element.nr) {
-        tempNr = element.nr;
-      }
-    });
+  const { valid } = await (zutatForm.value || VForm).validate();
+  console.log("valid", valid);
+  if (valid) {
+    let tempNr = 0;
     const newItem = {
       nr: tempNr + 1,
-      menge: event.target.menge.value,
-      name: event.target.name.value,
+      menge: zutatForm.value?.quantity.value,
+      name: zutatForm.value?.zutat.value,
     };
-
-    console.log("add ingredient", newItem, "mit Nummer", tempNr);
-    recipe.value.ingredients!.push(newItem);
-    zutatForm.value.reset();
+    if (recipe.value.ingredients != null) {
+      newItem.nr = recipe.value.ingredients!.length + 1;
+      console.log("add ingredient", newItem, "mit Nummer", tempNr);
+      recipe.value.ingredients!.push(newItem);
+    } else {
+      recipe.value.ingredients = [];
+      recipe.value.ingredients[tempNr] = newItem;
+    }
+    zutatForm.value?.reset();
   }
+}
+
+function saveUpdateRecipe(): void {
+  recipe.value.active = false;
+  console.info("save", recipe.value);
+  RecipeServiceApi.updateRecipe(recipe.value).then((antwort) => {
+    console.log("gespeichert", antwort);
+  });
 }
 
 onBeforeMount(() => {

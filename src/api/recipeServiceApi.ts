@@ -4,6 +4,12 @@ import { db } from "@/plugins/firebase";
 import { recipeConverter } from "@/components/Models/Recipe.class";
 
 export default class RecipeServiceApi {
+
+  public static async updateRecipe(recipe: Recipe): Promise<Recipe> {
+    const recipeRef = doc(db, "test", recipe.id!).withConverter(recipeConverter);
+    return await setDoc(recipeRef, recipe).then(()=> recipe);
+  }
+
   public static async getSingleRecipe(recipeId: string): Promise<Recipe | undefined> {
     const docRef = doc(db, "test", recipeId).withConverter(recipeConverter);
     const docSnap = await getDoc(docRef);

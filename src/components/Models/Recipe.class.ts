@@ -145,8 +145,8 @@ export const recipeConverter = {
       createdBy: recipe.createdBy,
       time: recipe.time,
       active: recipe.active,
-      ingredients: ingredientsConverter(recipe.ingredients),
-      recipeDescription: descriptionConverter(recipe.recipeDescription),
+      ingredients: recipe.ingredients,
+      recipeDescription: recipe.recipeDescription,
     };
   },
   fromFirestore: (snapshot, options) => {
