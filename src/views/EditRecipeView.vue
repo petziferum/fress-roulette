@@ -133,13 +133,49 @@
           <v-card-title>Zubereitungsschritte</v-card-title>
           <v-row>
             <v-col>
-              <v-sheet v-for="step in recipe.recipeDescription" :key="step.nr">
-                {{ step }}
+              <v-sheet
+                v-for="(step, i) in recipe.recipeDescription"
+                :key="step.nr"
+              >
+                <v-row :key="i">
+                  <v-col cols="3">
+                    <v-skeleton-loader
+                      type="image"
+                      height="100"
+                    ></v-skeleton-loader>
+                  </v-col>
+                  <v-col cols="9">
+                    <v-textarea
+                      background-color="white"
+                      height="100px"
+                      outlined
+                      :label="step.nr + '. Schritt'"
+                      v-model="step.text"
+                      :rules="filled"
+                      :append-icon="step.nr > 1 ? 'mdi-minus' : ''"
+                      @click:append="deleteStep(i)"
+                    ></v-textarea>
+                    <v-btn
+                      v-if="step.nr != recipe.recipeDescription.length"
+                      color="white"
+                      height="18px"
+                      class="rounded-b-pill"
+                      tile
+                      style="position: relative; top: -35px; left: 45%"
+                      @click="addStepBetween(step.nr)"
+                      :key="`${i}+addStep`"
+                      >+
+                    </v-btn>
+                  </v-col>
+                </v-row>
               </v-sheet>
+              <v-btn @click="addStep">Schritt hinzufügen</v-btn>
             </v-col>
           </v-row>
         </v-card-text>
       </template>
+
+      <!-- Im Editmode  -->
       <template v-else>
         <v-form ref="recipeForm">
           <v-row>
@@ -172,7 +208,10 @@ function loadRecipe(): void {
   RecipeServiceApi.getSingleRecipe(useRoute().params.id as string).then(
     (response) => {
       if (response) {
+        const editRecipe = Recipe.createEmtptyRecipe();
         console.log(
+          "edit: ",
+          editRecipe,
           "response recipe id:",
           response.id,
           "params id",
@@ -206,6 +245,30 @@ async function addIngredient(): Promise<void> {
       recipe.value.ingredients[tempNr] = newItem;
     }
     zutatForm.value?.reset();
+  }
+}
+
+function addStep() {
+  if (recipe.value.recipeDescription.length <= 9) {
+    const x = { nr: recipe.value.recipeDescription.length + 1, text: "", img: "" };
+    recipe.value.recipeDescription.push(x);
+  }
+}
+
+function addStepBetween(nr: number) {
+  console.log("nr", nr);
+  console.log("länge", recipe.value.recipeDescription.length);
+  recipe.value.recipeDescription.splice(nr, 0, { nr: nr + 1, text: "", img:"" });
+  for (let i = nr + 1; i < recipe.value.recipeDescription.length; i++) {
+    console.log("bearbeiten ", i);
+    recipe.value.recipeDescription[i].nr += 1;
+  }
+  console.log(recipe.value.recipeDescription[nr]);
+}
+
+function deleteStep(n: number) {
+  if (recipe.value.recipeDescription.length > 1) {
+    recipe.value.recipeDescription.splice(n, 1);
   }
 }
 

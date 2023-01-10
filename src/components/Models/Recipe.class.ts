@@ -1,3 +1,4 @@
+
 interface Description {
   nr: number;
   text: string;
@@ -20,7 +21,7 @@ export default class Recipe {
     public recipeName?: string,
     public type?: string,
     public ingredients?: Ingredient[],
-    public recipeDescription?: Description[],
+    public recipeDescription: Description[] = [],
     public active?: boolean,
     public tags?: string[]
   ) {
@@ -42,17 +43,17 @@ export default class Recipe {
   }
 
   withTags(value: string[]): Recipe {
-    this.tags = value;
+    this.tags = value ?? [];
     return this;
   }
 
   withRecipeName(value: string): Recipe {
-    this.recipeName = value;
+    this.recipeName = value ?? "";
     return this;
   }
 
   withCreatedBy(value: string): Recipe {
-    this.createdBy = value;
+    this.createdBy = value ?? "";
     return this;
   }
 
@@ -62,26 +63,26 @@ export default class Recipe {
   }
 
   withImageSrc(value: string): Recipe {
-    this.imageSrc = value;
+    this.imageSrc = value ?? "";
     return this;
   }
 
   withDescription(value: string): Recipe {
-    this.description = value;
+    this.description = value ?? "";
     return this;
   }
 
   withType(value: string): Recipe {
-    this.type = value;
+    this.type = value ?? "";
     return this;
   }
   withIngredients(value: Ingredient[]): Recipe {
-    this.ingredients = value;
+    this.ingredients = value ?? [];
     return this;
   }
 
   withRecipeDescription(value: Description[]): Recipe {
-    this.recipeDescription = value;
+    this.recipeDescription = value ?? [];
     return this;
   }
 
@@ -151,17 +152,16 @@ export const recipeConverter = {
   },
   fromFirestore: (snapshot, options) => {
     const recipe = snapshot.data(options);
-    return new Recipe(
-      snapshot.id,
-      recipe.createdBy,
-      recipe.time,
-      recipe.imageSrc,
-      recipe.description,
-      recipe.recipeName,
-      recipe.type,
-      recipe.ingredients,
-      recipe.recipeDescription,
-      recipe.imageSrc
-    );
+    return Recipe.createEmtptyRecipe()
+      .withId(snapshot.id)
+      .withCreatedBy(recipe.createdBy)
+      .withRecipeName(recipe.recipeName)
+      .withTime(recipe.time)
+      .withIngredients(recipe.ingredients)
+      .withImageSrc(recipe.imageSrc)
+      .withType(recipe.type)
+      .withDescription(recipe.description)
+      .withRecipeDescription(recipe.recipeDescription)
+      .withTags(recipe.tags);
   },
 };
