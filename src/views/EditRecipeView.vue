@@ -29,7 +29,23 @@
                   v-for="(ingredient, i) in recipe.ingredients"
                   :key="ingredient.nr"
                 >
-                  <th>{{ ingredient.menge }}</th>
+                  <th>
+                    <template v-if="editItem === i">
+                      <v-form
+                        ref="editIngredient"
+                        @submit.prevent="editItem = null"
+                      >
+                        <v-text-field
+                          class="mr-1"
+                          label="Name"
+                          variant="outlined"
+                          density="compact"
+                          v-model="recipe.ingredients[i].menge"
+                        />
+                      </v-form>
+                    </template>
+                    <template v-else>{{ ingredient.menge }} </template>
+                  </th>
                   <td>
                     <template v-if="editItem == i">
                       <v-form
@@ -57,10 +73,7 @@
                       </v-btn>
                     </template>
                     <template v-else>
-                      <v-btn
-                        variant="text"
-                        @click="editItem = null"
-                      >
+                      <v-btn variant="text" @click="editItem = null">
                         <v-icon small>mdi-cancel</v-icon>
                       </v-btn>
                     </template>
