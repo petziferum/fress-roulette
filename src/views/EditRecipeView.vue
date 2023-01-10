@@ -128,6 +128,17 @@
             </v-list-item>
           </v-list>
         </v-card-text>
+        <!--- Zubereitungsschritte -->
+        <v-card-text>
+          <v-card-title>Zubereitungsschritte</v-card-title>
+          <v-row>
+            <v-col>
+              <v-sheet v-for="step in recipe.recipeDescription" :key="step.nr">
+                {{ step }}
+              </v-sheet>
+            </v-col>
+          </v-row>
+        </v-card-text>
       </template>
       <template v-else>
         <v-form ref="recipeForm">
