@@ -1,4 +1,3 @@
-
 interface Description {
   nr: number;
   text: string;
@@ -114,30 +113,6 @@ export default class Recipe {
   }
 }
 
-function ingredientsConverter(i) {
-  if (i) {
-    return {
-      nr: i.nr,
-      name: i.name,
-      menge: i.menge,
-    };
-  } else {
-    return null;
-  }
-}
-
-function descriptionConverter(d) {
-  if (d) {
-    return {
-      nr: d.nr,
-      img: d.img,
-      text: d.text,
-    };
-  } else {
-    return null;
-  }
-}
-
 export const recipeConverter = {
   toFirestore: (recipe) => {
     console.log("firestore converter gestartet", recipe);
@@ -156,7 +131,7 @@ export const recipeConverter = {
       .withId(snapshot.id)
       .withCreatedBy(recipe.createdBy)
       .withRecipeName(recipe.recipeName)
-      .withTime(recipe.time)
+      .withTime(recipe.time ?? new Date(Date.now()))
       .withIngredients(recipe.ingredients)
       .withImageSrc(recipe.imageSrc)
       .withType(recipe.type)

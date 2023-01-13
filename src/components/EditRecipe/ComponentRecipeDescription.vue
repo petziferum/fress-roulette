@@ -16,7 +16,7 @@
               append-inner-icon="mdi-pencil"
             ></v-textarea>
             <v-btn
-              v-if="step.nr != recipe.recipeDescription.length"
+              v-if="step.nr !== recipe.recipeDescription.length"
               color="white"
               height="18px"
               class="rounded-b-pill"
@@ -41,7 +41,7 @@
         >
         </v-textarea>
         <v-btn block rounded="0" color="success" type="submit"
-          >Schritt hinzufügen</v-btn
+          >Schritt 🍔 hinzufügen</v-btn
         >
       </v-form>
     </v-col>
