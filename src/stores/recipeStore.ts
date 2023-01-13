@@ -1,7 +1,9 @@
 import { defineStore } from "pinia";
-import { getCollection } from "@/plugins/firebase";
+import { db, getCollection } from "@/plugins/firebase";
 import type Recipe from "@/components/Models/Recipe.class";
-import {recipeConverter} from "@/components/Models/Recipe.class";
+import { recipeConverter } from "@/components/Models/Recipe.class";
+import { collection, getDocs } from "firebase/firestore";
+import RecipeServiceApi from "@/api/recipeServiceApi";
 
 export interface stateInterface {
   allRecipes: Recipe[];
@@ -16,13 +18,8 @@ export const recipeStore = defineStore("recipeStore", {
     loadAllRecipes: function () {
       console.info("store load All Recipes");
       this.allRecipes = [];
-      getCollection("test").then((res) => {
-        res.forEach((recipeData) => {
-          const data = recipeData;
-          //const r = recipeConverter.fromFirestore(data, null);
-          console.log("converter", data);
-          //this.allRecipes.push(recipeData.data);
-        });
+      RecipeServiceApi.getRecipes().then((recipes) => {
+        this.allRecipes = recipes;
       });
     },
   },

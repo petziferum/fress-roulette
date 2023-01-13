@@ -22,6 +22,7 @@
       suchfeld: <custom-input v-model="state.searchText" />
     </div>
   </v-container>
+  {{ state.recipesList.values() }}
 </template>
 
 <script lang="ts" setup>
@@ -51,7 +52,10 @@ const state: State = reactive({
     .withRecipeName("Dummy Rezept")
     .withCreatedBy("Petzi")
     .withTags(["dummy", "lecker"])
-    .withIngredients([{ nr: 1, menge: "1Tl", name: "Zucker" }, { nr: 2, menge: "100g", name: "Butter"}])
+    .withIngredients([
+      { nr: 1, menge: "1Tl", name: "Zucker" },
+      { nr: 2, menge: "100g", name: "Butter" },
+    ])
     .withRecipeDescription([
       { nr: 1, text: "kochen und backen", img: "no Image" },
       { nr: 2, text: "Dann Backen und schneiden", img: "no Image" },
@@ -64,7 +68,7 @@ function removeRecipes(): void {
 }
 
 function fetchRecipes(): void {
-  console.clear()
+  console.clear();
   state.recipesList = [];
   /*getCollection("test").then((res) => {
     state.recipesLoaded = true;
@@ -75,12 +79,12 @@ function fetchRecipes(): void {
   });
    */
   store.loadAllRecipes();
-  console.log("fetchRecipes", store.allRecipes);
-  setTimeout(()=> {
-    state.recipesList = store.allRecipes
+  console.log("fetchRecipes", store.allRecipes.values());
+  setTimeout(() => {
+    store.allRecipes.forEach(r => state.recipesList.push(r));
+    console.log("geladen", state.recipesList);
     state.recipesLoaded = true;
   }, 1000);
-
 }
 
 onMounted(() => {
