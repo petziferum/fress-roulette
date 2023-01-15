@@ -20,21 +20,9 @@
 </template>
 
 <script setup lang="ts">
-import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-import router from "@/router";
 
-const registerWithGoogle = () => {
-  const provider = new GoogleAuthProvider();
-  const auth = getAuth();
-  signInWithPopup(auth, provider)
-    .then((result) => {
-      console.log("result", result.user);
-      router.push("/about");
-    })
-    .catch((error) => {
-      console.error("Fehler", error.message);
-    });
-};
+import {registerWithGoogle} from "@/plugins/firebase";
+
 </script>
 
 <style scoped></style>

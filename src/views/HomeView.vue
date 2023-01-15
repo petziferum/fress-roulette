@@ -2,11 +2,13 @@
   <v-container>
     <v-row>
       <v-col>
-        geladen? {{ state.recipesLoaded }}
-        <v-btn @click="fetchRecipes" v-if="!state.recipesLoaded"
-          >Lade Rezepte</v-btn
-        >
+        <div>geladen? {{ state.recipesLoaded }}</div>
+        <div>
+          <v-btn @click="fetchRecipes" v-if="!state.recipesLoaded"
+            >Lade Rezepte</v-btn
+          >
         <v-btn v-else @click="removeRecipes">Rezepte entfernen</v-btn>
+        </div>
       </v-col>
     </v-row>
     <v-row justify="left" v-if="state.recipesLoaded">
@@ -81,7 +83,7 @@ function fetchRecipes(): void {
   store.loadAllRecipes();
   console.log("fetchRecipes", store.allRecipes.values());
   setTimeout(() => {
-    store.allRecipes.forEach(r => state.recipesList.push(r));
+    store.allRecipes.forEach((r) => state.recipesList.push(r));
     console.log("geladen", state.recipesList);
     state.recipesLoaded = true;
   }, 1000);

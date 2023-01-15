@@ -1,11 +1,8 @@
 import { defineStore } from "pinia";
-import { db, getCollection } from "@/plugins/firebase";
 import type Recipe from "@/components/Models/Recipe.class";
-import { recipeConverter } from "@/components/Models/Recipe.class";
-import { collection, getDocs } from "firebase/firestore";
 import RecipeServiceApi from "@/api/recipeServiceApi";
 
-export interface stateInterface {
+export interface recipeStateInterface {
   allRecipes: Recipe[];
 }
 
@@ -13,7 +10,7 @@ export const recipeStore = defineStore("recipeStore", {
   state: () =>
     ({
       allRecipes: [],
-    } as stateInterface),
+    } as recipeStateInterface),
   actions: {
     loadAllRecipes: function () {
       console.info("store load All Recipes");

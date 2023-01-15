@@ -1,7 +1,15 @@
 import { initializeApp } from "firebase/app";
-import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
+import {
+  getAuth,
+  GoogleAuthProvider,
+  onAuthStateChanged,
+  signInWithPopup,
+  signOut,
+} from "firebase/auth";
 import {
   collection,
+  doc,
+  getDoc,
   getDocs,
   getFirestore,
   query,
@@ -11,6 +19,8 @@ import { getStorage } from "firebase/storage";
 import router from "@/router";
 import { computed } from "vue";
 import Recipe, { recipeConverter } from "@/components/Models/Recipe.class";
+import {userStore} from "@/stores/userStore";
+
 
 const firebaseConfig = {
   apiKey: "AIzaSyCPt03Bp5UBVXn72EVSWNAhvt4u0NI2m5M",
@@ -42,14 +52,56 @@ export function logOut() {
 export const user = computed(() => {
   let user = getAuth().currentUser;
   if (user) {
+    console.log("user eingelogged",user.uid)
+    getUserFirestoreData(user.uid);
     return user;
   } else {
     onAuthStateChanged(getAuth(), (authUser) => {
+      console.info("authstatechanged", authUser);
       user = authUser;
+      getUserFirestoreData(user!.uid);
     });
     return user;
   }
 });
+
+export const registerWithGoogle = () => {
+  const provider = new GoogleAuthProvider();
+  const auth = getAuth();
+  signInWithPopup(auth, provider)
+    .then((result) => {
+      const user = result.user;
+      getUserFirestoreData(user.uid);
+      router.push("/user/dashboard");
+    })
+    .catch((error) => {
+      console.error("Fehler", error.message);
+    });
+};
+
+export const getUserFirestoreData = async (userId: string) => {
+  console.info("getUserFirestoreData", userId);
+  const userState = userStore();
+  const userStoreRef = doc(db, "users", userId);
+  const userDocSnap = await getDoc(userStoreRef);
+  if (userDocSnap.exists()) {
+    const d = userDocSnap.data();
+    const data = {
+      email: d.email,
+      firstName: d.firstName,
+      lastName: d.lastName,
+      lastLogin: d.lastLogin,
+      recipes: d.recipes,
+      id: d.id,
+      userName: d.userName,
+    };
+    console.log("user store data: ", data);
+    userState.userFirestoreData = data;
+    console.log("userFirestoreData aus firebase.ts", userState.userFirestoreData);
+  } else {
+    console.log("user wurde nicht gefunden", userId);
+  }
+};
 
 export async function getUserRecipe(): Promise<Recipe[]> {
   const userRecipes: Recipe[] = [];

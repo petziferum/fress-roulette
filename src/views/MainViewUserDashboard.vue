@@ -66,6 +66,15 @@
               </v-table>
             </v-col>
           </v-row>
+          <v-row>
+            <v-col cols="12">
+              <div>User Store Data:</div>
+              <v-card-text>
+                <div>User aus Store</div>
+                <div>{{ userState.getStoreUser }}</div>
+              </v-card-text>
+            </v-col>
+          </v-row>
           <v-card-actions>
             <div class="text-caption">
               https://learnvue.co/tutorials/vue-firebase-authentication
@@ -73,10 +82,7 @@
           </v-card-actions>
         </v-card>
       </v-col>
-    </v-row>
-
-    <v-row>
-      <v-col cols="12">
+      <v-col cols="12" md="6">
         <v-card>
           <v-card-title>
             Deine Rezepte
@@ -101,6 +107,7 @@ import { getUserRecipe, user, logOut } from "@/plugins/firebase";
 import Recipe from "@/components/Models/Recipe.class";
 import { useRouter } from "vue-router";
 import AddRecipeDialog from "@/components/AddRecipeDialog.vue";
+import { userStore } from "@/stores/userStore"
 
 // Todo: Typing ref Values
 const router = useRouter();
@@ -110,6 +117,7 @@ const alertMessage = ref<string | null>(null);
 const passField = ref();
 const userRecipes = ref<Recipe[]>([]);
 const editRoute = ref("/recipe/edit/");
+const userState = userStore();
 
 const required = computed(() => {
   return (v: string) => !!v || "Darf nicht leer sein";
@@ -134,7 +142,7 @@ function editRecipe(id: string): void {
 }
 
 onBeforeMount(() => {
-  getUserRecipe().then((recipes) => (userRecipes.value = recipes));
+  //getUserRecipe().then((recipes) => (userRecipes.value = recipes));
 });
 </script>
 
