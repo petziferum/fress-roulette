@@ -1,44 +1,24 @@
 <template>
-  <v-container>
-    <v-row>
-      <v-col>
-        <div>geladen? {{ state.recipesLoaded }}</div>
-        <div>
-          <v-btn @click="fetchRecipes" v-if="!state.recipesLoaded"
-            >Lade Rezepte</v-btn
-          >
-        <v-btn v-else @click="removeRecipes">Rezepte entfernen</v-btn>
-        </div>
+  <div>
+    <v-row justify="center">
+      <v-col cols="4">
+        <v-card height="2000px">
+          <v-card-title>Hauptansicht</v-card-title>
+        </v-card>
       </v-col>
     </v-row>
-    <v-row justify="left" v-if="state.recipesLoaded">
-      <!-- https://vuejs.org/guide/components/props.html#prop-passing-details -->
-      <v-col cols="4" v-for="recipe of state.recipesList" :key="recipe.id">
-        <receipe-card :recipe="recipe" v-model="state.searchText" />
-      </v-col>
-    </v-row>
-    <div v-else>nichts geladen...</div>
-    v-model = {{ state.beispiel }}, suchtext: {{ state.searchText }}
-    <receipe-card :recipe="state.dummyRecipe"></receipe-card>
-    <div class="ma-3">
-      suchfeld: <custom-input v-model="state.searchText" />
-    </div>
-  </v-container>
-  {{ state.recipesList.values() }}
+  </div>
 </template>
 
 <script lang="ts" setup>
-import ReceipeCard from "@/components/ReceipeDetailsCard.vue";
 import Recipe from "@/components/Models/Recipe.class";
-import { onMounted, reactive } from "vue";
-import CustomInput from "@/components/CustomInput.vue";
+import { reactive } from "vue";
 import { recipeStore } from "@/stores/recipeStore";
 
 //Interface für den State
 interface State {
   recipesLoaded: boolean;
   recipesList: any[];
-  dummyRecipe: Recipe;
   beispiel: string;
   searchText: string;
 }
@@ -50,7 +30,9 @@ const state: State = reactive({
   recipesList: [],
   beispiel: "Beispielwurst",
   searchText: "suche",
-  dummyRecipe: Recipe.createEmtptyRecipe()
+});
+const dummyRecipe = reactive(
+  Recipe.createEmtptyRecipe()
     .withRecipeName("Dummy Rezept")
     .withCreatedBy("Petzi")
     .withTags(["dummy", "lecker"])
@@ -61,8 +43,8 @@ const state: State = reactive({
     .withRecipeDescription([
       { nr: 1, text: "kochen und backen", img: "no Image" },
       { nr: 2, text: "Dann Backen und schneiden", img: "no Image" },
-    ]),
-});
+    ])
+);
 
 function removeRecipes(): void {
   state.recipesList = [];
@@ -88,8 +70,4 @@ function fetchRecipes(): void {
     state.recipesLoaded = true;
   }, 1000);
 }
-
-onMounted(() => {
-  console.log("mounted");
-});
 </script>

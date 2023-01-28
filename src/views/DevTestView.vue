@@ -22,18 +22,18 @@
 
 <script setup lang="ts">
 import TagsSelect from "@/components/componenttest/TagsSelect.vue";
-import { ref } from "vue";
+import { ref, reactive } from "vue";
 import RecipesView from "@/components/componenttest/RecipesView.vue";
-import Recipe from "@/components/Models/Recipe.class";
 import RecipePreviewCard from "@/components/RecipePreviewCard.vue";
+import imgUrl from "@/assets/whisky.jpg";
 
-
-const recipe = ref({
+const recipe = reactive({
   recipeName: "rezept 1",
+  img: imgUrl,
   createdBy: "Petzi",
   tags: ["deftig"],
 });
-const recipeArray = ref<Recipe[]>([recipe.value]);
+const recipeArray = ref([recipe]);
 </script>
 
 <style scoped></style>

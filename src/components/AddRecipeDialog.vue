@@ -42,6 +42,7 @@ import Recipe from "@/components/Models/Recipe.class";
 import { useRouter } from "vue-router";
 import RecipeServiceApi from "@/api/recipeServiceApi";
 
+const bgImage = ref("/src/assets/whisky.jpg");
 const props = defineProps(["userId"]);
 const router = useRouter();
 const isOpen = ref(false);
