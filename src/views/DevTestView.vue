@@ -5,6 +5,11 @@
     </v-row>
     <v-row>
       <v-col>
+      <roulette />
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col>
         <recipe-preview-card :recipe="recipe" />
       </v-col>
       <v-col cols="12">
@@ -26,6 +31,7 @@ import { ref, reactive } from "vue";
 import RecipesView from "@/components/componenttest/RecipesView.vue";
 import RecipePreviewCard from "@/components/RecipePreviewCard.vue";
 import imgUrl from "@/assets/whisky.jpg";
+import Roulette from "@/components/componenttest/Roulette.vue";
 
 const recipe = reactive({
   recipeName: "rezept 1",
