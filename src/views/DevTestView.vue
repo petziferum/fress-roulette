@@ -31,7 +31,7 @@ import { ref, reactive } from "vue";
 import RecipesView from "@/components/componenttest/RecipesView.vue";
 import RecipePreviewCard from "@/components/RecipePreviewCard.vue";
 import imgUrl from "@/assets/whisky.jpg";
-import Roulette from "@/components/componenttest/Roulette.vue";
+import Roulette from "@/components/componenttest/RecipeRoulette.vue";
 
 const recipe = reactive({
   recipeName: "rezept 1",

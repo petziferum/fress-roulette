@@ -10,9 +10,15 @@
       <v-card-text>
         {{ array }}<br />
         {{ show }}
-        <transition name="slide" mode="out-in">
-          <p v-if="show" :key="result">{{ result }}</p>
-        </transition>
+        <v-card :color="bg" width="100px" height="100px">
+          <v-row justify="center">
+            <v-col cols="6" class="text-center">
+              <transition name="slide" mode="out-in">
+                <div v-if="show" :key="result">{{ result }}</div>
+              </transition>
+            </v-col>
+          </v-row>
+        </v-card>
       </v-card-text>
     </v-card>
   </div>
@@ -24,18 +30,20 @@ import { onBeforeMount, ref } from "vue";
 const array = ref<string[]>([]);
 const result = ref();
 const show = ref(false);
+const bg = ref("red");
 
 function getRandomItem() {
+  bg.value = bg.value === "red" ? "black" : "red";
   show.value = false;
   const nr = Math.floor(Math.random() * array.value.length);
   console.log("value", nr);
   result.value = array.value[nr];
   array.value.splice(nr, 1);
+  if (array.value.length <= 0) {
+    reset();
+  }
   show.value = true;
 }
-
-
-
 
 const reset = () => {
   show.value = false;
@@ -48,17 +56,17 @@ onBeforeMount(() => {
 </script>
 <style>
 .slide-enter-from {
-  transform: translateX(-300px);
+  transform: translateX(-50px);
   opacity: 0.3;
 }
 
 .slide-enter-active,
 .slide-leave-active {
-  transition: all 1s;
+  transition: all 0.5s;
 }
 .slide-enter,
 .slide-leave-to {
-  transform: translateX(300px);
+  transform: translateX(30px);
   opacity: 0;
 }
 </style>
