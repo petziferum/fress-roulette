@@ -13,7 +13,6 @@ export const recipeStore = defineStore("recipeStore", {
     } as recipeStateInterface),
   actions: {
     loadAllRecipes: function () {
-      console.info("store load All Recipes");
       this.allRecipes = [];
       RecipeServiceApi.getRecipes().then((recipes) => {
         this.allRecipes = recipes;
@@ -22,7 +21,6 @@ export const recipeStore = defineStore("recipeStore", {
   },
   getters: {
     getAllRecipes(state): Recipe[] {
-      console.log("getter", state.allRecipes);
       return state.allRecipes;
     },
   },

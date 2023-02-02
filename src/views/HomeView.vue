@@ -4,6 +4,44 @@
       <v-col cols="4">
         <v-card height="2000px">
           <v-card-title>Hauptansicht</v-card-title>
+          <v-card-subtitle>
+            <v-btn variant="tonal" elevation="8" rounded="0" size="x-small" style="margin-right: 30px" @click.prevent="fetchRecipes">fetch</v-btn>
+            <v-btn variant="tonal" elevation="8" rounded="0" size="x-small" @click="loading = !loading">loading</v-btn>
+          </v-card-subtitle>
+          <div>
+            <div style="height:30px" class="text-center">
+              <Transition name="fade">
+              <v-icon color="blue" size="30" v-if="loading">mdi-loading mdi-spin</v-icon>
+              </Transition>
+            </div>
+            <v-expansion-panels>
+              <v-expansion-panel v-for="recipe in recipesList" :key="recipe.id">
+                <v-expansion-panel-title>{{
+                  recipe.recipeName
+                }}</v-expansion-panel-title>
+                <v-expansion-panel-text>
+                  <v-row>
+                    <v-col>
+                      {{ recipe.id }}
+                    </v-col>
+                    <v-col>
+                      {{ recipe.createdBy }}
+                    </v-col>
+                    <v-col cols="12">
+                      {{ recipe.ingredients }}
+                    </v-col>
+                    <v-col>
+                      {{ recipe.description }}
+                    </v-col>
+                    <v-col>
+                      {{ recipe.tags }}
+                    </v-col>
+                  </v-row>
+                  <div>{{ recipe }}</div>
+                </v-expansion-panel-text>
+              </v-expansion-panel>
+            </v-expansion-panels>
+          </div>
         </v-card>
       </v-col>
     </v-row>
@@ -12,62 +50,48 @@
 
 <script lang="ts" setup>
 import Recipe from "@/components/Models/Recipe.class";
-import { reactive } from "vue";
+import { onMounted, ref } from "vue";
 import { recipeStore } from "@/stores/recipeStore";
 
-//Interface für den State
-interface State {
-  recipesLoaded: boolean;
-  recipesList: any[];
-  beispiel: string;
-  searchText: string;
-}
 const store = recipeStore();
+const loading = ref(false);
+const recipesList = ref<Recipe[]>([]);
 
 //Der State mit Typ-declaration aus dem Interface
-const state: State = reactive({
-  recipesLoaded: false,
-  recipesList: [],
-  beispiel: "Beispielwurst",
-  searchText: "suche",
-});
-const dummyRecipe = reactive(
-  Recipe.createEmtptyRecipe()
-    .withRecipeName("Dummy Rezept")
-    .withCreatedBy("Petzi")
-    .withTags(["dummy", "lecker"])
-    .withIngredients([
-      { nr: 1, menge: "1Tl", name: "Zucker" },
-      { nr: 2, menge: "100g", name: "Butter" },
-    ])
-    .withRecipeDescription([
-      { nr: 1, text: "kochen und backen", img: "no Image" },
-      { nr: 2, text: "Dann Backen und schneiden", img: "no Image" },
-    ])
-);
 
 function removeRecipes(): void {
-  state.recipesList = [];
-  state.recipesLoaded = false;
+  recipesList.value = [];
+  loading.value = false;
 }
 
 function fetchRecipes(): void {
   console.clear();
-  state.recipesList = [];
-  /*getCollection("test").then((res) => {
-    state.recipesLoaded = true;
-    res.forEach((doc) => {
-      console.info("r", doc.data());
-      state.recipesList.push(doc.data());
-    });
-  });
-   */
+  recipesList.value = [];
+  const db = "recipes";
+  loading.value=true;
+
   store.loadAllRecipes();
   console.log("fetchRecipes", store.allRecipes.values());
   setTimeout(() => {
-    store.allRecipes.forEach((r) => state.recipesList.push(r));
-    console.log("geladen", state.recipesList);
-    state.recipesLoaded = true;
+    store.allRecipes.forEach((r) => recipesList.value.push(r as Recipe));
+    loading.value = false;
   }, 1000);
 }
+
+onMounted(() => {
+  fetchRecipes();
+});
 </script>
+<style scoped>
+.fade-enter-active,
+.fade-leave-active {
+
+  transition: opacity 0.5s ease-in-out;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+</style>
+
