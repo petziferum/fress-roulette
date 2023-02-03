@@ -14,6 +14,11 @@
               <v-icon color="blue" size="30" v-if="loading">mdi-loading mdi-spin</v-icon>
               </Transition>
             </div>
+            <v-row>
+              <v-col cols="12">
+                <recipe-roulette :recipes-array="recipesList" />
+              </v-col>
+            </v-row>
             <v-expansion-panels>
               <v-expansion-panel v-for="recipe in recipesList" :key="recipe.id">
                 <v-expansion-panel-title>{{
@@ -52,6 +57,7 @@
 import Recipe from "@/components/Models/Recipe.class";
 import { onMounted, ref } from "vue";
 import { recipeStore } from "@/stores/recipeStore";
+import RecipeRoulette from "@/components/componenttest/RecipeRoulette.vue";
 
 const store = recipeStore();
 const loading = ref(false);
