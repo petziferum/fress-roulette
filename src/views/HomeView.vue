@@ -1,17 +1,34 @@
 <template>
   <div>
     <v-row justify="center">
-      <v-col cols="4">
+      <v-col cols="10">
         <v-card height="2000px">
           <v-card-title>Hauptansicht</v-card-title>
           <v-card-subtitle>
-            <v-btn variant="tonal" elevation="8" rounded="0" size="x-small" style="margin-right: 30px" @click.prevent="fetchRecipes">fetch</v-btn>
-            <v-btn variant="tonal" elevation="8" rounded="0" size="x-small" @click="loading = !loading">loading</v-btn>
+            <v-btn
+              variant="tonal"
+              elevation="8"
+              rounded="0"
+              size="x-small"
+              style="margin-right: 30px"
+              @click.prevent="fetchRecipes"
+              >fetch</v-btn
+            >
+            <v-btn
+              variant="tonal"
+              elevation="8"
+              rounded="0"
+              size="x-small"
+              @click="loading = !loading"
+              >loading</v-btn
+            >
           </v-card-subtitle>
           <div>
-            <div style="height:30px" class="text-center">
+            <div style="height: 30px" class="text-center">
               <Transition name="fade">
-              <v-icon color="blue" size="30" v-if="loading">mdi-loading mdi-spin</v-icon>
+                <v-icon color="blue" size="30" v-if="loading"
+                  >mdi-loading mdi-spin</v-icon
+                >
               </Transition>
             </div>
             <v-row>
@@ -25,24 +42,7 @@
                   recipe.recipeName
                 }}</v-expansion-panel-title>
                 <v-expansion-panel-text>
-                  <v-row>
-                    <v-col>
-                      {{ recipe.id }}
-                    </v-col>
-                    <v-col>
-                      {{ recipe.createdBy }}
-                    </v-col>
-                    <v-col cols="12">
-                      {{ recipe.ingredients }}
-                    </v-col>
-                    <v-col>
-                      {{ recipe.description }}
-                    </v-col>
-                    <v-col>
-                      {{ recipe.tags }}
-                    </v-col>
-                  </v-row>
-                  <div>{{ recipe }}</div>
+                  <receipe-details-card :recipe="recipe" />
                 </v-expansion-panel-text>
               </v-expansion-panel>
             </v-expansion-panels>
@@ -58,12 +58,11 @@ import Recipe from "@/components/Models/Recipe.class";
 import { onMounted, ref } from "vue";
 import { recipeStore } from "@/stores/recipeStore";
 import RecipeRoulette from "@/components/componenttest/RecipeRoulette.vue";
+import ReceipeDetailsCard from "@/components/ReceipeDetailsCard.vue";
 
 const store = recipeStore();
 const loading = ref(false);
 const recipesList = ref<Recipe[]>([]);
-
-//Der State mit Typ-declaration aus dem Interface
 
 function removeRecipes(): void {
   recipesList.value = [];
@@ -74,7 +73,7 @@ function fetchRecipes(): void {
   console.clear();
   recipesList.value = [];
   const db = "recipes";
-  loading.value=true;
+  loading.value = true;
 
   store.loadAllRecipes();
   console.log("fetchRecipes", store.allRecipes.values());
@@ -91,7 +90,6 @@ onMounted(() => {
 <style scoped>
 .fade-enter-active,
 .fade-leave-active {
-
   transition: opacity 0.5s ease-in-out;
 }
 
@@ -100,4 +98,3 @@ onMounted(() => {
   opacity: 0;
 }
 </style>
-

@@ -28,6 +28,7 @@ onBeforeMount(() => {
   auth = getAuth();
   onAuthStateChanged(auth, (user) => {
     isLoggedIn.value = !!user;
+    console.log("isloggedin", isLoggedIn.value);
   });
 });
 </script>
