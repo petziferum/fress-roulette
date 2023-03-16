@@ -46,8 +46,8 @@
               >
               <v-col cols="1">
                 <template v-if="edit">
-                  <v-btn icon @click="editStep(text.nr)"
-                    ><v-icon small>mdi-pencil</v-icon></v-btn
+                  <v-btn flat icon @click="editStep(text.nr)"
+                    ><v-icon size="small">mdi-pencil</v-icon></v-btn
                   >
                 </template>
               </v-col>

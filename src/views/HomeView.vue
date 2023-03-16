@@ -2,7 +2,7 @@
   <div>
     <v-row justify="center">
       <v-col cols="10">
-        <v-card height="2000px">
+        <v-card>
           <v-card-title>Hauptansicht</v-card-title>
           <v-card-subtitle>
             <v-btn
@@ -36,6 +36,7 @@
                 <recipe-roulette :recipes-array="recipesList" />
               </v-col>
             </v-row>
+            <!--
             <v-expansion-panels>
               <v-expansion-panel v-for="recipe in recipesList" :key="recipe.id">
                 <v-expansion-panel-title>{{
@@ -46,6 +47,27 @@
                 </v-expansion-panel-text>
               </v-expansion-panel>
             </v-expansion-panels>
+            -->
+            <v-row no-gutters>
+              <v-col cols="4" v-for="r in recipesList" :key="r.id">
+                <v-card elevation="12">
+                  <div class="image-wrapper">
+                    <v-img
+                      :src="r.imageSrc"
+                      height="100px"
+                      cover
+                      :class="{ hovered: ishover }"
+                    >
+                      <div class="overlay">
+                        <v-card-title
+                          >{{ r.recipeName }} - h:{{ ishover }}</v-card-title
+                        >
+                      </div>
+                    </v-img>
+                  </div>
+                </v-card>
+              </v-col>
+            </v-row>
           </div>
         </v-card>
       </v-col>
@@ -58,7 +80,6 @@ import Recipe from "@/components/Models/Recipe.class";
 import { onMounted, ref } from "vue";
 import { recipeStore } from "@/stores/recipeStore";
 import RecipeRoulette from "@/components/componenttest/RecipeRoulette.vue";
-import ReceipeDetailsCard from "@/components/ReceipeDetailsCard.vue";
 
 const store = recipeStore();
 const loading = ref(false);
@@ -96,5 +117,26 @@ onMounted(() => {
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
+}
+.image-wrapper {
+  position: relative;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.overlay:hover {
+  opacity: 1;
 }
 </style>
