@@ -3,7 +3,7 @@
     <v-row justify="center">
       <v-col cols="10">
         <v-card>
-          <v-card-title>Hauptansicht</v-card-title>
+          <v-card-title>HomeView</v-card-title>
           <v-card-subtitle>
             <v-btn
               variant="tonal"
@@ -52,16 +52,9 @@
               <v-col cols="4" v-for="r in recipesList" :key="r.id">
                 <v-card elevation="12">
                   <div class="image-wrapper">
-                    <v-img
-                      :src="r.imageSrc"
-                      height="100px"
-                      cover
-                      :class="{ hovered: ishover }"
-                    >
+                    <v-img :src="r.imageSrc" height="100px" cover>
                       <div class="overlay">
-                        <v-card-title
-                          >{{ r.recipeName }} - h:{{ ishover }}</v-card-title
-                        >
+                        <v-card-title>{{ r.recipeName }}</v-card-title>
                       </div>
                     </v-img>
                   </div>
@@ -138,5 +131,6 @@ onMounted(() => {
 
 .overlay:hover {
   opacity: 1;
+    cursor: pointer;
 }
 </style>

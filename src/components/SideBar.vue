@@ -19,6 +19,12 @@ import { ref } from "vue";
 
 const listItems = ref([
   { title: "Home", to: "/", icon: "mdi-home", subtitle: "Startseite" },
+    {
+        title: "Roulette",
+        to: "/roulette",
+        icon: "mdi-circle",
+        subtitle: "friss du fette Sau!",
+    },
   {
     title: "Rezepte",
     to: "/rezepte",

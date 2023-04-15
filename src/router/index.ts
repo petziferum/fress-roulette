@@ -14,6 +14,14 @@ const router = createRouter({
       },
     },
     {
+      path: "/roulette",
+      name: "roulette",
+      component: () => import("@/views/TheRouletteView.vue"),
+      meta: {
+        requiresAuth: false,
+      },
+    },
+    {
       path: "/login",
       name: "login",
       component: () => import("@/views/LoginView.vue"),

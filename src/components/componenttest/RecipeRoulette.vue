@@ -30,7 +30,7 @@ import { onBeforeMount, ref } from "vue";
 import Recipe from "@/components/Models/Recipe.class";
 
 const props = defineProps(["recipesArray"]);
-const emitValue = defineEmits(["update:recipesArray"]);
+//const emitValue = defineEmits(["update:recipesArray"]);
 
 const array = ref<[]>(Object.assign([], props.recipesArray));
 const result = ref<Recipe>();
@@ -39,11 +39,16 @@ const bg = ref("red");
 
 function getRandomItem() {
   if (props.recipesArray) {
-    console.log("props length: ",props.recipesArray.length, "array length", array.value.length);
+    console.log(
+      "props length: ",
+      props.recipesArray.length,
+      "array length",
+      array.value.length
+    );
     bg.value = bg.value === "red" ? "black" : "red";
     show.value = false;
     const nr = Math.floor(Math.random() * array.value.length);
-    console.log("value",nr, array.value[nr]);
+    console.log("value", nr, array.value[nr]);
     result.value = array.value[nr];
     array.value.splice(nr, 1);
   }
@@ -57,8 +62,7 @@ const reset = (text: string) => {
   console.debug("reset");
   show.value = true;
   array.value = Object.assign([], props.recipesArray);
-  result.value =
-    Recipe.createEmtptyRecipe().withRecipeName(text);
+  result.value = Recipe.createEmtptyRecipe().withRecipeName(text);
   console.debug("array", array.value.length, result.value);
 };
 
