@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-card>
+    <v-card flat>
       <v-toolbar>
         <v-toolbar-items>
           <v-btn @click="getRandomItem">Start</v-btn>
@@ -9,14 +9,17 @@
       </v-toolbar>
       <v-card-text>
         <div v-if="recipesArray.length">{{ recipesArray.length }} Rezepte</div>
-        <v-card :color="bg" width="300px" height="100px">
-          <v-img v-if="result.img" width="100%" :src="result.img" />
-          <v-row justify="center">
-            <v-col cols="6" class="text-center">
+        <v-card :color="bg" width="100%" height="250px">
+            <template v-slot:image>
+          <v-img cover v-if="result.imageSrc" width="100%" :src="result.imageSrc" />
+            </template>
+          <v-row justify="center" style="background-color: #282828">
+            <v-col cols="12" class="text-center">
               <div class="text-amber-darken-2">Heute gibts:</div>
               <transition name="slide" mode="out-in">
                 <div v-if="show" :key="result">{{ result.recipeName }}</div>
               </transition>
+
             </v-col>
           </v-row>
         </v-card>

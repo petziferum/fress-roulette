@@ -2,7 +2,7 @@
   <v-row justify="center">
     <v-col cols="12" class="text-center">TheRouletteView</v-col>
     <v-col cols="12" md="6">
-      <v-card>
+      <v-card flat>
         <v-card-title>Title</v-card-title>
         <v-card-text>
           <v-btn @click="fetchRecipes">fetch recipes</v-btn>
