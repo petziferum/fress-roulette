@@ -31,23 +31,7 @@
                 >
               </Transition>
             </div>
-            <v-row>
-              <v-col cols="12">
-                <recipe-roulette :recipes-array="recipesList" />
-              </v-col>
-            </v-row>
-            <!--
-            <v-expansion-panels>
-              <v-expansion-panel v-for="recipe in recipesList" :key="recipe.id">
-                <v-expansion-panel-title>{{
-                  recipe.recipeName
-                }}</v-expansion-panel-title>
-                <v-expansion-panel-text>
-                  <receipe-details-card :recipe="recipe" />
-                </v-expansion-panel-text>
-              </v-expansion-panel>
-            </v-expansion-panels>
-            -->
+
             <v-row no-gutters>
               <v-col cols="4" v-for="r in recipesList" :key="r.id">
                 <v-card elevation="12">
@@ -84,7 +68,6 @@ function removeRecipes(): void {
 }
 
 function fetchRecipes(): void {
-  console.clear();
   recipesList.value = [];
   const db = "recipes";
   loading.value = true;
@@ -131,6 +114,6 @@ onMounted(() => {
 
 .overlay:hover {
   opacity: 1;
-    cursor: pointer;
+  cursor: pointer;
 }
 </style>
