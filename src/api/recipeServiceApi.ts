@@ -14,7 +14,7 @@ export default class RecipeServiceApi {
   public static async getSingleRecipe(
     recipeId: string
   ): Promise<Recipe | undefined> {
-    const docRef = doc(db, "test", recipeId).withConverter(recipeConverter);
+    const docRef = doc(db, "recipes", recipeId).withConverter(recipeConverter);
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
       return docSnap.data();

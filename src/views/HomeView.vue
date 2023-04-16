@@ -34,7 +34,7 @@
 
             <v-row no-gutters>
               <v-col cols="4" v-for="r in recipesList" :key="r.id">
-                <v-card elevation="12">
+                <v-card elevation="12" link :to="'/recipe/view/' + r.id">
                   <div class="image-wrapper">
                     <v-img :src="r.imageSrc" height="100px" cover>
                       <div class="overlay">
