@@ -29,11 +29,14 @@ export const recipeStore = defineStore("recipeStore", {
     loadRecipeById: function (id) {
       console.log("foo", id);
       this.recipesLoading = true;
-      RecipeServiceApi.getSingleRecipe(id).then((res) => {
-        console.log("response", res);
-        this.viewRecipe = res ? res : undefined;
-        this.recipesLoading = false;
-      });
+      RecipeServiceApi.getSingleRecipe(id)
+        .then((res) => {
+          if (res) {
+            console.log("response", res);
+            this.viewRecipe = res;
+          }
+        })
+        .then(() => (this.recipesLoading = false));
     },
   },
   getters: {
