@@ -39,7 +39,7 @@
                 <v-card-text
                   v-for="text in recipe.recipeDescription"
                   :key="text.nr"
-                  class="text-body-1 elevation-2"
+                  class="text-body-1 ma-4"
                 >
                   <v-row>
                     <v-col cols="1">{{ text.nr }}.</v-col>
@@ -58,10 +58,11 @@
                     >
                     <v-col cols="1">
                       <template v-if="edit">
-                        <v-btn icon><v-icon small>mdi-pencil</v-icon></v-btn>
+                        <v-btn icon flat><v-icon size="small">mdi-pencil</v-icon></v-btn>
                       </template>
                     </v-col>
                   </v-row>
+                    <v-divider />
                 </v-card-text>
               </v-col>
             </v-row>
@@ -79,7 +80,7 @@ import Recipe from "@/components/Models/Recipe.class";
 
 const id = defineProps(["id"]);
 const editItemNumber = ref(null);
-const edit = ref(false);
+const edit = ref(true);
 const editItemText = ref("");
 const store = recipeStore();
 const recipe = computed((): Recipe | undefined => store.viewRecipe);
