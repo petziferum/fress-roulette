@@ -31,7 +31,7 @@ export const recipeStore = defineStore("recipeStore", {
       this.recipesLoading = true;
       RecipeServiceApi.getSingleRecipe(id).then((res) => {
         console.log("response", res);
-        this.viewRecipe = res ? res : null;
+        this.viewRecipe = res ? res : undefined;
         this.recipesLoading = false;
       });
     },
