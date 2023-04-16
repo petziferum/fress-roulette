@@ -10,16 +10,20 @@
       <v-card-text>
         <div v-if="recipesArray.length">{{ recipesArray.length }} Rezepte</div>
         <v-card :color="bg" width="100%" height="250px">
-            <template v-slot:image>
-          <v-img cover v-if="result.imageSrc" width="100%" :src="result.imageSrc" />
-            </template>
+          <template v-slot:image>
+            <v-img
+              cover
+              v-if="result['imageSrc']"
+              width="100%"
+              :src="result.imageSrc"
+            />
+          </template>
           <v-row justify="center" style="background-color: #282828">
             <v-col cols="12" class="text-center">
               <div class="text-amber-darken-2">Heute gibts:</div>
               <transition name="slide" mode="out-in">
                 <div v-if="show" :key="result">{{ result.recipeName }}</div>
               </transition>
-
             </v-col>
           </v-row>
         </v-card>
@@ -36,7 +40,7 @@ const props = defineProps(["recipesArray"]);
 //const emitValue = defineEmits(["update:recipesArray"]);
 
 const array = ref<[]>(Object.assign([], props.recipesArray));
-const result = ref<Recipe>();
+const result = ref<Recipe>(new Recipe());
 const show = ref(false);
 const bg = ref("red");
 
