@@ -123,8 +123,6 @@ function getUserRecipes(): void {
   getUserRecipe().then((recipes) => (userRecipes.value = recipes));
 }
 
-
-
 const required = computed(() => {
   return (v: string) => !!v || "Darf nicht leer sein";
 });

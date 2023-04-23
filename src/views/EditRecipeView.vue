@@ -59,7 +59,7 @@ const router = useRoute();
 function loadRecipe(): void {
   RecipeServiceApi.getSingleRecipe(useRoute().params.id as string).then(
     (response) => {
-        console.log("response", response)
+      console.log("response", response);
       if (response) {
         const editRecipe = Recipe.createEmtptyRecipe();
         console.log(
