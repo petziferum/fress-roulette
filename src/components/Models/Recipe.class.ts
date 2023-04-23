@@ -133,7 +133,7 @@ export const recipeConverter = {
       createdBy: recipe.createdBy,
       time: recipe.time,
       active: recipe.active,
-      ingredients: recipe.ingredients,
+      ingredients: recipe.ingredients ? recipe.ingredients : [],
       recipeDescription: recipe.recipeDescription,
     };
   },

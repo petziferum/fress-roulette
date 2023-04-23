@@ -87,7 +87,7 @@
           <v-card-title>
             Deine Rezepte
             <v-spacer />
-            <v-btn @click="getUserRecipe">Lade Rezepte</v-btn></v-card-title
+            <v-btn @click="getUserRecipes">Lade Rezepte</v-btn></v-card-title
           >
           <v-card-text v-for="recipe of userRecipes" :key="recipe.id">
             <ul>
@@ -107,7 +107,7 @@ import { getUserRecipe, user, logOut } from "@/plugins/firebase";
 import Recipe from "@/components/Models/Recipe.class";
 import { useRouter } from "vue-router";
 import AddRecipeDialog from "@/components/AddRecipeDialog.vue";
-import { userStore } from "@/stores/userStore"
+import { userStore } from "@/stores/userStore";
 
 // Todo: Typing ref Values
 const router = useRouter();
@@ -118,6 +118,12 @@ const passField = ref();
 const userRecipes = ref<Recipe[]>([]);
 const editRoute = ref("/recipe/edit/");
 const userState = userStore();
+
+function getUserRecipes(): void {
+  getUserRecipe().then((recipes) => (userRecipes.value = recipes));
+}
+
+
 
 const required = computed(() => {
   return (v: string) => !!v || "Darf nicht leer sein";

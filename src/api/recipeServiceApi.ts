@@ -14,7 +14,7 @@ export default class RecipeServiceApi {
   public static async getSingleRecipe(
     recipeId: string
   ): Promise<Recipe | undefined> {
-    const docRef = doc(db, "recipes", recipeId).withConverter(recipeConverter);
+    const docRef = doc(db, "test", recipeId).withConverter(recipeConverter);
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
       return docSnap.data();
@@ -33,10 +33,15 @@ export default class RecipeServiceApi {
   }
 
   public static async createNewEditRecipe(recipe: Recipe): Promise<string> {
+    if (!recipe.recipeName) {
+      throw new Error("recipeName is missing");
+    }
+    const id = recipe.recipeName.substring(0, 24);
     try {
-      const ref = doc(collection(db, "test")).withConverter(recipeConverter);
+      const ref = doc(db, "test", id).withConverter(recipeConverter);
       console.log("ref = ", ref.id);
-      return await setDoc(ref, recipe).then(() => {
+      return await setDoc(ref, recipe).then((res) => {
+        console.log("res = ", res);
         return ref.id;
       });
     } catch (e) {

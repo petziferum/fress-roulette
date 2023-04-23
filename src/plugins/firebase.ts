@@ -19,8 +19,7 @@ import { getStorage } from "firebase/storage";
 import router from "@/router";
 import { computed } from "vue";
 import Recipe, { recipeConverter } from "@/components/Models/Recipe.class";
-import {userStore} from "@/stores/userStore";
-
+import { userStore } from "@/stores/userStore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCPt03Bp5UBVXn72EVSWNAhvt4u0NI2m5M",
@@ -52,7 +51,7 @@ export function logOut() {
 export const user = computed(() => {
   let user = getAuth().currentUser;
   if (user) {
-    console.log("user eingelogged",user.uid)
+    console.log("user eingelogged", user.uid);
     getUserFirestoreData(user.uid);
     return user;
   } else {
@@ -97,7 +96,10 @@ export const getUserFirestoreData = async (userId: string) => {
     };
     console.log("user store data: ", data);
     userState.userFirestoreData = data;
-    console.log("userFirestoreData aus firebase.ts", userState.userFirestoreData);
+    console.log(
+      "userFirestoreData aus firebase.ts",
+      userState.userFirestoreData
+    );
   } else {
     console.log("user wurde nicht gefunden", userId);
   }
@@ -116,10 +118,10 @@ export async function getUserRecipe(): Promise<Recipe[]> {
 
     const docSnap = await getDocs(q);
     docSnap.forEach((doc) => {
+      console.log("doc", doc.id, " => ", doc.data());
       if (doc.exists()) {
-        // Convert to City object
+        console.log("Document data:", doc.data());
         const r = doc.data();
-        // Use a City instance method
         userRecipes.push(r);
       } else {
         console.log("No such document!");

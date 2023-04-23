@@ -93,6 +93,7 @@ const loading = computed({
   },
 });
 onBeforeMount(function () {
+
   store.loadRecipeById(id.id);
   const route = useRoute();
   console.log("route params", route.params.id);
