@@ -1,7 +1,26 @@
 <template>
   <div class="mx-2">
+    <v-row justify="center">
+      <v-col cols="4">
+        <div class="text-h1">Dev Test View</div></v-col>
+    </v-row>
     <v-row>
-      <v-col> Dev Test View </v-col>
+      <v-col cols="12">
+        <v-list variant="elevated">
+          <v-list-item
+            v-for="r in store.recipeList"
+            :key="r.recipeName"
+            :title="r.recipeName"
+            :subtitle="r.id"
+          >
+            <template v-slot:append>
+              <v-btn variant="elevated" rounded="pill" size="small">
+                <v-icon color="orange">mdi-pencil</v-icon>
+              </v-btn>
+            </template>
+          </v-list-item>
+        </v-list>
+      </v-col>
     </v-row>
     <v-row justify="center">
       <v-col cols="12" md="6">
@@ -22,9 +41,7 @@
                     <v-card-text>
                       Dialog
                     </v-card-text>
-                    <v-card-text>
-                      {{ store.recipe.recipeName }}
-                    </v-card-text>
+                    <v-text-field v-model="store.recipe.recipeName" />
                     <v-card-actions>
                       <v-spacer />
                       <v-btn small @click="dialog = !dialog">close</v-btn>
@@ -83,7 +100,7 @@
 
 <script setup lang="ts">
 import TagsSelect from "@/components/componenttest/TagsSelect.vue";
-import { ref, reactive } from "vue";
+import { ref, reactive, onBeforeMount } from "vue";
 import RecipesView from "@/components/componenttest/RecipesView.vue";
 import RecipePreviewCard from "@/components/RecipePreviewCard.vue";
 import imgUrl from "@/assets/whisky.jpg";
@@ -98,6 +115,8 @@ const recipe = reactive({
   tags: ["deftig"],
 });
 const recipeArray = ref([recipe]);
+
+onBeforeMount(()=> store.initRecipes())
 </script>
 
 <style scoped></style>

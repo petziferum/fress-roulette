@@ -4,22 +4,68 @@ import Description from "@/components/Models/Recipe.class";
 
 export interface stateInterface {
   recipe: Recipe;
+  recipeList: Recipe[];
 }
 export const useDevStore = defineStore("devStore", {
   state: () =>
     ({
+      recipeList: [],
       recipe: Recipe.createEmtptyRecipe()
         .withRecipeName("Test Recipe")
-        .withIngredients([{menge: "7", name: "Zwiebeln"}, {menge: "54", name: "Knoblauch"}])
+        .withIngredients([
+          { menge: "7", name: "Zwiebeln" },
+          { menge: "54", name: "Knoblauch" },
+        ])
         .withRecipeDescription([{ nr: 1, text: "Zwiebeln schneiden", img: "" }])
         .withImageSrc("/src/assets/whisky.jpg"),
     } as stateInterface),
   actions: {
-    // This is where you would put your actions
+    initRecipes() {
+      const recipes = [
+        Recipe.createEmtptyRecipe()
+          .withRecipeName("Test Recipe")
+          .withIngredients([
+            { menge: "7", name: "Zwiebeln" },
+            { menge: "54", name: "Knoblauch" },
+          ])
+          .withRecipeDescription([
+            { nr: 1, text: "Zwiebeln schneiden", img: "" },
+          ])
+          .withImageSrc("/src/assets/whisky.jpg"),
+        Recipe.createEmtptyRecipe()
+          .withId("123")
+          .withRecipeName("Rezept 1")
+          .withIngredients([
+            { menge: "3", name: "Karotten" },
+            { menge: "500g", name: "Hackfleisch" },
+          ])
+          .withImageSrc(""),
+        Recipe.createEmtptyRecipe()
+          .withId("234523")
+          .withRecipeName("Rezept 2")
+          .withIngredients([
+            { menge: "3", name: "Oliven" },
+            { menge: "4 Flaschen", name: "Vodka" },
+          ])
+          .withImageSrc(""),
+        Recipe.createEmtptyRecipe()
+          .withId("55553")
+          .withRecipeName("Rezept 3")
+          .withIngredients([
+            { menge: "43", name: "Steine" },
+            { menge: "500g", name: "Rohes Fleisch" },
+          ])
+          .withImageSrc(""),
+      ];
+      this.recipeList = recipes;
+    },
   },
   getters: {
     getDevData(state): any {
       return state.recipe;
+    },
+    getRecipeList(state): Recipe[] {
+      return state.recipeList;
     },
   },
 });
