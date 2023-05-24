@@ -3,9 +3,65 @@
     <v-row>
       <v-col> Dev Test View </v-col>
     </v-row>
-    <v-row>
-      <v-col>
-      <roulette />
+    <v-row justify="center">
+      <v-col cols="12" md="6">
+        <v-card height="400px">
+          <v-img
+            class="align-end text-white"
+            :src="store.recipe.imageSrc"
+            cover
+            height="200px"
+          >
+            <v-card-title>
+              {{ store.recipe.recipeName }} aus dem Pinia Store 🍍
+
+              <v-btn variant="tonal" size="small" icon class="float-right">
+                <v-icon size="small" color="orange">mdi-pencil</v-icon>
+                <v-dialog v-model="dialog" width="50%" activator="parent">
+                  <v-card>
+                    <v-card-text>
+                      Dialog
+                    </v-card-text>
+                    <v-card-text>
+                      {{ store.recipe.recipeName }}
+                    </v-card-text>
+                    <v-card-actions>
+                      <v-spacer />
+                      <v-btn small @click="dialog = !dialog">close</v-btn>
+                    </v-card-actions>
+                  </v-card>
+                </v-dialog>
+              </v-btn>
+            </v-card-title>
+          </v-img>
+          <v-row>
+            <v-col cols="12" md="5">
+              <v-list density="compact">
+                <v-list-item
+                  v-for="(item, index) in store.recipe.ingredients"
+                  :key="index"
+                >
+                  <template v-slot:prepend>
+                    {{ item.menge }}
+                  </template>
+                  <v-list-item-title class="ml-3">
+                    {{ item.name }}</v-list-item-title
+                  >
+                </v-list-item>
+              </v-list>
+            </v-col>
+            <v-col cols="12" md="7">
+              <v-card-text
+                v-for="step in store.recipe.recipeDescription"
+                :key="step.nr"
+              >
+                <div>Schritt {{ step.nr }}</div>
+                {{ step.text }}
+              </v-card-text>
+              <v-divider></v-divider>
+            </v-col>
+          </v-row>
+        </v-card>
       </v-col>
     </v-row>
     <v-row>
@@ -31,8 +87,10 @@ import { ref, reactive } from "vue";
 import RecipesView from "@/components/componenttest/RecipesView.vue";
 import RecipePreviewCard from "@/components/RecipePreviewCard.vue";
 import imgUrl from "@/assets/whisky.jpg";
-import Roulette from "@/components/componenttest/RecipeRoulette.vue";
+import { useDevStore } from "@/components/componenttest/devStore";
 
+const dialog = ref(false);
+const store = useDevStore();
 const recipe = reactive({
   recipeName: "rezept 1",
   img: imgUrl,

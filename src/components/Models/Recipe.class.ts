@@ -1,13 +1,12 @@
-interface Description {
+export interface Description {
   nr: number;
   text: string;
   img: string;
 }
 
-interface Ingredient {
+export interface Ingredient {
   menge: string;
   name: string;
-  nr: number;
 }
 
 export default class Recipe {
