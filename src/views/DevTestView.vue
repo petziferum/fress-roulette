@@ -4,6 +4,7 @@
       <v-col cols="4">
         <div class="text-h1">Dev Test View</div></v-col>
     </v-row>
+    <esp-cam />
     <v-row>
       <v-col cols="12">
         <v-list variant="elevated">
@@ -105,6 +106,8 @@ import RecipesView from "@/components/componenttest/RecipesView.vue";
 import RecipePreviewCard from "@/components/RecipePreviewCard.vue";
 import imgUrl from "@/assets/whisky.jpg";
 import { useDevStore } from "@/components/componenttest/devStore";
+import EspCam from "@/components/componenttest/EspCam.vue";
+
 
 const dialog = ref(false);
 const store = useDevStore();
