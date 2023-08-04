@@ -1,5 +1,5 @@
 <template>
-  <VNavigationDrawer permanent expand-on-hover rail order="2">
+  <VNavigationDrawer v-model="drawerState" temporary rail order="2">
     <v-list>
       <v-list-item
         link
@@ -15,16 +15,24 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { computed, ref } from "vue";
+import { useAppStore } from "@/stores/appStore";
+
+const appStore = useAppStore();
+
+const drawerState = computed({
+  get: () => appStore.drawer,
+  set: (value) => (appStore.drawer = value),
+});
 
 const listItems = ref([
   { title: "Home", to: "/", icon: "mdi-home", subtitle: "Startseite" },
-    {
-        title: "Roulette",
-        to: "/roulette",
-        icon: "mdi-circle",
-        subtitle: "friss du fette Sau!",
-    },
+  {
+    title: "Roulette",
+    to: "/roulette",
+    icon: "mdi-circle",
+    subtitle: "friss du fette Sau!",
+  },
   {
     title: "Rezepte",
     to: "/rezepte",

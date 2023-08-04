@@ -6,6 +6,8 @@
     :image="barImg"
     class="align-content-center text-white"
   >
+    <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
+    {{ drawer }} - {{ mobile }}
     <v-spacer />
     <v-sheet class="myTitleBar">
       <v-img
@@ -21,8 +23,22 @@
 </template>
 
 <script setup lang="ts">
+import { computed, onMounted, ref } from "vue";
+import { useAppStore } from "@/stores/appStore";
+import { useDisplay } from "vuetify";
+
 const barImg = "/src/assets/whisky.jpg";
 const titleImg = "/src/assets/TITLE.png";
+const store = useAppStore();
+
+const drawer = computed({
+  get: () => store.drawer,
+  set: (value) => (store.drawer = value),
+});
+
+const mobile = computed(() => {
+  return store.mobile;
+});
 </script>
 
 <style scoped>

@@ -1,7 +1,7 @@
 <template>
   <v-row>
     <v-btn @click="capture">Capture</v-btn>
-    <video v-if="!espLoading" crossorigin :src="espImg" autoplay width="800" height="600" style="border: 1px solid black;" />
+    <v-img v-if="!espLoading" :src="espImg" width="800" height="600" style="border: 1px solid black;" />
     <v-icon v-else>mdi-cactus</v-icon>
   </v-row>
 </template>
@@ -15,7 +15,7 @@ const espImg = ref("");
 async function capture(): Promise<void> {
   espLoading.value = true;
   console.log("capture");
-  await fetch("http://192.168.1.23:81/stream")
+  await fetch("http://192.168.1.23/capture")
     .then((response) => response.blob())
     .then((blob) => {
       console.log(blob, espLoading.value  );

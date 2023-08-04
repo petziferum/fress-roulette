@@ -4,6 +4,7 @@
       <v-col cols="4">
         <div class="text-h1">Dev Test View</div></v-col>
     </v-row>
+    <esp-wled />
     <esp-cam />
     <v-row>
       <v-col cols="12">
@@ -107,6 +108,7 @@ import RecipePreviewCard from "@/components/RecipePreviewCard.vue";
 import imgUrl from "@/assets/whisky.jpg";
 import { useDevStore } from "@/components/componenttest/devStore";
 import EspCam from "@/components/componenttest/EspCam.vue";
+import EspWled from "@/components/componenttest/EspWled.vue";
 
 
 const dialog = ref(false);
