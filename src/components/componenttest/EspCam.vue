@@ -1,7 +1,13 @@
 <template>
   <v-row>
     <v-btn @click="capture">Capture</v-btn>
-    <v-img v-if="!espLoading" :src="espImg" width="800" height="600" style="border: 1px solid black;" />
+    <v-img
+      v-if="!espLoading"
+      :src="espImg"
+      width="800"
+      height="600"
+      style="border: 1px solid black"
+    />
     <v-icon v-else>mdi-cactus</v-icon>
   </v-row>
 </template>
@@ -18,7 +24,7 @@ async function capture(): Promise<void> {
   await fetch("http://192.168.1.23/capture")
     .then((response) => response.blob())
     .then((blob) => {
-      console.log(blob, espLoading.value  );
+      console.log(blob, espLoading.value);
       const streamURL = URL.createObjectURL(blob);
       espImg.value = streamURL;
       espLoading.value = false;
@@ -30,6 +36,4 @@ async function capture(): Promise<void> {
   console.log("caption fertig");
 }
 </script>
-<style scoped>
-
-</style>
+<style scoped></style>
