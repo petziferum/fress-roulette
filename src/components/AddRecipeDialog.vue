@@ -1,12 +1,7 @@
 <template>
   <v-dialog v-model="isOpen">
     <template v-slot:activator="{ props }">
-      <v-btn
-        style="z-index: 2; top: 9px; margin-right: 15px; float: right"
-        elevation="4"
-        color="orange"
-        v-bind="props"
-        large
+      <v-btn class="dialog" elevation="4" v-bind="props" large
         ><v-icon>mdi-plus</v-icon></v-btn
       >
     </template>
@@ -62,8 +57,15 @@ function createRecipe() {
   newRecipe.value.time = new Date(Date.now());
   RecipeServiceApi.createNewEditRecipe(newRecipe.value)
     .then((id) => {
-      newRecipe.value.id = id;
-      route = "/recipe/edit/" + id;
+      if (id != "error") {
+        newRecipe.value.id = id;
+        route = "/recipe/edit/" + id;
+      } else {
+        console.log("Fehler beim Erstellen des Rezepts", id);
+        throw new Error(
+          "Fehler beim Erstellen des Rezepts, keine ID erstellt."
+        );
+      }
     })
     .then(() => {
       router.push(route);
@@ -74,4 +76,21 @@ function createRecipe() {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.dialog {
+  z-index: 2;
+  top: 9px;
+  margin-right: 15px;
+  float: right;
+  background-image: linear-gradient(
+    to left,
+    violet,
+    indigo,
+    blue,
+    green,
+    yellow,
+    orange,
+    red
+  );
+}
+</style>

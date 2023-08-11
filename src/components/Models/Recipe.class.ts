@@ -11,18 +11,30 @@ interface Ingredient {
 }
 
 export default class Recipe {
+  public id?: string;
+  public createdBy?: string;
+  public time?: Date;
+  public imageSrc?: string;
+  public description?: string;
+  public recipeName?: string;
+  public type?: string;
+  public ingredients?: Ingredient[];
+  public recipeDescription: Description[] = [];
+  public active?: boolean;
+  public tags?: string[];
+
   constructor(
-    public id?: string,
-    public createdBy?: string,
-    public time?: Date,
-    public imageSrc?: string,
-    public description?: string,
-    public recipeName?: string,
-    public type?: string,
-    public ingredients?: Ingredient[],
-    public recipeDescription: Description[] = [],
-    public active?: boolean,
-    public tags?: string[]
+    id?: string,
+    createdBy?: string,
+    time?: Date,
+    imageSrc?: string,
+    description?: string,
+    recipeName?: string,
+    type?: string,
+    ingredients?: Ingredient[],
+    recipeDescription: Description[] = [],
+    active?: boolean,
+    tags?: string[]
   ) {
     this.id = id;
     this.createdBy = createdBy;
@@ -121,7 +133,7 @@ export const recipeConverter = {
       createdBy: recipe.createdBy,
       time: recipe.time,
       active: recipe.active,
-      ingredients: recipe.ingredients,
+      ingredients: recipe.ingredients ? recipe.ingredients : [],
       recipeDescription: recipe.recipeDescription,
     };
   },

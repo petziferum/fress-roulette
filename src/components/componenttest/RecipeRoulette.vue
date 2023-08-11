@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-card>
+    <v-card flat>
       <v-toolbar>
         <v-toolbar-items>
           <v-btn @click="getRandomItem">Start</v-btn>
@@ -9,10 +9,17 @@
       </v-toolbar>
       <v-card-text>
         <div v-if="recipesArray.length">{{ recipesArray.length }} Rezepte</div>
-        <v-card :color="bg" width="300px" height="100px">
-          <v-img v-if="result.img" width="100%" :src="result.img" />
-          <v-row justify="center">
-            <v-col cols="6" class="text-center">
+        <v-card :color="bg" width="100%" height="250px">
+          <template v-slot:image>
+            <v-img
+              cover
+              v-if="result['imageSrc']"
+              width="100%"
+              :src="result.imageSrc"
+            />
+          </template>
+          <v-row justify="center" style="background-color: #282828">
+            <v-col cols="12" class="text-center">
               <div class="text-amber-darken-2">Heute gibts:</div>
               <transition name="slide" mode="out-in">
                 <div v-if="show" :key="result">{{ result.recipeName }}</div>
@@ -30,20 +37,25 @@ import { onBeforeMount, ref } from "vue";
 import Recipe from "@/components/Models/Recipe.class";
 
 const props = defineProps(["recipesArray"]);
-const emitValue = defineEmits(["update:recipesArray"]);
+//const emitValue = defineEmits(["update:recipesArray"]);
 
 const array = ref<[]>(Object.assign([], props.recipesArray));
-const result = ref<Recipe>();
+const result = ref<Recipe>(new Recipe());
 const show = ref(false);
 const bg = ref("red");
 
 function getRandomItem() {
   if (props.recipesArray) {
-    console.log("props length: ",props.recipesArray.length, "array length", array.value.length);
+    console.log(
+      "props length: ",
+      props.recipesArray.length,
+      "array length",
+      array.value.length
+    );
     bg.value = bg.value === "red" ? "black" : "red";
     show.value = false;
     const nr = Math.floor(Math.random() * array.value.length);
-    console.log("value",nr, array.value[nr]);
+    console.log("value", nr, array.value[nr]);
     result.value = array.value[nr];
     array.value.splice(nr, 1);
   }
@@ -57,8 +69,7 @@ const reset = (text: string) => {
   console.debug("reset");
   show.value = true;
   array.value = Object.assign([], props.recipesArray);
-  result.value =
-    Recipe.createEmtptyRecipe().withRecipeName(text);
+  result.value = Recipe.createEmtptyRecipe().withRecipeName(text);
   console.debug("array", array.value.length, result.value);
 };
 

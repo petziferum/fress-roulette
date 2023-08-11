@@ -3,7 +3,7 @@
     <v-card>
       <v-card-title>{{ recipe.recipeName }}</v-card-title>
       <v-card-subtitle
-        >{{ recipe.id }} CreatedBy: {{ recipe.createdBy }}
+        >ID: {{ recipe.id }} CreatedBy: {{ recipe.createdBy }}
         <div>Erstellt am: {{ recipe.time }}</div></v-card-subtitle
       >
       <v-card-actions>
@@ -59,6 +59,7 @@ const router = useRoute();
 function loadRecipe(): void {
   RecipeServiceApi.getSingleRecipe(useRoute().params.id as string).then(
     (response) => {
+      console.log("response", response);
       if (response) {
         const editRecipe = Recipe.createEmtptyRecipe();
         console.log(

@@ -8,7 +8,15 @@ const router = createRouter({
     {
       path: "/",
       name: "home",
-      component: ()=> import("@/views/HomeView.vue"),
+      component: () => import("@/views/HomeView.vue"),
+      meta: {
+        requiresAuth: false,
+      },
+    },
+    {
+      path: "/roulette",
+      name: "roulette",
+      component: () => import("@/views/TheRouletteView.vue"),
       meta: {
         requiresAuth: false,
       },
@@ -22,6 +30,15 @@ const router = createRouter({
       path: "/register",
       name: "register",
       component: () => import("@/views/RegisterView.vue"),
+    },
+    {
+      path: "/recipe/view/:id",
+      name: "recipeView",
+      props: true,
+      component: () => import("@/views/TheRecipeDetailsView.vue"),
+      meta: {
+        requiresAuth: true,
+      },
     },
     {
       path: "/recipe/edit/:id",

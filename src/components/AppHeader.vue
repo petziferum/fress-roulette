@@ -1,5 +1,6 @@
 <template>
   <v-app-bar
+    flat
     order="1"
     height="200"
     :image="barImg"
