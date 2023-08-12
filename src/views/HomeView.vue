@@ -41,14 +41,8 @@
               <v-col cols="9">{{ recipesList.length }} Rezepte geladen </v-col>
               <template v-if="filteredRecipes.length > 0">
                 <v-col cols="4" v-for="r in filteredRecipes" :key="r.id">
-                  <v-card
-                    elevation="8"
-                    link
-                    :to="'/recipe/view/' + r.id">
-                    <v-img
-                      cover
-                      height="250"
-                      :src="r.imageSrc" />
+                  <v-card elevation="8" link :to="'/recipe/view/' + r.id">
+                    <v-img cover height="250" :src="r.imageSrc" />
                     <v-card-item>
                       <v-card-title>{{ r.recipeName }}</v-card-title>
                     </v-card-item>
@@ -61,7 +55,8 @@
                           readonly
                           color="amber"
                           background-color="grey lighten-2"
-                          class="mr-2"></v-rating>
+                          class="mr-2"
+                        ></v-rating>
                       </v-row>
                     </v-card-text>
                   </v-card>
@@ -70,7 +65,11 @@
               <template v-else>
                 <v-col cols="12">
                   <v-card elevation="12">
-                    <v-card-title>Keine Rezepte mit Anfangsbuchstaben "{{selectedLetter}}" vorhanden</v-card-title>
+                    <v-card-title
+                      >Keine Rezepte mit Anfangsbuchstaben "{{
+                        selectedLetter
+                      }}" vorhanden</v-card-title
+                    >
                     <v-card-text>
                       <v-icon color="brown" size="30">mdi-emoticon-sad</v-icon>
                     </v-card-text>
@@ -97,14 +96,12 @@ const letters = ref("ABCDEFGHIJKLMNOPQRSTUVWXYZ".split(""));
 const selectedLetter = ref("A");
 
 const filteredRecipes = computed(() => {
-  return recipesList.value.filter((r) => {
-    if (selectedLetter.value) {
-      r.recipeName?.startsWith(selectedLetter.value)
-    } else {
-      return r;
-    }
-    }
-  );
+  if (selectedLetter.value) {
+    return recipesList.value.filter((r) =>
+      r.recipeName?.toLowerCase().startsWith(selectedLetter.value.toLowerCase()));
+  } else {
+    return recipesList.value;
+  }
 });
 
 function removeRecipes(): void {
