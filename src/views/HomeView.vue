@@ -1,9 +1,9 @@
 <template>
   <div>
     <v-row justify="center">
-      <v-col cols="12" md="10">
-        <v-card height="2000px">
-          <v-card-title>Hauptansicht</v-card-title>
+      <v-col cols="10">
+        <v-card>
+          <v-card-title>HomeView</v-card-title>
           <v-card-subtitle>
             <v-btn
               variant="tonal"
@@ -15,16 +15,29 @@
               >fetch</v-btn
             >
           </v-card-subtitle>
-          <v-row>
-            <v-col cols="12">
-              <recipe-roulette :recipes-array="recipesList" />
-            </v-col>
-          </v-row>
-          <recipe-preview-card
-            v-for="recipe in recipesList"
-            :recipe="recipe"
-            :key="recipe.id"
-          />
+          <div>
+            <div style="height: 30px" class="text-center">
+              <Transition name="fade">
+                <v-icon color="blue" size="30" v-if="loading"
+                  >mdi-loading mdi-spin</v-icon
+                >
+              </Transition>
+            </div>
+
+            <v-row no-gutters>
+              <v-col cols="4" v-for="r in recipesList" :key="r.id">
+                <v-card elevation="12" link :to="'/recipe/view/' + r.id">
+                  <div class="image-wrapper">
+                    <v-img :src="r.imageSrc" height="100px" cover>
+                      <div class="overlay">
+                        <v-card-title>{{ r.recipeName }}</v-card-title>
+                      </div>
+                    </v-img>
+                  </div>
+                </v-card>
+              </v-col>
+            </v-row>
+          </div>
         </v-card>
       </v-col>
     </v-row>
@@ -36,7 +49,6 @@ import Recipe from "@/components/Models/Recipe.class";
 import { onMounted, ref } from "vue";
 import { recipeStore } from "@/stores/recipeStore";
 import RecipeRoulette from "@/components/componenttest/RecipeRoulette.vue";
-import RecipePreviewCard from "@/components/RecipePreviewCard.vue";
 
 const store = recipeStore();
 const loading = ref(false);
@@ -68,8 +80,7 @@ onMounted(() => {
 <style scoped>
 .fade-enter-active,
 .fade-leave-active {
-
-  transition: opacity 0.5s ease-in-out;
+  transition: opacity 0.9s ease-in-out;
 }
 
 .fade-enter-from,

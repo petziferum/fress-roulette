@@ -1,50 +1,36 @@
 import { defineStore } from "pinia";
-import type Recipe from "@/components/Models/Recipe.class";
 import RecipeServiceApi from "@/api/recipeServiceApi";
+import { ref } from "vue";
+import type Recipe from "@/components/Models/Recipe.class";
 
-export interface recipeStateInterface {
-  allRecipes: Recipe[];
-  viewRecipe: Recipe | undefined;
-  recipesLoading: boolean;
-}
+export const recipeStore = defineStore("recipeStore", () => {
+  const allRecipes = ref<Recipe[]>([]);
+  const viewRecipe = ref<Recipe | undefined>(undefined);
+  const recipesLoading = ref(false);
 
-export const recipeStore = defineStore("recipeStore", {
-  state: () =>
-    ({
-      allRecipes: [],
-      viewRecipe: undefined,
-      recipesLoading: false,
-    } as recipeStateInterface),
-  actions: {
-    loadAllRecipes: function (): Promise<void> {
-      this.recipesLoading = true;
-      this.allRecipes = [];
-      console.log("lade rezepte");
-      return RecipeServiceApi.getRecipes().then((recipes) => {
-        this.allRecipes = recipes;
-        this.recipesLoading = false;
-        console.log("fetch fertig", this.recipesLoading);
-      });
-    },
-    loadRecipeById: function (id) {
-      console.log("foo", id);
-      this.recipesLoading = true;
-      RecipeServiceApi.getSingleRecipe(id)
-        .then((res) => {
-          if (res) {
-            console.log("response", res);
-            this.viewRecipe = res;
-          }
-        })
-        .then(() => (this.recipesLoading = false));
-    },
-  },
-  getters: {
-    getAllRecipes(state): Recipe[] {
-      return state.allRecipes;
-    },
-    getLoadingState(state): boolean {
-      return state.recipesLoading;
-    },
-  },
+  function loadAllRecipes(): Promise<void> {
+    recipesLoading.value = true;
+    allRecipes.value = [];
+    console.log("lade rezepte");
+    return RecipeServiceApi.getRecipes().then((recipes) => {
+      allRecipes.value = recipes;
+      recipesLoading.value = false;
+      console.log("fetch fertig", recipesLoading.value);
+    });
+  }
+
+  function loadRecipeById(id) {
+    console.log("foo", id);
+    recipesLoading.value = true;
+    RecipeServiceApi.getSingleRecipe(id)
+      .then((res) => {
+        if (res) {
+          console.log("response", res);
+          viewRecipe.value = res;
+        }
+      })
+      .then(() => (recipesLoading.value = false));
+  }
+
+  return { allRecipes, loadAllRecipes, recipesLoading, loadRecipeById, viewRecipe };
 });
