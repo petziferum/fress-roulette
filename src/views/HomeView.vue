@@ -14,6 +14,14 @@
               @click.prevent="fetchRecipes"
               >fetch</v-btn
             >
+            <v-btn
+              variant="tonal"
+              size="x-small"
+              v-for="letter in letters"
+              @click.prevent="selectedLetter = letter"
+              :key="letter"
+              >{{ letter }}</v-btn
+            >
           </v-card-subtitle>
           <div>
             <div style="height: 30px" class="text-center">
@@ -25,17 +33,35 @@
             </div>
 
             <v-row no-gutters>
-              <v-col cols="4" v-for="r in recipesList" :key="r.id">
-                <v-card elevation="12" link :to="'/recipe/view/' + r.id">
-                  <div class="image-wrapper">
-                    <v-img :src="r.imageSrc" height="100px" cover>
-                      <div class="overlay">
-                        <v-card-title>{{ r.recipeName }}</v-card-title>
-                      </div>
-                    </v-img>
-                  </div>
-                </v-card>
+              <v-col cols="3">
+                Rezepte mit Buchstaben: "{{ selectedLetter }}"
               </v-col>
+              <v-col cols="9">{{ recipesList.length }} Rezepte geladen </v-col>
+              <template v-if="filteredRecipes.length > 0">
+                <v-col cols="4" v-for="r in filteredRecipes" :key="r.id">
+                  <v-card elevation="12" link :to="'/recipe/view/' + r.id">
+                    true
+
+                    <div class="image-wrapper">
+                      <v-img :src="r.imageSrc" height="100px" cover>
+                        <div class="overlay">
+                          <v-card-title>{{ r.recipeName }}</v-card-title>
+                        </div>
+                      </v-img>
+                    </div>
+                  </v-card>
+                </v-col>
+              </template>
+              <template v-else>
+                <v-col cols="12">
+                  <v-card elevation="12">
+                    <v-card-title>Keine Rezepte vorhanden</v-card-title>
+                    <v-card-text>
+                      <v-icon color="red" size="30">mdi-alert</v-icon>
+                    </v-card-text>
+                  </v-card>
+                </v-col>
+              </template>
             </v-row>
           </div>
         </v-card>
@@ -46,12 +72,20 @@
 
 <script lang="ts" setup>
 import Recipe from "@/components/Models/Recipe.class";
-import { onMounted, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { recipeStore } from "@/stores/recipeStore";
 
 const store = recipeStore();
 const loading = ref(false);
 const recipesList = ref<Recipe[]>([]);
+const letters = ref("ABCDEFGHIJKLMNOPQRSTUVWXYZ".split(""));
+const selectedLetter = ref("a");
+
+const filteredRecipes = computed(() => {
+  return recipesList.value.filter((r) =>
+    r.recipeName?.startsWith(selectedLetter.value)
+  );
+});
 
 function removeRecipes(): void {
   recipesList.value = [];
@@ -97,6 +131,7 @@ onMounted(() => {
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.6);
+  color: white;
   opacity: 0;
   transition: opacity 0.2s ease;
   display: flex;
