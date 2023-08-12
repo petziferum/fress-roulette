@@ -32,18 +32,17 @@ const router = createRouter({
       component: () => import("@/views/RegisterView.vue"),
     },
     {
-      path: "/recipe/view/:id",
-      name: "recipeView",
-      props: true,
-      component: () => import("@/views/TheRecipeDetailsView.vue"),
+      path: "/recipe/edit/:id",
+      name: "newRecipe",
+      component: () => import("@/views/EditRecipeView.vue"),
       meta: {
         requiresAuth: true,
       },
     },
     {
-      path: "/recipe/edit/:id",
-      name: "newRecipe",
-      component: () => import("@/views/EditRecipeView.vue"),
+      path: "/recipe/view/:name",
+      name: "viewRecipe",
+      component: () => import("@/components/ReceipeDetailsCard.vue"),
       meta: {
         requiresAuth: true,
       },

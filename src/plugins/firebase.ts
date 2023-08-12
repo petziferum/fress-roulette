@@ -106,10 +106,11 @@ export const getUserFirestoreData = async (userId: string) => {
 };
 
 export async function getUserRecipe(): Promise<Recipe[]> {
+  const COLLECTION_NAME = "test";
   const userRecipes: Recipe[] = [];
   if (user.value) {
     const userid = user.value.uid;
-    const collectionRef = collection(db, "test");
+    const collectionRef = collection(db, COLLECTION_NAME);
     console.info("get user recipes", userid, collectionRef);
     const q = query(
       collectionRef,
@@ -118,10 +119,10 @@ export async function getUserRecipe(): Promise<Recipe[]> {
 
     const docSnap = await getDocs(q);
     docSnap.forEach((doc) => {
-      console.log("doc", doc.id, " => ", doc.data());
       if (doc.exists()) {
-        console.log("Document data:", doc.data());
+        // Convert to Recipe object
         const r = doc.data();
+        // Use a Recipe instance method
         userRecipes.push(r);
       } else {
         console.log("No such document!");

@@ -87,7 +87,7 @@
           <v-card-title>
             Deine Rezepte
             <v-spacer />
-            <v-btn @click="getUserRecipes">Lade Rezepte</v-btn></v-card-title
+            <v-btn @click="fetchRecipes">Lade Rezepte</v-btn></v-card-title
           >
           <v-card-text v-for="recipe of userRecipes" :key="recipe.id">
             <ul>
@@ -119,10 +119,6 @@ const userRecipes = ref<Recipe[]>([]);
 const editRoute = ref("/recipe/edit/");
 const userState = userStore();
 
-function getUserRecipes(): void {
-  getUserRecipe().then((recipes) => (userRecipes.value = recipes));
-}
-
 const required = computed(() => {
   return (v: string) => !!v || "Darf nicht leer sein";
 });
@@ -141,12 +137,16 @@ async function checkIfTextfieldIsValid() {
   }
 }
 
+function fetchRecipes(): void {
+  userRecipes.value = [];
+  getUserRecipe().then((recipes) => (userRecipes.value = recipes));
+}
 function editRecipe(id: string): void {
   router.push(editRoute.value + id);
 }
 
 onBeforeMount(() => {
-  //getUserRecipe().then((recipes) => (userRecipes.value = recipes));
+  getUserRecipe().then((recipes) => (userRecipes.value = recipes));
 });
 </script>
 
