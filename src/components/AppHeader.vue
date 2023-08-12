@@ -7,7 +7,7 @@
     class="align-content-center text-white"
   >
     <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-    {{ drawer }} - {{ mobile }}
+    drawer: {{ drawer }} mobile: {{ mobile }}
     <v-spacer />
     <v-sheet class="myTitleBar">
       <v-img
@@ -19,6 +19,16 @@
       />
     </v-sheet>
     <v-spacer />
+    <template v-slot:extension>
+    <v-toolbar>
+      <v-toolbar-items>
+        <v-btn block @click="$router.push('/')">
+          Home
+        </v-btn>
+      </v-toolbar-items>
+    </v-toolbar>
+    </template>
+
   </v-app-bar>
 </template>
 

@@ -48,7 +48,6 @@
 import Recipe from "@/components/Models/Recipe.class";
 import { onMounted, ref } from "vue";
 import { recipeStore } from "@/stores/recipeStore";
-import RecipeRoulette from "@/components/componenttest/RecipeRoulette.vue";
 
 const store = recipeStore();
 const loading = ref(false);
