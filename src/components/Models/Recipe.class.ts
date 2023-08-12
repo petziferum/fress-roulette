@@ -21,6 +21,7 @@ export default class Recipe {
   public recipeDescription: Description[] = [];
   public active?: boolean;
   public tags?: string[];
+  public rating?: number = 3.8;
 
   constructor(
     id?: string,
@@ -33,7 +34,8 @@ export default class Recipe {
     ingredients?: Ingredient[],
     recipeDescription: Description[] = [],
     active?: boolean,
-    tags?: string[]
+    tags?: string[],
+    rating?: number
   ) {
     this.id = id;
     this.createdBy = createdBy;
@@ -45,6 +47,12 @@ export default class Recipe {
     this.recipeDescription = recipeDescription;
     this.active = active;
     this.tags = tags;
+    this.rating = rating;
+  }
+
+  withRating(value: number): Recipe {
+    this.rating = value;
+    return this;
   }
 
   withId(value: string): Recipe {
@@ -134,6 +142,8 @@ export const recipeConverter = {
       active: recipe.active,
       ingredients: recipe.ingredients ? recipe.ingredients : [],
       recipeDescription: recipe.recipeDescription,
+      imageSrc: recipe.imageSrc,
+      rating: recipe.rating
     };
   },
   fromFirestore: (snapshot, options) => {
@@ -148,6 +158,7 @@ export const recipeConverter = {
       .withType(recipe.type)
       .withDescription(recipe.description)
       .withRecipeDescription(recipe.recipeDescription)
-      .withTags(recipe.tags);
+      .withTags(recipe.tags)
+      .withRating(3.8);
   },
 };
