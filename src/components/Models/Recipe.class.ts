@@ -1,3 +1,5 @@
+import * as string_decoder from "string_decoder";
+
 export interface Description {
   nr: number;
   text: string;
@@ -9,9 +11,14 @@ export interface Ingredient {
   name: string;
 }
 
+export interface CreatedBy {
+  id: string;
+  name: string;
+}
+
 export default class Recipe {
   public id?: string;
-  public createdBy?: string;
+  public createdBy?: CreatedBy;
   public time?: Date;
   public imageSrc?: string;
   public description?: string;
@@ -25,7 +32,7 @@ export default class Recipe {
 
   constructor(
     id?: string,
-    createdBy?: string,
+    createdBy?: CreatedBy,
     time?: Date,
     imageSrc?: string,
     description?: string,
@@ -70,8 +77,8 @@ export default class Recipe {
     return this;
   }
 
-  withCreatedBy(value: string): Recipe {
-    this.createdBy = value ?? "";
+  withCreatedBy(value: CreatedBy): Recipe {
+    this.createdBy = value ?? null;
     return this;
   }
 
@@ -134,7 +141,7 @@ export default class Recipe {
 
 export const recipeConverter = {
   toFirestore: (recipe) => {
-    console.log("firestore converter gestartet", recipe);
+    console.log("firestore converter gestartet", recipe.recipeName);
     return {
       recipeName: recipe.recipeName,
       createdBy: recipe.createdBy,
@@ -143,14 +150,18 @@ export const recipeConverter = {
       ingredients: recipe.ingredients ? recipe.ingredients : [],
       recipeDescription: recipe.recipeDescription,
       imageSrc: recipe.imageSrc,
-      rating: recipe.rating
+      rating: recipe.rating,
     };
   },
   fromFirestore: (snapshot, options) => {
     const recipe = snapshot.data(options);
+    let cb: CreatedBy;
+    if (typeof recipe.createdBy === typeof "string") {
+      cb = { id: recipe.createdBy, name: "" };
+    } else cb = recipe.createdBy;
     return Recipe.createEmtptyRecipe()
       .withId(snapshot.id)
-      .withCreatedBy(recipe.createdBy)
+      .withCreatedBy(cb)
       .withRecipeName(recipe.recipeName)
       .withTime(recipe.time ?? new Date(Date.now()))
       .withIngredients(recipe.ingredients)

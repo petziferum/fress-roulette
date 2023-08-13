@@ -43,12 +43,15 @@
       <v-avatar size="30" class="mr-2">
         <v-icon color="grey">mdi-account-cowboy-hat</v-icon>
       </v-avatar>
+      {{ recipe.createdBy }}
     </v-card-item>
   </v-card>
 </template>
 
 <script setup lang="ts">
-const props = defineProps(["recipe"]);
+import Recipe from "@/components/Models/Recipe.class";
+
+const props = defineProps({recipe: Recipe});
 const image = "src/assets/whisky.jpg";
 </script>
 
