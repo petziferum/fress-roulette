@@ -58,11 +58,13 @@
                     >
                     <v-col cols="1">
                       <template v-if="edit">
-                        <v-btn icon flat><v-icon size="small">mdi-pencil</v-icon></v-btn>
+                        <v-btn icon flat
+                          ><v-icon size="small">mdi-pencil</v-icon></v-btn
+                        >
                       </template>
                     </v-col>
                   </v-row>
-                    <v-divider />
+                  <v-divider />
                 </v-card-text>
               </v-col>
             </v-row>
@@ -86,17 +88,16 @@ const store = recipeStore();
 const recipe = computed((): Recipe | undefined => store.viewRecipe);
 const loading = computed({
   get() {
-    return store.getLoadingState;
+    return store.recipesLoading;
   },
   set(value) {
     store.recipesLoading = value;
   },
 });
 onBeforeMount(function () {
-
-  store.loadRecipeById(id.id);
   const route = useRoute();
-  console.log("route params", route.params.id);
+  store.loadRecipeById(route.params.name);
+  console.log("route params", route.params.name);
 });
 
 function cancel() {
