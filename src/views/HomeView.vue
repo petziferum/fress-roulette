@@ -41,8 +41,14 @@
               <v-col cols="9">{{ recipesList.length }} Rezepte geladen </v-col>
               <template v-if="filteredRecipes.length > 0">
                 <v-col cols="4" v-for="r in filteredRecipes" :key="r.id">
-                  <v-card elevation="8" link :to="'/recipe/view/' + r.id">
-                    <v-img cover height="250" :src="r.imageSrc" />
+                  <v-card
+                    elevation="8"
+                    rounded="xl"
+                    class="base-card"
+                    link
+                    :to="'/recipe/view/' + r.id"
+                  >
+                    <v-img cover class="card-image" :src="image" />
                     <v-card-item>
                       <v-card-title>{{ r.recipeName }}</v-card-title>
                     </v-card-item>
@@ -58,7 +64,24 @@
                           class="mr-2"
                         ></v-rating>
                       </v-row>
+                      <v-row>
+                        <v-col cols="12">
+                          Zutaten:
+                          <p>
+                            <v-chip-group>
+                              <v-chip v-for="i in r.ingredients" :key="i" variant="outlined" size="small">{{
+                                i.name
+                              }}</v-chip>
+                            </v-chip-group>
+                          </p>
+                        </v-col>
+                      </v-row>
                     </v-card-text>
+                    <v-card-item>
+                      <v-avatar size="30" class="mr-2">
+                        <v-icon color="grey">mdi-account-cowboy-hat</v-icon>
+                      </v-avatar>
+                    </v-card-item>
                   </v-card>
                 </v-col>
               </template>
@@ -94,11 +117,13 @@ const loading = ref(false);
 const recipesList = ref<Recipe[]>([]);
 const letters = ref("ABCDEFGHIJKLMNOPQRSTUVWXYZ".split(""));
 const selectedLetter = ref("A");
+const image = "src/assets/whisky.jpg";
 
 const filteredRecipes = computed(() => {
   if (selectedLetter.value) {
     return recipesList.value.filter((r) =>
-      r.recipeName?.toLowerCase().startsWith(selectedLetter.value.toLowerCase()));
+      r.recipeName?.toLowerCase().startsWith(selectedLetter.value.toLowerCase())
+    );
   } else {
     return recipesList.value;
   }
@@ -127,6 +152,13 @@ onMounted(() => {
 });
 </script>
 <style scoped>
+.base-card {
+  margin: 1em;
+  width: 300px;
+}
+.card-image {
+  height: 200px;
+}
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.9s ease-in-out;

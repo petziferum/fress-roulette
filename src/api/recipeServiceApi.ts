@@ -3,9 +3,13 @@ import { collection, doc, getDocs, getDoc, setDoc } from "firebase/firestore";
 import { db } from "@/plugins/firebase";
 import { recipeConverter } from "@/components/Models/Recipe.class";
 
+const DB_COLLECTION = "test";
+
 export default class RecipeServiceApi {
+
+
   public static async updateRecipe(recipe: Recipe): Promise<Recipe> {
-    const recipeRef = doc(db, "test", recipe.id!).withConverter(
+    const recipeRef = doc(db, DB_COLLECTION, recipe.id!).withConverter(
       recipeConverter
     );
     return await setDoc(recipeRef, recipe).then(() => recipe);
@@ -14,7 +18,7 @@ export default class RecipeServiceApi {
   public static async getSingleRecipe(
     recipeId: string
   ): Promise<Recipe | undefined> {
-    const docRef = doc(db, "test", recipeId).withConverter(recipeConverter);
+    const docRef = doc(db, DB_COLLECTION , recipeId).withConverter(recipeConverter);
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
       return docSnap.data();
@@ -38,7 +42,7 @@ export default class RecipeServiceApi {
     }
     const id = recipe.recipeName.substring(0, 24);
     try {
-      const ref = doc(db, "test", id).withConverter(recipeConverter);
+      const ref = doc(db, DB_COLLECTION, id).withConverter(recipeConverter);
       console.log("ref = ", ref.id);
       return await setDoc(ref, recipe).then((res) => {
         console.log("res = ", res);
@@ -53,7 +57,7 @@ export default class RecipeServiceApi {
   public static async saveNewRecipe(recipe: Recipe): Promise<string> {
     //const recipeDbObject = recipeConverter.toFirestore(recipe);
     try {
-      const ref = doc(collection(db, "test")).withConverter(recipeConverter);
+      const ref = doc(collection(db, DB_COLLECTION)).withConverter(recipeConverter);
       console.log("ref = ", ref.id);
       return await setDoc(ref, recipe).then(() => {
         return ref.id;
