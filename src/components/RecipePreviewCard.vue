@@ -1,39 +1,63 @@
 <template>
-  <v-card>
-    <v-img :src="recipe.img" width="10%" />
-    <v-expansion-panels>
-      <v-expansion-panel>
-        <v-expansion-panel-title
-          >{{ recipe.recipeName }}
-          <v-btn :to="`/recipe/view/` + recipe.recipeName">Zum Rezept</v-btn
-        ></v-expansion-panel-title>
-        <v-expansion-panel-text>
-          <v-row>
-            <v-col>
-              {{ recipe.id }}
-            </v-col>
-            <v-col>
-              {{ recipe.createdBy }}
-            </v-col>
-            <v-col cols="12">
-              {{ recipe.ingredients }}
-            </v-col>
-            <v-col>
-              {{ recipe.description }}
-            </v-col>
-            <v-col>
-              {{ recipe.tags }}
-            </v-col>
-          </v-row>
-          <div>{{ recipe }}</div>
-        </v-expansion-panel-text>
-      </v-expansion-panel>
-    </v-expansion-panels>
+  <v-card
+    elevation="8"
+    rounded="xl"
+    class="base-card"
+    link
+    :to="'/recipe/view/' + recipe.id"
+  >
+    <v-img cover class="card-image" :src="image" />
+    <v-card-item>
+      <v-card-title>{{ recipe.recipeName }}</v-card-title>
+    </v-card-item>
+    <v-card-text>
+      <v-row align="center" class="mx-0">
+        <v-rating
+          v-model="recipe.rating"
+          dense
+          half-increments
+          readonly
+          color="amber"
+          background-color="grey lighten-2"
+          class="mr-2"
+        ></v-rating>
+      </v-row>
+      <v-row>
+        <v-col cols="12">
+          Zutaten:
+          <p>
+            <v-chip-group>
+              <v-chip
+                v-for="i in recipe.ingredients"
+                :key="i"
+                variant="outlined"
+                size="small"
+                >{{ i.name }}</v-chip
+              >
+            </v-chip-group>
+          </p>
+        </v-col>
+      </v-row>
+    </v-card-text>
+    <v-card-item>
+      <v-avatar size="30" class="mr-2">
+        <v-icon color="grey">mdi-account-cowboy-hat</v-icon>
+      </v-avatar>
+    </v-card-item>
   </v-card>
 </template>
 
 <script setup lang="ts">
 const props = defineProps(["recipe"]);
+const image = "src/assets/whisky.jpg";
 </script>
 
-<style scoped></style>
+<style scoped>
+.base-card {
+  margin: 1em;
+  width: 300px;
+}
+.card-image {
+  height: 200px;
+}
+</style>
