@@ -141,17 +141,17 @@ export default class Recipe {
 
 export const recipeConverter = {
   toFirestore: (recipe) => {
-    console.log("firestore converter gestartet", recipe.recipeName);
+    console.log("toFirestore converter gestartet", recipe);
     return {
       recipeName: recipe.recipeName,
       createdBy: recipe.createdBy,
       time: recipe.time,
       active: recipe.active,
       ingredients: recipe.ingredients ? recipe.ingredients : [],
-      recipeDescription: recipe.recipeDescription,
-      imageSrc: recipe.imageSrc,
-      tags: recipe.tags,
-      rating: recipe.rating,
+      recipeDescription: recipe.recipeDescription? recipe.recipeDescription : [],
+      imageSrc: recipe.imageSrc? recipe.imageSrc : "",
+      tags: recipe.tags ? recipe.tags : [],
+      rating: recipe.rating ? recipe.rating : 3,
     };
   },
   fromFirestore: (snapshot, options) => {

@@ -57,6 +57,7 @@ function createRecipe() {
   newRecipe.value.time = new Date(Date.now());
   RecipeServiceApi.createNewEditRecipe(newRecipe.value)
     .then((id) => {
+      console.log("ID: ", id);
       if (id != "error") {
         newRecipe.value.id = id;
         route = "/recipe/edit/" + id;
