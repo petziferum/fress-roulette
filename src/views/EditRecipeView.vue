@@ -1,10 +1,15 @@
 <template>
   <v-container>
     <v-card>
+      <v-toolbar>
+        <v-toolbar-tiems>
+          <v-btn text @click="$router.go(-1)">Zurück</v-btn>
+        </v-toolbar-tiems>
+      </v-toolbar>
       <v-card-title>{{ recipe.recipeName }}</v-card-title>
       <v-card-subtitle
-        >ID: {{ recipe.id }}<br>
-        CreatedBy: {{ recipe.createdBy }}<br>
+        >ID: {{ recipe.id }}<br />
+        CreatedBy: {{ recipe.createdBy }}<br />
         <div>Erstellt am: {{ recipe.time }}</div></v-card-subtitle
       >
       <v-card-actions>
@@ -27,9 +32,7 @@
         <v-card-text>
           <tags-select v-model="recipe" />
         </v-card-text>
-        <v-card-actions>
-          Rating: {{ recipe.rating }}
-        </v-card-actions>
+        <v-card-actions> Rating: {{ recipe.rating }} </v-card-actions>
         <v-card-text>
           Zutaten
           <component-zutat v-model="recipe" />

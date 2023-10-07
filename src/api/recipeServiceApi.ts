@@ -7,8 +7,6 @@ import { slugifyString } from "@/common/scripts";
 const DB_COLLECTION = "test";
 
 export default class RecipeServiceApi {
-
-
   public static async updateRecipe(recipe: Recipe): Promise<Recipe> {
     const recipeRef = doc(db, DB_COLLECTION, recipe.id!).withConverter(
       recipeConverter
@@ -19,7 +17,9 @@ export default class RecipeServiceApi {
   public static async getSingleRecipe(
     recipeId: string
   ): Promise<Recipe | undefined> {
-    const docRef = doc(db, DB_COLLECTION , recipeId).withConverter(recipeConverter);
+    const docRef = doc(db, DB_COLLECTION, recipeId).withConverter(
+      recipeConverter
+    );
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
       return docSnap.data();
@@ -55,7 +55,9 @@ export default class RecipeServiceApi {
   public static async saveNewRecipe(recipe: Recipe): Promise<string> {
     //const recipeDbObject = recipeConverter.toFirestore(recipe);
     try {
-      const ref = doc(collection(db, DB_COLLECTION)).withConverter(recipeConverter);
+      const ref = doc(collection(db, DB_COLLECTION)).withConverter(
+        recipeConverter
+      );
       return await setDoc(ref, recipe).then(() => {
         return ref.id;
       });
