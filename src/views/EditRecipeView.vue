@@ -2,9 +2,9 @@
   <v-container>
     <v-card>
       <v-toolbar>
-        <v-toolbar-tiems>
+        <v-toolbar-items>
           <v-btn text @click="$router.go(-1)">Zurück</v-btn>
-        </v-toolbar-tiems>
+        </v-toolbar-items>
       </v-toolbar>
       <v-card-title>{{ recipe.recipeName }}</v-card-title>
       <v-card-subtitle
@@ -58,7 +58,6 @@ import { VForm } from "vuetify/lib/components/index";
 import ComponentZutat from "@/components/EditRecipe/ComponentZutat.vue";
 import ComponentRecipeDescription from "@/components/EditRecipe/ComponentRecipeDescription.vue";
 import TagsSelect from "@/components/componenttest/TagsSelect.vue";
-import { slugifyString } from "@/common/scripts";
 
 const editMode = ref(false);
 const recipe = ref<Recipe>(Recipe.createEmptyRecipe());

@@ -32,7 +32,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { ref } from "vue";
 import Recipe from "@/components/Models/Recipe.class";
 import { useRouter } from "vue-router";
 import RecipeServiceApi from "@/api/recipeServiceApi";
