@@ -17,7 +17,7 @@ export interface CreatedBy {
 }
 
 export default class Recipe {
-  public id?: string;
+  public id: string;
   public createdBy?: CreatedBy;
   public time?: Date;
   public imageSrc?: string;
@@ -31,7 +31,7 @@ export default class Recipe {
   public rating?: number = 3.8;
 
   constructor(
-    id?: string,
+    id: string,
     createdBy?: CreatedBy,
     time?: Date,
     imageSrc?: string,
@@ -134,8 +134,8 @@ export default class Recipe {
     return this;
   }
 
-  public static createEmtptyRecipe(): Recipe {
-    return new Recipe();
+  public static createEmptyRecipe(): Recipe {
+    return new Recipe("0");
   }
 }
 
@@ -150,6 +150,7 @@ export const recipeConverter = {
       ingredients: recipe.ingredients ? recipe.ingredients : [],
       recipeDescription: recipe.recipeDescription,
       imageSrc: recipe.imageSrc,
+      tags: recipe.tags,
       rating: recipe.rating,
     };
   },
@@ -157,9 +158,10 @@ export const recipeConverter = {
     const recipe = snapshot.data(options);
     let cb: CreatedBy;
     if (typeof recipe.createdBy === typeof "string") {
+      console.log("createdBy ist nur n string yo", recipe.recipeName);
       cb = { id: recipe.createdBy, name: "" };
     } else cb = recipe.createdBy;
-    return Recipe.createEmtptyRecipe()
+    return Recipe.createEmptyRecipe()
       .withId(snapshot.id)
       .withCreatedBy(cb)
       .withRecipeName(recipe.recipeName)

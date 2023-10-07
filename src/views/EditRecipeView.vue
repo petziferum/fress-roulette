@@ -16,6 +16,19 @@
         >
       </v-card-actions>
       <template v-if="!editMode">
+        <v-form ref="recipeForm">
+          <v-row>
+            <v-col>
+              <v-text-field label="Rezept Name" v-model="recipe.recipeName" />
+            </v-col>
+          </v-row>
+        </v-form>
+        <v-card-text>
+          <tags-select v-model="recipe" />
+        </v-card-text>
+        <v-card-actions>
+          Rating: {{ recipe.rating }}
+        </v-card-actions>
         <v-card-text>
           Zutaten
           <component-zutat v-model="recipe" />
@@ -26,17 +39,6 @@
           <v-card-title>Zubereitungsschritte</v-card-title>
           <component-recipe-description v-model="recipe" />
         </v-card-text>
-      </template>
-
-      <!-- Im Editmode  -->
-      <template v-else>
-        <v-form ref="recipeForm">
-          <v-row>
-            <v-col>
-              <v-text-field label="Rezept Name" v-model="recipe.recipeName" />
-            </v-col>
-          </v-row>
-        </v-form>
       </template>
       {{ recipe }}
     </v-card>
@@ -51,9 +53,10 @@ import RecipeServiceApi from "@/api/recipeServiceApi";
 import { VForm } from "vuetify/lib/components/index";
 import ComponentZutat from "@/components/EditRecipe/ComponentZutat.vue";
 import ComponentRecipeDescription from "@/components/EditRecipe/ComponentRecipeDescription.vue";
+import TagsSelect from "@/components/componenttest/TagsSelect.vue";
 
 const editMode = ref(false);
-const recipe = ref<Recipe>(Recipe.createEmtptyRecipe());
+const recipe = ref<Recipe>(Recipe.createEmptyRecipe());
 const router = useRoute();
 
 function loadRecipe(): void {
@@ -61,7 +64,7 @@ function loadRecipe(): void {
     (response) => {
       console.log("response", response);
       if (response) {
-        const editRecipe = Recipe.createEmtptyRecipe();
+        const editRecipe = Recipe.createEmptyRecipe();
         console.log(
           "edit: ",
           editRecipe,

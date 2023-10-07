@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <v-card>
     <v-row justify="center">
       <v-col cols="10">
         <v-card>
@@ -33,37 +33,37 @@
                 >
               </Transition>
             </div>
-
-            <v-row no-gutters>
-              <v-col cols="3">
-                Rezepte mit Buchstaben: "{{ selectedLetter }}"
-              </v-col>
-              <v-col cols="9">{{ recipesList.length }} Rezepte geladen </v-col>
-              <template v-if="filteredRecipes.length > 0">
-                <v-col cols="4" v-for="r in filteredRecipes" :key="r.id">
-                  <RecipePreviewCard :recipe="r" />
-                </v-col>
-              </template>
-              <template v-else>
-                <v-col cols="12">
-                  <v-card elevation="12">
-                    <v-card-title
-                    >Keine Rezepte mit Anfangsbuchstaben "{{
-                        selectedLetter
-                      }}" vorhanden</v-card-title
-                    >
-                    <v-card-text>
-                      <v-icon color="brown" size="30">mdi-emoticon-sad</v-icon>
-                    </v-card-text>
-                  </v-card>
-                </v-col>
-              </template>
-            </v-row>
           </div>
         </v-card>
       </v-col>
     </v-row>
-  </div>
+    <v-row>
+      <v-card-text>
+      <v-col cols="12" md="4"> Rezepte mit Buchstaben: "{{ selectedLetter }}" </v-col>
+      <v-col cols="12" md="8">{{ recipesList.length }} Rezepte geladen </v-col>
+      </v-card-text>
+    </v-row>
+    <v-row no-gutters>
+      <template v-if="filteredRecipes.length > 0">
+        <v-col cols="12" md="4" v-for="r in filteredRecipes" :key="r.id">
+          <RecipePreviewCard :recipe="r" />
+        </v-col>
+      </template>
+      <template v-else>
+        <v-col cols="12">
+          <v-card elevation="12">
+            <v-card-title
+              >Keine Rezepte mit Anfangsbuchstaben "{{ selectedLetter }}"
+              vorhanden</v-card-title
+            >
+            <v-card-text>
+              <v-icon color="brown" size="30">mdi-emoticon-sad</v-icon>
+            </v-card-text>
+          </v-card>
+        </v-col>
+      </template>
+    </v-row>
+  </v-card>
 </template>
 
 <script lang="ts" setup>
@@ -77,7 +77,6 @@ const loading = ref(false);
 const recipesList = ref<Recipe[]>([]);
 const letters = ref("ABCDEFGHIJKLMNOPQRSTUVWXYZ".split(""));
 const selectedLetter = ref("");
-
 
 const filteredRecipes = computed(() => {
   if (selectedLetter.value) {
@@ -112,7 +111,6 @@ onMounted(() => {
 });
 </script>
 <style scoped>
-
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.9s ease-in-out;

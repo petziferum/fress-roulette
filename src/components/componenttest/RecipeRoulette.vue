@@ -69,7 +69,7 @@ const reset = (text: string) => {
   console.debug("reset");
   show.value = true;
   array.value = Object.assign([], props.recipesArray);
-  result.value = Recipe.createEmtptyRecipe().withRecipeName(text);
+  result.value = Recipe.createEmptyRecipe().withRecipeName(text);
   console.debug("array", array.value.length, result.value);
 };
 

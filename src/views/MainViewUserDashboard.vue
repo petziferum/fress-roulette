@@ -90,10 +90,16 @@
             <v-btn @click="fetchRecipes">Lade Rezepte</v-btn></v-card-title
           >
           <v-card-text v-for="recipe of userRecipes" :key="recipe.id">
-            <ul>
-              <li>{{ recipe }}</li>
-              <li><v-btn @click="editRecipe(recipe.id)">Bearbeiten</v-btn></li>
-            </ul>
+            <v-list density="compact">
+              <v-list-item v-for="(value, key) in recipe" :key="key">
+                <v-list-item-title>{{ key }}</v-list-item-title>
+                <v-list-item-subtitle>
+                  {{ value }}
+                </v-list-item-subtitle>
+              </v-list-item>
+            </v-list>
+            <v-btn @click="editRecipe(recipe.id)">Bearbeiten</v-btn>
+            <v-divider />
           </v-card-text>
         </v-card>
       </v-col>

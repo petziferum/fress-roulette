@@ -42,7 +42,7 @@ const props = defineProps(["userId"]);
 const router = useRouter();
 const isOpen = ref(false);
 const newRecipe = ref(
-  Recipe.createEmtptyRecipe().withActive(false).withCreatedBy(props.userId)
+  Recipe.createEmptyRecipe().withActive(false).withCreatedBy(props.userId)
 );
 const filledRule = ref([(v) => v != null || "Name muss ausgefüllt sein"]);
 const loading = ref(false);

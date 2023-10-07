@@ -114,7 +114,7 @@ export async function getUserRecipe(): Promise<Recipe[]> {
     console.info("get user recipes", userid, collectionRef);
     const q = query(
       collectionRef,
-      where("createdBy", "==", userid)
+      where("createdBy.id", "==", userid)
     ).withConverter(recipeConverter);
 
     const docSnap = await getDocs(q);

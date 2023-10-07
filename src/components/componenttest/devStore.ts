@@ -10,7 +10,7 @@ export const useDevStore = defineStore("devStore", {
   state: () =>
     ({
       recipeList: [],
-      recipe: Recipe.createEmtptyRecipe()
+      recipe: Recipe.createEmptyRecipe()
         .withRecipeName("Test Recipe")
         .withIngredients([
           { menge: "7", name: "Zwiebeln" },
@@ -22,7 +22,7 @@ export const useDevStore = defineStore("devStore", {
   actions: {
     initRecipes() {
       const recipes = [
-        Recipe.createEmtptyRecipe()
+        Recipe.createEmptyRecipe()
           .withRecipeName("Test Recipe")
           .withIngredients([
             { menge: "7", name: "Zwiebeln" },
@@ -32,7 +32,7 @@ export const useDevStore = defineStore("devStore", {
             { nr: 1, text: "Zwiebeln schneiden", img: "" },
           ])
           .withImageSrc("/src/assets/whisky.jpg"),
-        Recipe.createEmtptyRecipe()
+        Recipe.createEmptyRecipe()
           .withId("123")
           .withRecipeName("Rezept 1")
           .withIngredients([
@@ -40,7 +40,7 @@ export const useDevStore = defineStore("devStore", {
             { menge: "500g", name: "Hackfleisch" },
           ])
           .withImageSrc(""),
-        Recipe.createEmtptyRecipe()
+        Recipe.createEmptyRecipe()
           .withId("234523")
           .withRecipeName("Rezept 2")
           .withIngredients([
@@ -48,7 +48,7 @@ export const useDevStore = defineStore("devStore", {
             { menge: "4 Flaschen", name: "Vodka" },
           ])
           .withImageSrc(""),
-        Recipe.createEmtptyRecipe()
+        Recipe.createEmptyRecipe()
           .withId("55553")
           .withRecipeName("Rezept 3")
           .withIngredients([

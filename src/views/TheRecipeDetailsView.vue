@@ -24,6 +24,9 @@
             "
             elevation="10"
           >
+            <v-card-title>
+              {{ recipe.recipeName }}
+            </v-card-title>
             <v-row>
               <v-col cols="12" md="4">
                 <v-list>
