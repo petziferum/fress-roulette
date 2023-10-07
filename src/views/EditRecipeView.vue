@@ -3,7 +3,7 @@
     <v-card>
       <v-toolbar>
         <v-toolbar-items>
-          <v-btn text @click="$router.go(-1)">Zurück</v-btn>
+          <v-btn variant="text" @click="$router.go(-1)">Zurück</v-btn>
         </v-toolbar-items>
       </v-toolbar>
       <v-card-title>{{ recipe.recipeName }}</v-card-title>
@@ -54,7 +54,7 @@ import { onBeforeMount, ref } from "vue";
 import { useRoute } from "vue-router";
 import Recipe from "@/components/Models/Recipe.class";
 import RecipeServiceApi from "@/api/recipeServiceApi";
-import { VForm } from "vuetify/lib/components/index";
+import { VForm } from "vuetify/components";
 import ComponentZutat from "@/components/EditRecipe/ComponentZutat.vue";
 import ComponentRecipeDescription from "@/components/EditRecipe/ComponentRecipeDescription.vue";
 import TagsSelect from "@/components/componenttest/TagsSelect.vue";

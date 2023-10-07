@@ -19,8 +19,8 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer />
-            <v-btn text color="red" @click="cancel">abbrechen</v-btn>
-            <v-btn text color="green" @click="createRecipe">weiter</v-btn>
+            <v-btn variant="text" color="red" @click="cancel">abbrechen</v-btn>
+            <v-btn variant="text" color="green" @click="createRecipe">weiter</v-btn>
           </v-card-actions>
         </v-form>
       </template>
@@ -37,7 +37,6 @@ import Recipe from "@/components/Models/Recipe.class";
 import { useRouter } from "vue-router";
 import RecipeServiceApi from "@/api/recipeServiceApi";
 
-const bgImage = ref("/src/assets/whisky.jpg");
 const props = defineProps(["userId"]);
 const router = useRouter();
 const isOpen = ref(false);
