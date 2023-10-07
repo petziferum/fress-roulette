@@ -32,7 +32,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import Recipe from "@/components/Models/Recipe.class";
 import { useRouter } from "vue-router";
 import RecipeServiceApi from "@/api/recipeServiceApi";
@@ -55,14 +55,12 @@ function createRecipe() {
   let route = "/recipe/new/" + newRecipe.value.id;
   //Setze aktuelle Zeit in Rezept
   newRecipe.value.time = new Date(Date.now());
-  RecipeServiceApi.createNewEditRecipe(newRecipe.value)
+  RecipeServiceApi.createNewEditRecipe(newRecipe.value) // id wird in createNewEditRecipe durch slugify gesetzt
     .then((id) => {
-      console.log("ID: ", id);
       if (id != "error") {
         newRecipe.value.id = id;
         route = "/recipe/edit/" + id;
       } else {
-        console.log("Fehler beim Erstellen des Rezepts", id);
         throw new Error(
           "Fehler beim Erstellen des Rezepts, keine ID erstellt."
         );
@@ -72,7 +70,7 @@ function createRecipe() {
       router.push(route);
     })
     .catch((error) => {
-      console.log("Fehler: ", error);
+      throw new Error("🤡 Fehler aufgetaucht: " + error);
     });
 }
 </script>

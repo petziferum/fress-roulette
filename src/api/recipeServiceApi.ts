@@ -2,6 +2,7 @@ import type Recipe from "@/components/Models/Recipe.class";
 import { collection, doc, getDocs, getDoc, setDoc } from "firebase/firestore";
 import { db } from "@/plugins/firebase";
 import { recipeConverter } from "@/components/Models/Recipe.class";
+import { slugifyString } from "@/common/scripts";
 
 const DB_COLLECTION = "test";
 
@@ -40,16 +41,13 @@ export default class RecipeServiceApi {
     if (!recipe.recipeName) {
       throw new Error("recipeName is missing");
     }
-    const id = recipe.recipeName.substring(0, 24);
+    const id = slugifyString(recipe.recipeName.substring(0, 128));
     try {
       const ref = doc(db, DB_COLLECTION, id).withConverter(recipeConverter);
-      console.log("ref = ", ref.id);
       return await setDoc(ref, recipe).then((res) => {
-        console.log("res = ", res);
         return ref.id;
       });
     } catch (e) {
-      console.error("error: ", e);
       return "error";
     }
   }
@@ -58,12 +56,10 @@ export default class RecipeServiceApi {
     //const recipeDbObject = recipeConverter.toFirestore(recipe);
     try {
       const ref = doc(collection(db, DB_COLLECTION)).withConverter(recipeConverter);
-      console.log("ref = ", ref.id);
       return await setDoc(ref, recipe).then(() => {
         return ref.id;
       });
     } catch (e) {
-      console.error("error: ", e);
       return "error";
     }
   }

@@ -3,7 +3,8 @@
     <v-card>
       <v-card-title>{{ recipe.recipeName }}</v-card-title>
       <v-card-subtitle
-        >ID: {{ recipe.id }} CreatedBy: {{ recipe.createdBy }}
+        >ID: {{ recipe.id }}<br>
+        CreatedBy: {{ recipe.createdBy }}<br>
         <div>Erstellt am: {{ recipe.time }}</div></v-card-subtitle
       >
       <v-card-actions>
@@ -54,6 +55,7 @@ import { VForm } from "vuetify/lib/components/index";
 import ComponentZutat from "@/components/EditRecipe/ComponentZutat.vue";
 import ComponentRecipeDescription from "@/components/EditRecipe/ComponentRecipeDescription.vue";
 import TagsSelect from "@/components/componenttest/TagsSelect.vue";
+import { slugifyString } from "@/common/scripts";
 
 const editMode = ref(false);
 const recipe = ref<Recipe>(Recipe.createEmptyRecipe());
