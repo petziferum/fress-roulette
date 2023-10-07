@@ -24,6 +24,16 @@
             "
             elevation="10"
           >
+            <v-toolbar>
+              <v-toolbar-items>
+                <v-btn icon @click="router.go(-1)">
+                  <v-icon>mdi-arrow-left</v-icon>
+                </v-btn>
+                <v-btn icon>
+                  <v-icon>mdi-delete</v-icon>
+                </v-btn>
+              </v-toolbar-items>
+            </v-toolbar>
             <v-card-title>
               {{ recipe.recipeName }}
             </v-card-title>
@@ -82,6 +92,7 @@ import { recipeStore } from "@/stores/recipeStore";
 import { computed, onBeforeMount, ref } from "vue";
 import { useRoute } from "vue-router";
 import Recipe from "@/components/Models/Recipe.class";
+import router from "@/router";
 
 const id = defineProps(["id"]);
 const editItemNumber = ref(null);

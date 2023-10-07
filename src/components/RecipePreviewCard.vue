@@ -28,6 +28,17 @@
           </v-row>
           <v-row>
             <v-col cols="12">
+              <v-chip
+                size="small"
+                v-for="t in recipe?.tags"
+                :key="t"
+                class="mr-1"
+                >{{ t }}</v-chip
+              >
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col cols="12">
               Zutaten:
               <p>
                 <v-chip-group>
@@ -35,8 +46,9 @@
                     v-for="i in recipe?.ingredients"
                     :key="i"
                     variant="outlined"
+                    rounded="0"
                     size="small"
-                  >{{ i.name }}</v-chip
+                    >{{ i.name }}</v-chip
                   >
                 </v-chip-group>
               </p>
@@ -51,8 +63,6 @@
         </v-card-item>
       </v-col>
     </v-row>
-
-
   </v-card>
 </template>
 
