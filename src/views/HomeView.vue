@@ -45,7 +45,7 @@
     </v-row>
     <v-row no-gutters>
       <template v-if="filteredRecipes.length > 0">
-        <v-col cols="12" md="4" v-for="r in filteredRecipes" :key="r.id">
+        <v-col cols="12" lg="6" v-for="r in filteredRecipes" :key="r.id">
           <RecipePreviewCard :recipe="r" />
         </v-col>
       </template>
