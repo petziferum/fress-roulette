@@ -1,4 +1,5 @@
 import * as string_decoder from "string_decoder";
+import type { Difficulty } from "@/components/Models/Difficulty";
 
 export interface Description {
   nr: number;
@@ -29,6 +30,7 @@ export default class Recipe {
   public active?: boolean;
   public tags?: string[];
   public rating?: number = 3.8;
+  public difficulty?: Difficulty;
 
   constructor(
     id: string,
@@ -42,7 +44,8 @@ export default class Recipe {
     recipeDescription: Description[] = [],
     active?: boolean,
     tags?: string[],
-    rating?: number
+    rating?: number,
+    difficulty?: Difficulty
   ) {
     this.id = id;
     this.createdBy = createdBy;
@@ -55,6 +58,7 @@ export default class Recipe {
     this.active = active;
     this.tags = tags;
     this.rating = rating;
+    this.difficulty = difficulty;
   }
 
   withRating(value: number): Recipe {
@@ -116,6 +120,11 @@ export default class Recipe {
     return this;
   }
 
+  withDifficulty(value: Difficulty): Recipe {
+    this.difficulty = value;
+    return this;
+  }
+
   setActive(): void {
     this.active = true;
   }
@@ -148,8 +157,10 @@ export const recipeConverter = {
       time: recipe.time,
       active: recipe.active,
       ingredients: recipe.ingredients ? recipe.ingredients : [],
-      recipeDescription: recipe.recipeDescription? recipe.recipeDescription : [],
-      imageSrc: recipe.imageSrc? recipe.imageSrc : "",
+      recipeDescription: recipe.recipeDescription
+        ? recipe.recipeDescription
+        : [],
+      imageSrc: recipe.imageSrc ? recipe.imageSrc : "",
       tags: recipe.tags ? recipe.tags : [],
       rating: recipe.rating ? recipe.rating : 3,
     };

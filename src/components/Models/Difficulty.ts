@@ -19,8 +19,8 @@ export const DifficultyToDescription = new Map<Difficulty, string>([
 ]);
 
 export const DifficultyToRecord = Object.keys(Difficulty).map((key) => ({
-  value: key,
-  text: DifficultyToDescription.get(key as Difficulty),
+  key: key,
+  value: DifficultyToDescription.get(key as Difficulty),
 }));
 
 export const DifficultyToColor = new Map<Difficulty, string>([

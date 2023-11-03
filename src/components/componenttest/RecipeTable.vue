@@ -1,22 +1,26 @@
 <template>
+  <v-container>
+    <v-autocomplete :items="difficulty" item-title="value" label="Schwierigkeit"/>
+  </v-container>
   <v-table>
     <thead>
       <tr>
-        <th>name</th>
-        <th>Rating</th>
+        <th>Name</th>
+        <th>Schwierigkeit</th>
       </tr>
     </thead>
     <tbody>
       <tr v-for="item in items" :key="item.name">
         <td>{{ item.recipeName }}</td>
-        <td>{{ item.rating }}</td>
+        <td>{{ item.difficulty }}</td>
       </tr>
     </tbody></v-table
   >
 </template>
 <script setup lang="ts">
 import { ref } from "vue";
+import { DifficultyToRecord } from "@/components/Models/Difficulty";
 defineProps({items: Array});
-
+const difficulty = ref(DifficultyToRecord);
 </script>
 <style scoped></style>

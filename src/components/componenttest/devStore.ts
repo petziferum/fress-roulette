@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import Recipe from "@/components/Models/Recipe.class";
-import Description from "@/components/Models/Recipe.class";
+import { Difficulty } from "@/components/Models/Difficulty";
 
 export interface stateInterface {
   recipe: Recipe;
@@ -31,6 +31,7 @@ export const useDevStore = defineStore("devStore", {
           .withRecipeDescription([
             { nr: 1, text: "Zwiebeln schneiden", img: "" },
           ])
+          .withDifficulty(Difficulty.EASY)
           .withImageSrc("/src/assets/whisky.jpg"),
         Recipe.createEmptyRecipe()
           .withId("123")
@@ -47,6 +48,7 @@ export const useDevStore = defineStore("devStore", {
             { menge: "3", name: "Oliven" },
             { menge: "4 Flaschen", name: "Vodka" },
           ])
+          .withDifficulty(Difficulty.IMPOSSIBLE)
           .withImageSrc(""),
         Recipe.createEmptyRecipe()
           .withId("55553")
