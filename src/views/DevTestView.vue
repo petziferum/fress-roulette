@@ -1,8 +1,10 @@
 <template>
   <div class="mx-2">
+    <wrapper-panel>
+      <recipe-table :items="store.recipeList" />
+    </wrapper-panel>
     <v-row justify="center">
-      <v-col cols="4">
-        <div class="text-h1">Dev Test View</div></v-col>
+      <v-col cols="4"> <div class="text-h1">Dev Test View</div></v-col>
     </v-row>
     <esp-wled />
     <esp-cam />
@@ -40,9 +42,7 @@
                 <v-icon size="small" color="orange">mdi-pencil</v-icon>
                 <v-dialog v-model="dialog" width="50%" activator="parent">
                   <v-card>
-                    <v-card-text>
-                      Dialog
-                    </v-card-text>
+                    <v-card-text> Dialog </v-card-text>
                     <v-text-field v-model="store.recipe.recipeName" />
                     <v-card-actions>
                       <v-spacer />
@@ -109,7 +109,8 @@ import imgUrl from "@/assets/whisky.jpg";
 import { useDevStore } from "@/components/componenttest/devStore";
 import EspCam from "@/components/componenttest/EspCam.vue";
 import EspWled from "@/components/componenttest/EspWled.vue";
-
+import WrapperPanel from "@/components/componenttest/WrapperPanel.vue";
+import RecipeTable from "@/components/componenttest/RecipeTable.vue";
 
 const dialog = ref(false);
 const store = useDevStore();
@@ -121,7 +122,7 @@ const recipe = reactive({
 });
 const recipeArray = ref([recipe]);
 
-onBeforeMount(()=> store.initRecipes())
+onBeforeMount(() => store.initRecipes());
 </script>
 
 <style scoped></style>
