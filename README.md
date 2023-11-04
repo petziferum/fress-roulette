@@ -4,6 +4,10 @@ A private project to save my own recipes and get a random recipe for the day.
 This Project is build with Vue 3 and Vite and I use it to keep on track with the new Vue 3 features.
 It will also replace the old app that can still be found at https://recipes-petzi.web.app/.
 
+## Need Help!
+
+I'm not a designer and I'm not good at it. So if you have any ideas how to make this app look better, please let me know.
+
 ## ToDo's
 
 - Rezept bearbeiten Komponente erstellen mit allen Textfeldern die benötigt werden
