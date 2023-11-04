@@ -1,7 +1,7 @@
 <template>
   <v-card>
     <v-row justify="center">
-      <v-col cols="10">
+      <v-col cols="12" md="10">
         <v-card>
           <v-card-title>HomeView</v-card-title>
           <v-card-subtitle>

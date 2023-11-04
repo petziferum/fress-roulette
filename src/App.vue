@@ -3,7 +3,13 @@
     <app-header />
     <side-bar></side-bar>
     <v-main>
-      <router-view />
+      <v-row>
+        <v-col cols="12" md="3"></v-col>
+        <v-col cols="12" md="6">
+          <router-view />
+        </v-col>
+        <v-col cols="12" md="12"></v-col>
+      </v-row>
     </v-main>
     <v-footer class="flex-column" border>
       <div v-if="isLoggedIn">Angemeldet</div>
