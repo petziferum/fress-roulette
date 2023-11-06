@@ -1,0 +1,11 @@
+[
+  {"id":"0","imageSrc":"/src/assets/whisky.jpg","recipeName":"Test Recipe","ingredients":[{"menge":"7","name":"Zwiebeln"},{"menge":"54","name":"Knoblauch"}],"recipeDescription":[{"nr":1,"text":"Zwiebeln schneiden","img":""}],"difficulty":"EASY"},
+  {"id":"123","imageSrc":"","recipeName":"Benzin Käsefondue","ingredients":[{"menge":"3","name":"Karotten"},{"menge":"500g","name":"Hackfleisch"}],"recipeDescription":[]},
+  {"id":"234523","imageSrc":"","recipeName":"Taco al Naturerde","ingredients":[{"menge":"3","name":"Oliven"},{"menge":"4 Flaschen","name":"Vodka"}],"recipeDescription":[],"rating":2.3,"difficulty":"IMPOSSIBLE"},
+  {"id":"55553","imageSrc":"","recipeName":"Stein Suppe","ingredients":[{"menge":"43","name":"Steine"},{"menge":"500g","name":"Rohes Fleisch"}],"recipeDescription":[]},
+  {"id":"123asdf","recipeName":"Alkohol Nitroglyzerin Cocktail","recipeDescription":[],"rating":5,"difficulty":"EASY"},
+  {"id":"123asd345f","recipeName":"Zyankali Salad","ingredients":[{"menge":"1","name":"Zyankali"},{"menge":"1","name":"Salad"}],"recipeDescription":[],"rating":3,"difficulty":"MEDIUM"},
+  {"id":"0eoico88owie","recipeName":"Cyanid Suppe","ingredients":[{"menge":"100g","name":"Cyanid"},{"menge":"100ml","name":"Suppe"}],"recipeDescription":[],"rating":4.5,"difficulty":"EASY"},
+  {"id":"02f","recipeName":"Viagra Lasagne","ingredients":[{"menge":"500g","name":"Viagra"},{"menge":"100g","name":"Lasagne"}],"recipeDescription":[],"rating":2.5,"difficulty":"MEDIUM"},
+  {"id":"4f126","recipeName":"Cholesterin Bombe","ingredients":[{"menge":"500g","name":"Pures Cholesterin"},{"menge":"100g","name":"Zucker"},{"menge": "800g","name":"Fett"}],"recipeDescription":["Gönn dir doch mal was!"],"rating":2.5,"difficulty":"MEDIUM"}
+  ]

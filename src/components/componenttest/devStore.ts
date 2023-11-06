@@ -1,7 +1,8 @@
 import { defineStore } from "pinia";
 import Recipe from "@/components/Models/Recipe.class";
 import { Difficulty } from "@/components/Models/Difficulty";
-import { withDirectives } from "vue";
+import testrecipes from "@/components/componenttest/testrecipes.json";
+
 
 export interface stateInterface {
   recipe: Recipe;
@@ -26,6 +27,7 @@ export const useDevStore = defineStore("devStore", {
     } as stateInterface),
   actions: {
     initRecipes() {
+      /*
       const recipes = [
         Recipe.createEmptyRecipe()
           .withRecipeName("Test Recipe")
@@ -95,7 +97,8 @@ export const useDevStore = defineStore("devStore", {
           ])
           .withDifficulty(Difficulty.MEDIUM),
       ];
-      this.recipeList = recipes;
+       */
+      this.recipeList = Object.assign([], testrecipes);
     },
   },
   getters: {
@@ -121,7 +124,7 @@ export const useDevStore = defineStore("devStore", {
         if (!aStartsWithQuery && bStartsWithQuery) return 1;
         return nameA.localeCompare(nameB);
       });
-      setTimeout(() => (state.loading = false), 500);
+      state.loading = false;
       return sortedList;
     },
     getDevData(state): any {
