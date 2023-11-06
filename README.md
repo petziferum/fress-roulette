@@ -8,6 +8,17 @@ It will also replace the old app that can still be found at https://recipes-petz
 
 I'm not a designer and I'm not good at it. So if you have any ideas how to make this app look better, please let me know.
 
+Things that must be done:
+- make Recipe Card beatiful with css and fancy Animations
+- Create a nice looking Header
+- Create a nice looking Footer
+- Design a special Background for the App
+- Create a nice looking 404 Page
+- Aggregation Page for all Recipes
+- Create a nice looking Recipe Detail Page
+- Add Rating and Difficulty to Recipe Card
+
+
 ## ToDo's
 
 - Rezept bearbeiten Komponente erstellen mit allen Textfeldern die benötigt werden
