@@ -1,8 +1,6 @@
 import { defineStore } from "pinia";
 import Recipe from "@/components/Models/Recipe.class";
-import { Difficulty } from "@/components/Models/Difficulty";
 import testrecipes from "@/components/componenttest/testrecipes.json";
-
 
 export interface stateInterface {
   recipe: Recipe;

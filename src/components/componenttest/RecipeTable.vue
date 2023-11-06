@@ -1,6 +1,10 @@
 <template>
   <v-container>
-    <v-autocomplete :items="difficulty" item-title="value" label="Schwierigkeit"/>
+    <v-autocomplete
+      :items="difficulty"
+      item-title="value"
+      label="Schwierigkeit"
+    />
     <v-text-field label="suche" v-model="store.searchQuery" />
   </v-container>
   {{ store.loading }}
@@ -23,9 +27,12 @@
 </template>
 <script setup lang="ts">
 import { ref } from "vue";
-import { DifficultyToRecord, DifficultyToDescription } from "@/components/Models/Difficulty";
+import {
+  DifficultyToRecord,
+  DifficultyToDescription,
+} from "@/components/Models/Difficulty";
 import { useDevStore } from "@/components/componenttest/devStore";
-defineProps({items: Array});
+defineProps({ items: Array });
 const difficulty = ref(DifficultyToRecord);
 
 const store = useDevStore();
