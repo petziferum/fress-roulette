@@ -14,13 +14,13 @@
               @click.prevent="fetchRecipes"
               >fetch</v-btn
             >
-            <v-btn @click="selectedLetter = ''">All</v-btn>
+            <v-btn @click="store.searchQuery = ''">All</v-btn>
             <v-btn
               variant="tonal"
               size="x-small"
               class="mr-1"
               v-for="letter in letters"
-              @click.prevent="selectedLetter = letter"
+              @click.prevent="store.searchQuery = letter"
               :key="letter"
               >{{ letter }}</v-btn
             >
@@ -39,13 +39,13 @@
     </v-row>
     <v-row>
       <v-card-text>
-      <v-col cols="12" md="4"> Rezepte mit Buchstaben: "{{ selectedLetter }}" </v-col>
+      <v-col cols="12" md="4"> Rezepte mit Buchstaben: "{{ store.searchQuery }}" </v-col>
       <v-col cols="12" md="8">{{ recipesList.length }} Rezepte geladen </v-col>
       </v-card-text>
     </v-row>
     <v-row no-gutters>
-      <template v-if="filteredRecipes.length > 0">
-        <v-col cols="12" lg="6" v-for="r in filteredRecipes" :key="r.id">
+      <template v-if="store.getSortedRecipeList().length > 0">
+        <v-col cols="12" lg="6" v-for="r in store.getSortedRecipeList()" :key="r.id">
           <RecipePreviewCard :recipe="r" />
         </v-col>
       </template>
@@ -101,9 +101,10 @@ function fetchRecipes(): void {
   store.loadAllRecipes();
   console.log("fetchRecipes", store.allRecipes.values());
   setTimeout(() => {
-    store.allRecipes.forEach((r) => recipesList.value.push(r as Recipe));
+    //store.allRecipes.forEach((r) => recipesList.value.push(r as Recipe));
+    recipesList.value = store.getSortedRecipeList();
     loading.value = false;
-  }, 1000);
+  }, 500);
 }
 
 onMounted(() => {
