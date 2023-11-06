@@ -1,6 +1,7 @@
 <template>
   <v-container>
     <v-autocomplete :items="difficulty" item-title="value" label="Schwierigkeit"/>
+    <v-text-field label="suche" v-model="store.searchQuery" />
   </v-container>
   <v-table class="elevation-8">
     <thead>
@@ -26,5 +27,6 @@ import { useDevStore } from "@/components/componenttest/devStore";
 defineProps({items: Array});
 const difficulty = ref(DifficultyToRecord);
 
+const store = useDevStore();
 </script>
 <style scoped></style>
