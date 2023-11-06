@@ -7,12 +7,14 @@
       <tr>
         <th><b>Name</b></th>
         <th><b>Schwierigkeit</b></th>
+        <th><b>Rating</b></th>
       </tr>
     </thead>
     <tbody>
       <tr v-for="item in items" :key="item.name">
         <td>{{ item.recipeName }}</td>
         <td>{{ DifficultyToDescription.get(item.difficulty) }}</td>
+        <td>{{ item.rating }}</td>
       </tr>
     </tbody></v-table
   >

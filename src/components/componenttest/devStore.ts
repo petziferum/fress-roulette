@@ -51,7 +51,8 @@ export const useDevStore = defineStore("devStore", {
             { menge: "4 Flaschen", name: "Vodka" },
           ])
           .withDifficulty(Difficulty.IMPOSSIBLE)
-          .withImageSrc(""),
+          .withImageSrc("")
+          .withRating(2.3),
         Recipe.createEmptyRecipe()
           .withId("55553")
           .withRecipeName("Stein Suppe")
@@ -73,7 +74,7 @@ export const useDevStore = defineStore("devStore", {
             { menge: "1", name: "Salad" },
           ])
           .withDifficulty(Difficulty.MEDIUM)
-          .withRating(5),
+          .withRating(3),
       ];
       this.recipeList = recipes;
     },
