@@ -3,7 +3,8 @@
     <v-autocomplete :items="difficulty" item-title="value" label="Schwierigkeit"/>
     <v-text-field label="suche" v-model="store.searchQuery" />
   </v-container>
-  <v-table class="elevation-8">
+  {{ store.loading }}
+  <v-table class="elevation-8" v-if="!store.loading" translate="yes">
     <thead>
       <tr>
         <th><b>Name</b></th>

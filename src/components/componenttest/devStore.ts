@@ -1,17 +1,20 @@
 import { defineStore } from "pinia";
 import Recipe from "@/components/Models/Recipe.class";
 import { Difficulty } from "@/components/Models/Difficulty";
+import { withDirectives } from "vue";
 
 export interface stateInterface {
   recipe: Recipe;
   recipeList: Recipe[];
   searchQuery: string;
+  loading: boolean;
 }
 export const useDevStore = defineStore("devStore", {
   state: () =>
     ({
       recipeList: [],
       searchQuery: "",
+      loading: false,
       recipe: Recipe.createEmptyRecipe()
         .withRecipeName("Test Recipe")
         .withIngredients([
@@ -45,7 +48,7 @@ export const useDevStore = defineStore("devStore", {
           .withImageSrc(""),
         Recipe.createEmptyRecipe()
           .withId("234523")
-          .withRecipeName("Taco al Naturerde")
+          .withRecipeName("Taco con Naturerde")
           .withIngredients([
             { menge: "3", name: "Oliven" },
             { menge: "4 Flaschen", name: "Vodka" },
@@ -75,41 +78,51 @@ export const useDevStore = defineStore("devStore", {
           ])
           .withDifficulty(Difficulty.MEDIUM)
           .withRating(3),
+        Recipe.createEmptyRecipe()
+          .withRecipeName("Cyanid Suppe")
+          .withRating(4.5)
+          .withIngredients([
+            { menge: "100g", name: "Cyanid" },
+            { menge: "100ml", name: "Suppe" },
+          ])
+          .withDifficulty(Difficulty.EASY),
+        Recipe.createEmptyRecipe()
+          .withRecipeName("Viagra Lasagne")
+          .withRating(2.5)
+          .withIngredients([
+            { menge: "500g", name: "Viagra" },
+            { menge: "100g", name: "Lasagne" },
+          ])
+          .withDifficulty(Difficulty.MEDIUM),
       ];
       this.recipeList = recipes;
     },
   },
   getters: {
     getSortedRecipeList(state): Recipe[] {
-      if (state.searchQuery.length > 0) {
-        return state.recipeList.filter(recipe => recipe.recipeName?.toLowerCase().includes(state.searchQuery.toLowerCase()))
-          .sort((a, b) => {
-            const nameA = a.recipeName?.toLowerCase();
-            const nameB = b.recipeName?.toLowerCase();
-            if (nameA.startsWith(state.searchQuery.toLowerCase()) && !nameB.startsWith(state.searchQuery.toLowerCase())) {
-              return nameA.localeCompare(nameB);
-            }
-            if (nameA.startsWith(state.searchQuery.toLowerCase())) {
-              return -1;
-            }
-            if (nameB.startsWith(state.searchQuery.toLowerCase())) {
-              return 1;
-            }
-            return nameA.localeCompare(nameB);
-          });
-      } else {
-        return state.recipeList.sort((a, b) => {
-          const nameA = a.recipeName.toLowerCase();
-          const nameB = b.recipeName.toLowerCase();
-          if (nameA < nameB) {
-            return -1;
-          }
-          if (nameA > nameB) {
-            return 1;
-          }
-          return 0;
-        });
-      }
+      state.loading = true;
+      const filteredList = state.recipeList.filter((recipe) =>
+        recipe.recipeName
+          ?.toLowerCase()
+          .includes(state.searchQuery.toLowerCase())
+      );
+
+      const sortedList = filteredList.sort((a, b) => {
+        const nameA = a.recipeName?.toLowerCase();
+        const nameB = b.recipeName?.toLowerCase();
+        const searchQueryLower = state.searchQuery.toLowerCase();
+
+        // Check if either name starts with the search query
+        const aStartsWithQuery = nameA.startsWith(searchQueryLower);
+        const bStartsWithQuery = nameB.startsWith(searchQueryLower);
+
+        // Sort by whether they start with the query and then alphabetically
+        if (aStartsWithQuery && !bStartsWithQuery) return -1;
+        if (!aStartsWithQuery && bStartsWithQuery) return 1;
+        return nameA.localeCompare(nameB);
+      });
+      setTimeout(() => (state.loading = false), 500);
+      return sortedList;
     },
     getDevData(state): any {
       return state.recipe;
