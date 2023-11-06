@@ -23,7 +23,7 @@ export default class Recipe {
   public time?: Date;
   public imageSrc?: string;
   public description?: string;
-  public recipeName?: string;
+  public recipeName: string = "";
   public type?: string;
   public ingredients?: Ingredient[];
   public recipeDescription: Description[] = [];
@@ -38,7 +38,7 @@ export default class Recipe {
     time?: Date,
     imageSrc?: string,
     description?: string,
-    recipeName?: string,
+    recipeName: string = "",
     type?: string,
     ingredients?: Ingredient[],
     recipeDescription: Description[] = [],
@@ -49,6 +49,7 @@ export default class Recipe {
   ) {
     this.id = id;
     this.createdBy = createdBy;
+    this.recipeName = recipeName;
     this.time = time;
     this.imageSrc = imageSrc;
     this.description = description;
