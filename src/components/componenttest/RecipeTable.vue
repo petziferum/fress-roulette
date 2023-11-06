@@ -20,7 +20,9 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { DifficultyToRecord, DifficultyToDescription } from "@/components/Models/Difficulty";
+import { useDevStore } from "@/components/componenttest/devStore";
 defineProps({items: Array});
 const difficulty = ref(DifficultyToRecord);
+
 </script>
 <style scoped></style>

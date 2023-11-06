@@ -10,7 +10,7 @@
     </v-row>
     <v-expansion-panels multiple v-model="panels">
       <wrapper-panel title="Recipe Table">
-        <recipe-table :items="store.recipeList" />
+        <recipe-table :items="store.getRecipeList" />
       </wrapper-panel>
       <wrapper-panel title="Esp Wled">
         <esp-wled />

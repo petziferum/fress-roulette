@@ -13,7 +13,6 @@ import ReceipeCard from "@/components/ReceipeDetailsCard.vue";
 
 const props = defineProps(["recipes"]);
 const emitValue = defineEmits(["update:recipe"]);
-
 </script>
 
 <style scoped>
