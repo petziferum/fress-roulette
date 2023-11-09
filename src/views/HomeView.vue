@@ -5,6 +5,7 @@
         <v-card>
           <v-card-title>HomeView</v-card-title>
           <v-card-subtitle>
+            <v-text-field label="Sche" variant="outlined" v-model="store.searchQuery"></v-text-field>
             <v-btn
               variant="tonal"
               elevation="8"
