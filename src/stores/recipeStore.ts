@@ -10,7 +10,6 @@ export const recipeStore = defineStore("recipeStore", () => {
   const viewRecipe = ref<Recipe | undefined>(undefined);
   const recipesLoading = ref(false);
   const searchQuery = ref("");
-  const loading = ref(false);
 
   function loadAllRecipes(): Promise<void> {
     recipesLoading.value = true;
