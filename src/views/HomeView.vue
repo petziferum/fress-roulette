@@ -5,7 +5,11 @@
         <v-card>
           <v-card-title>HomeView</v-card-title>
           <v-card-subtitle>
-            <v-text-field label="Sche" variant="outlined" v-model="store.searchQuery"></v-text-field>
+            <v-text-field
+              label="Sche"
+              variant="outlined"
+              v-model="store.searchQuery"
+            ></v-text-field>
             <v-btn
               variant="tonal"
               elevation="8"
@@ -40,13 +44,22 @@
     </v-row>
     <v-row>
       <v-card-text>
-      <v-col cols="12" md="4"> Rezepte mit Buchstaben: "{{ store.searchQuery }}" </v-col>
-      <v-col cols="12" md="8">{{ recipesList.length }} Rezepte geladen </v-col>
+        <v-col cols="12" md="4">
+          Rezepte mit Buchstaben: "{{ store.searchQuery }}"
+        </v-col>
+        <v-col cols="12" md="8"
+          >{{ recipesList.length }} Rezepte geladen
+        </v-col>
       </v-card-text>
     </v-row>
     <v-row no-gutters>
       <template v-if="store.getSortedRecipeList().length > 0">
-        <v-col cols="12" lg="6" v-for="r in store.getSortedRecipeList()" :key="r.id">
+        <v-col
+          cols="12"
+          lg="6"
+          v-for="r in store.getSortedRecipeList()"
+          :key="r.id"
+        >
           <RecipePreviewCard :recipe="r" />
         </v-col>
       </template>

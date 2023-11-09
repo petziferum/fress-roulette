@@ -1,6 +1,6 @@
 <template>
   <v-container fluid>
-    TheRecipeDetailsView - {{ id.id }}
+    TheRecipeDetailsView - ID: {{ recipe.id }}
     <v-row>
       <v-col>
         loading: {{ loading }} -<br />
