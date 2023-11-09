@@ -24,7 +24,7 @@
             "
             elevation="10"
           >
-            <v-toolbar>
+            <v-toolbar class="mb-4">
               <v-toolbar-items>
                 <v-btn icon @click="router.go(-1)">
                   <v-icon>mdi-arrow-left</v-icon>
@@ -33,10 +33,9 @@
                   <v-icon>mdi-delete</v-icon>
                 </v-btn>
               </v-toolbar-items>
+              <v-spacer />
+              <span class="text-h6">{{ recipe.recipeName }}</span>
             </v-toolbar>
-            <v-card-title>
-              {{ recipe.recipeName }}
-            </v-card-title>
             <v-row>
               <v-col cols="12" md="4">
                 <v-list>
