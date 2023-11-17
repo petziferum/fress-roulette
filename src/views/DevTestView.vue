@@ -9,6 +9,9 @@
       </v-col>
     </v-row>
     <v-expansion-panels multiple v-model="panels">
+      <wrapper-panel title="Foto Upload">
+        <the-photo-upload-component />
+      </wrapper-panel>
       <wrapper-panel title="Recipe Table">
         <recipe-table :items="store.getSortedRecipeList" />
       </wrapper-panel>
@@ -130,6 +133,7 @@ import EspCam from "@/components/componenttest/EspCam.vue";
 import EspWled from "@/components/componenttest/EspWled.vue";
 import WrapperPanel from "@/components/componenttest/WrapperPanel.vue";
 import RecipeTable from "@/components/componenttest/RecipeTable.vue";
+import ThePhotoUploadComponent from "@/components/componenttest/ThePhotoUploadComponent.vue";
 
 const dialog = ref(false);
 const panels = ref([0]);

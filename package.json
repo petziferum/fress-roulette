@@ -16,9 +16,9 @@
     "@mdi/font": "5.9.55",
     "pinia": "^2.0.28",
     "roboto-fontface": "*",
-    "vue": "^3.3.4",
-    "vue-router": "^4.1.6",
-    "vuetify": "^3.3.23",
+    "vue": "^3.3.8",
+    "vue-router": "^4.2.5",
+    "vuetify": "^3.4.2",
     "webfontloader": "^1.0.0"
   },
   "devDependencies": {

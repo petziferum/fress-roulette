@@ -24,11 +24,8 @@ import { recipeStore } from "@/stores/recipeStore";
 import { load } from "webfontloader";
 import RecipeRoulette from "@/components/componenttest/RecipeRoulette.vue";
 const store = recipeStore();
-
-const recipesList = computed(() => store.getAllRecipes);
-const loading = computed(
-  () => store.recipesLoading || store.getAllRecipes.length == 0
-);
+const loading = ref(false);
+const recipesList = computed(() => store.getSortedRecipeList());
 
 function fetchRecipes(): void {
   store.loadAllRecipes().then(() => console.log("promise fertig"));
