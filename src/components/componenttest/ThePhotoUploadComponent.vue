@@ -3,7 +3,6 @@
     <v-card>
       <v-card-title>PhotoUploadComponent</v-card-title>
       <v-card-text>
-        <!-- write a Form to upload images -->
         <v-form>
           <v-file-input
             v-model="file"
