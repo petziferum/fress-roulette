@@ -5,28 +5,79 @@
       <v-card-text>
         <v-form>
           <v-file-input
-            v-model="file"
+            ref="fileinput"
             :rules="fileRules"
             accept="image/*"
             label="File input"
             outlined
             dense
+            @change="onFileInput"
           ></v-file-input>
-          <v-btn @click="uploadFile">upload</v-btn>
+          <v-btn @click="uploadImage">upload</v-btn>
+          <v-alert v-if="uploadStatus" dense dismissible>
+            {{ uploadStatus.message }}
+          </v-alert>
         </v-form>
+      </v-card-text>
+      <v-card-text v-if="fileinput">
+        <div height="100px">
+          <v-img
+            style="border:1px solid grey;"
+            aspect-ratio="1"
+            max-width="100px"
+            contain
+            :src="imgsrc"
+          ></v-img>
+        </div>
       </v-card-text>
     </v-card>
   </v-container>
 </template>
 <script setup lang="ts">
-import { ref } from "vue";
-const file = ref(null);
-const fileRules = [
-  (v) => !!v || "File is required"
-];
-function uploadFile() {
-  console.log("uploadFile");
-  console.log(file.value);
+interface UploadStatus {
+  type: string;
+  message: string;
 }
+
+import { ref } from "vue";
+import { getStorage, ref as fireRef, uploadBytes } from "firebase/storage";
+const imagefile = ref<Blob>();
+const fileRules = [(v) => !!v || "File is required"];
+const fileinput = ref();
+const storage = getStorage();
+const uploadStatus = ref<UploadStatus | null>(null);
+const loading = ref(false);
+const imgsrc = ref("");
+
+const onFileInput = (event) => {
+  const input = fileinput.value;
+  if (input && input.files && input.files.length > 0) {
+    const file = input.files[0];
+    const fileReader = new FileReader();
+    fileReader.onload = (e) => {
+      imgsrc.value = e.target?.result as string;
+    };
+    fileReader.readAsDataURL(file);
+  }
+};
+const uploadImage = async () => {
+  const file = fileinput.value.files[0];
+  const storageRef = fireRef(storage, file.name);
+  if (!file) {
+    uploadStatus.value = { type: "error", message: "No file selected!" };
+    return;
+  }
+  loading.value = true;
+  try {
+    await uploadBytes(storageRef, file).then((snapshot) => {
+      console.log("Uploaded a blob or file!", snapshot);
+    });
+  } catch (error) {
+    console.log("error: ", error);
+    uploadStatus.value = { type: "error", message: error.message };
+  } finally {
+    loading.value = false;
+  }
+};
 </script>
 <style scoped></style>
