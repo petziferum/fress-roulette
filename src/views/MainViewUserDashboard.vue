@@ -3,12 +3,13 @@
     <v-toolbar style="text-align: center">
       <v-toolbar-title>User Dashboard</v-toolbar-title>
       <v-toolbar-items>
+        <v-btn variant="outlined" size="small" @click="logOut">logout</v-btn>
         <v-spacer />
         <add-recipe-dialog :user-id="user.uid" />
       </v-toolbar-items>
     </v-toolbar>
     <v-row class="mt-12" justify="center">
-      <v-col cols="6">
+      <v-col cols="12">
         <v-card elevation="6" color="secondary">
           <v-card-subtitle class="pa-5"
             >{{ user.displayName }} - Eingelogged: {{ loggedIn }}
@@ -22,12 +23,19 @@
           <v-card-subtitle v-if="alert">{{ alertMessage }}</v-card-subtitle>
           <v-row>
             <v-col cols="4">
-              <v-list>
-                <v-list-item>
-                  <v-list-item-title>User Login</v-list-item-title>
-                  <v-list-item-subtitle>passwort eingeben</v-list-item-subtitle>
-                </v-list-item>
-              </v-list>
+              <template v-if="user">
+                <v-btn @click="logOut">logout</v-btn>
+              </template>
+              <template v-else>
+                <v-list>
+                  <v-list-item>
+                    <v-list-item-title>User Login</v-list-item-title>
+                    <v-list-item-subtitle
+                    >passwort eingeben</v-list-item-subtitle
+                    >
+                  </v-list-item>
+                </v-list>
+              </template>
             </v-col>
             <v-col cols="8">
               <div v-if="!loggedIn" style="display: flex; flex-direction: row">

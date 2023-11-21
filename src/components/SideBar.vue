@@ -1,5 +1,5 @@
 <template>
-  <VNavigationDrawer v-model="drawerState" temporary rail order="2">
+  <VNavigationDrawer v-model="drawerState" temporary order="2">
     <v-list>
       <v-list-item
         link
