@@ -4,7 +4,7 @@
     <side-bar></side-bar>
     <v-main>
       <v-row justify="center">
-        <v-col cols="12">
+        <v-col cols="12" lg="8">
           <router-view />
         </v-col>
       </v-row>

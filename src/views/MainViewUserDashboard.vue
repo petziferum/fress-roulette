@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid class="pa-0">
+  <v-container fluid class="pa-0 mx-4">
     <v-toolbar style="text-align: center">
       <v-toolbar-title>User Dashboard</v-toolbar-title>
       <v-toolbar-items>
@@ -24,7 +24,7 @@
           <v-row>
             <v-col cols="4">
               <template v-if="user">
-                <v-btn @click="logOut">logout</v-btn>
+                <v-btn @click="logOut" variant="text">logout</v-btn>
               </template>
               <template v-else>
                 <v-list>
