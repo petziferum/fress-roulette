@@ -1,5 +1,4 @@
 import { defineStore } from "pinia";
-import { onBeforeMount, ref } from "vue";
 import { useDisplay } from "vuetify";
 
 export const useAppStore = defineStore("app", () => {

@@ -8,7 +8,7 @@
   >
     <v-row no-gutters>
       <v-col cols="4">
-        <v-img cover class="card-image" :src="image" />
+        <v-img cover class="card-image" :src="recipe.imageSrc" />
       </v-col>
       <v-col cols="8">
         <v-card-item>

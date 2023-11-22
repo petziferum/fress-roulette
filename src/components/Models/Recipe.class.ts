@@ -1,5 +1,6 @@
-import * as string_decoder from "string_decoder";
+
 import type { Difficulty } from "@/components/Models/Difficulty";
+import { userStore } from "@/stores/userStore";
 
 export interface Description {
   nr: number;
@@ -10,6 +11,11 @@ export interface Description {
 export interface Ingredient {
   menge: string;
   name: string;
+}
+
+export interface Meta {
+  changed: Date;
+  changedBy: CreatedBy;
 }
 
 export interface CreatedBy {
@@ -31,6 +37,7 @@ export default class Recipe {
   public tags?: string[];
   public rating?: number = 3.8;
   public difficulty?: Difficulty;
+  public meta?: Meta;
 
   constructor(
     id: string,
@@ -121,6 +128,11 @@ export default class Recipe {
     return this;
   }
 
+  withMeta(value: Meta): Recipe {
+    this.meta = value;
+    return this;
+  }
+
   withDifficulty(value: Difficulty): Recipe {
     this.difficulty = value;
     return this;
@@ -168,11 +180,24 @@ export const recipeConverter = {
   },
   fromFirestore: (snapshot, options) => {
     const recipe = snapshot.data(options);
+    let updated = false;
     let cb: CreatedBy;
-    if (typeof recipe.createdBy === typeof "string") {
+    if (typeof recipe.createdBy === typeof "string" || !recipe.createdBy) {
       console.log("createdBy ist nur n string yo", recipe.recipeName);
+      updated = true;
       cb = { id: recipe.createdBy, name: "" };
     } else cb = recipe.createdBy;
+
+    recipe.ingredients.forEach((el, index) => {
+      if (typeof el === typeof "string") {
+        updated = true;
+        recipe.ingredients[index] = { menge: "", name: el };
+      }
+    });
+
+    if (updated) {
+      recipe.meta = { changed: new Date(), changedBy: userStore.getStoreUser() };
+    }
     return Recipe.createEmptyRecipe()
       .withId(snapshot.id)
       .withCreatedBy(cb)
@@ -184,6 +209,9 @@ export const recipeConverter = {
       .withDescription(recipe.description)
       .withRecipeDescription(recipe.recipeDescription)
       .withTags(recipe.tags)
-      .withRating(3.8);
+      .withRating(3.8)
+      .withActive(recipe.active)
+      .withDifficulty(recipe.difficulty)
+      .withMeta(recipe.meta);
   },
 };
