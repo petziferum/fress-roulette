@@ -180,6 +180,7 @@ export const recipeConverter = {
   },
   fromFirestore: (snapshot, options) => {
     const recipe = snapshot.data(options);
+    const userState = userStore();
     let updated = false;
     let cb: CreatedBy;
     if (typeof recipe.createdBy === typeof "string" || !recipe.createdBy) {
@@ -196,7 +197,7 @@ export const recipeConverter = {
     });
 
     if (updated) {
-      recipe.meta = { changed: new Date(), changedBy: userStore.getStoreUser() };
+      recipe.meta = { changed: new Date(), changedBy: userState.getStoreUser() };
     }
     return Recipe.createEmptyRecipe()
       .withId(snapshot.id)

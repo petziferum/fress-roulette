@@ -16,8 +16,8 @@ export interface stateInterface {
 export const userStore = defineStore("userStore", () => {
   const userFirestoreData = ref({});
 
-  function getStoreUser(state): any {
-    return state.userFirestoreData;
+  function getStoreUser(): any {
+    return userFirestoreData;
   }
 
   return { userFirestoreData, getStoreUser };
