@@ -9,6 +9,9 @@
       </v-col>
     </v-row>
     <v-expansion-panels multiple v-model="panels">
+      <wrapper-panel title="Firestore löschen">
+        <v-btn>löschen</v-btn>
+      </wrapper-panel>
       <wrapper-panel title="Foto Upload">
         <the-photo-upload-component />
       </wrapper-panel>
@@ -151,6 +154,9 @@ const closePanels = () => {
 };
 
 onBeforeMount(() => store.initRecipes());
+
+const db = admin.firestore();
+
 </script>
 
 <style scoped></style>

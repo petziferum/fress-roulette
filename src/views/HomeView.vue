@@ -102,11 +102,6 @@ const filteredRecipes = computed(() => {
   }
 });
 
-function removeRecipes(): void {
-  recipesList.value = [];
-  loading.value = false;
-}
-
 function fetchRecipes(): void {
   console.clear();
   recipesList.value = [];

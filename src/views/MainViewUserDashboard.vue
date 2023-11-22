@@ -159,6 +159,32 @@ function editRecipe(id: string): void {
   router.push(editRoute.value + id);
 }
 
+function exportToJsonFile() {
+  if (!items || !items.length) {
+    console.error('No items provided for export.');
+    return;
+  }
+
+  try {
+    const jsonString = JSON.stringify(items, null, 2); // Pretty print the JSON
+    const blob = new Blob([jsonString], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+
+    // Create a link and trigger the download
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', 'exportedData.json');
+    document.body.appendChild(link);
+    link.click();
+
+    // Cleanup
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  } catch (error) {
+    console.error('Error exporting to JSON:', error);
+  }
+}
+
 onBeforeMount(() => {
   getUserRecipe().then((recipes) => (userRecipes.value = recipes));
 });
