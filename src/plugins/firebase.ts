@@ -38,8 +38,8 @@ const fireBucket = getStorage(firebaseApp);
 const fireAuth = getAuth(firebaseApp);
 const db = getFirestore(firebaseApp);
 const getCollection = async (name: string) => {
-  const docRef = query(collection(db, name)); // hier stand recipes
-  return await getDocs(docRef);
+  const docRef = query(collection(db, name));
+  return getDocs(docRef);
 };
 
 export function logOut() {
@@ -109,7 +109,7 @@ export const getUserFirestoreData = async (userId: string) => {
 };
 
 export async function getUserRecipe(): Promise<Recipe[]> {
-  const COLLECTION_NAME = "test";
+  const COLLECTION_NAME = "reipes";
   const userRecipes: Recipe[] = [];
   if (user.value) {
     const userid = user.value.uid;
@@ -122,6 +122,7 @@ export async function getUserRecipe(): Promise<Recipe[]> {
 
     const docSnap = await getDocs(q);
     docSnap.forEach((doc) => {
+      console.log("rezepte:", doc);
       if (doc.exists()) {
         // Convert to Recipe object
         const r = doc.data();
