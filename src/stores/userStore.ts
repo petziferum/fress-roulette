@@ -15,10 +15,13 @@ export interface stateInterface {
 
 export const userStore = defineStore("userStore", () => {
   const userFirestoreData = ref({});
+  const user = ref({});
+  const userLoading = ref(false);
+  const userError = ref("");
 
   function getStoreUser(): any {
     return userFirestoreData;
   }
 
-  return { userFirestoreData, getStoreUser };
+  return { userFirestoreData, userStore, getStoreUser };
 });

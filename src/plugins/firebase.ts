@@ -65,6 +65,7 @@ export const user = computed(() => {
 });
 
 export const registerWithGoogle = () => {
+  const userState = userStore();
   const provider = new GoogleAuthProvider();
   const auth = getAuth();
   signInWithPopup(auth, provider)
@@ -75,12 +76,14 @@ export const registerWithGoogle = () => {
     })
     .catch((error) => {
       console.error("Fehler", error.message);
+      userState.userError = error.message;
     });
 };
 
 export const getUserFirestoreData = async (userId: string) => {
-  console.info("getUserFirestoreData", userId);
   const userState = userStore();
+  console.info("getUserFirestoreData", userId);
+
   const userStoreRef = doc(db, "users", userId);
   const userDocSnap = await getDoc(userStoreRef);
   if (userDocSnap.exists()) {
