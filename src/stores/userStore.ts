@@ -23,5 +23,5 @@ export const userStore = defineStore("userStore", () => {
     return userFirestoreData;
   }
 
-  return { userFirestoreData, userStore, getStoreUser };
+  return { userFirestoreData, userError , getStoreUser };
 });

@@ -12,7 +12,8 @@
       <v-col cols="12">
         <v-card elevation="6" color="secondary">
           <v-card-subtitle class="pa-5"
-            >{{ user.displayName }} - Eingelogged: {{ loggedIn }}
+            >{{ user.displayName }} - Eingelogged: {{ loggedIn }}<br>
+            <p>userError: {{ userState.userError }}</p>
             <v-btn @click="checkIfTextfieldIsValid" variant="tonal"
               >Validate Textfield</v-btn
             >
