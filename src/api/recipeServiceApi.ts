@@ -40,7 +40,7 @@ export default class RecipeServiceApi {
     }
     const id = slugifyString(recipe.recipeName.substring(0, 128));
     try {
-      const ref = doc(db, DB_COLLECTION, id).withConverter(recipeConverter);
+      const ref = doc(db, COLLECTION_NAME, id).withConverter(recipeConverter);
       return await setDoc(ref, recipe).then(() => {
         return ref.id;
       });
@@ -52,7 +52,7 @@ export default class RecipeServiceApi {
   public static async saveNewRecipe(recipe: Recipe): Promise<string> {
     //const recipeDbObject = recipeConverter.toFirestore(recipe);
     try {
-      const ref = doc(collection(db, DB_COLLECTION)).withConverter(
+      const ref = doc(collection(db, COLLECTION_NAME)).withConverter(
         recipeConverter
       );
       return await setDoc(ref, recipe).then(() => {

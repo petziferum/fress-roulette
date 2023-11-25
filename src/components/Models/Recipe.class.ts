@@ -184,7 +184,6 @@ export const recipeConverter = {
     let updated = false;
     let cb: CreatedBy;
     if (typeof recipe.createdBy === typeof "string" || !recipe.createdBy) {
-      console.log("createdBy ist nur n string yo", recipe.recipeName);
       updated = true;
       cb = { id: recipe.createdBy, name: "" };
     } else cb = recipe.createdBy;

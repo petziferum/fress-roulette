@@ -1,15 +1,8 @@
 <template>
-  <v-container fluid>
-    TheRecipeDetailsView - ID: {{ recipe.id }}
-    <v-row>
-      <v-col>
-        loading: {{ loading }} -<br />
-        <v-btn @click="loading = !loading">loading</v-btn>
-      </v-col>
-    </v-row>
-    <v-row justify="center">
+  <v-container>
+    <v-row justify="center" class="mt-8">
       <template v-if="loading">
-        <v-col>
+        <v-col class="text-center">
           <v-icon size="x-large">mdi-loading mdi-spin</v-icon>
         </v-col>
       </template>
@@ -26,7 +19,7 @@
           >
             <v-toolbar class="mb-4">
               <v-toolbar-items>
-                <v-btn icon @click="router.go(-1)">
+                <v-btn icon @click="goBack">
                   <v-icon>mdi-arrow-left</v-icon>
                 </v-btn>
                 <v-btn icon>
@@ -34,7 +27,7 @@
                 </v-btn>
               </v-toolbar-items>
               <v-spacer />
-              <span class="text-h6">{{ recipe.recipeName }}</span>
+              <span class="text-h6 mx-4">{{ recipe.recipeName }}</span>
             </v-toolbar>
             <v-row>
               <v-col cols="12" md="4">
@@ -88,7 +81,7 @@
 </template>
 <script setup lang="ts">
 import { recipeStore } from "@/stores/recipeStore";
-import { computed, onBeforeMount, ref } from "vue";
+import { computed, nextTick, onBeforeMount, ref } from "vue";
 import { useRoute } from "vue-router";
 import Recipe from "@/components/Models/Recipe.class";
 import router from "@/router";
@@ -113,6 +106,10 @@ onBeforeMount(function () {
   store.loadRecipeById(id.value);
   console.log("route params", id.value);
 });
+
+function goBack() {
+  router.push({ name: "home" });
+}
 
 function cancel() {
   editItemNumber.value = null;

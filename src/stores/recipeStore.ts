@@ -23,19 +23,17 @@ export const recipeStore = defineStore("recipeStore", () => {
   }
 
   function loadRecipeById(id) {
-    console.log("foo", id);
     recipesLoading.value = true;
     RecipeServiceApi.getSingleRecipe(id)
       .then((res) => {
         if (res) {
-          console.log("response", res);
           viewRecipe.value = res;
         }
       })
       .catch((err) => {
-        console.log("error", err);
+        console.error("Es ist gerade ein Fehler aufgetreten:\n", err);
       })
-      .finally(() => (recipesLoading.value = false));
+      .finally(() => (setTimeout(() => recipesLoading.value = false, 1000)));
   }
 
   function getSortedRecipeList(): Recipe[] {

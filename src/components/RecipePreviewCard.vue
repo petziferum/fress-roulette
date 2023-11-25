@@ -4,7 +4,7 @@
     rounded="xl"
     class="base-card"
     link
-    :to="'/recipe/view/' + recipe.id"
+    @click="$emit('viewRecipe')"
   >
     <v-row no-gutters>
       <v-col cols="4">

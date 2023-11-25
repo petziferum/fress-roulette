@@ -60,7 +60,7 @@
           v-for="r in store.getSortedRecipeList()"
           :key="r.id"
         >
-          <RecipePreviewCard :recipe="r" />
+          <RecipePreviewCard @viewRecipe="routeToRecipe(r)" :recipe="r" />
         </v-col>
       </template>
       <template v-else>
@@ -85,12 +85,18 @@ import Recipe from "@/components/Models/Recipe.class";
 import { computed, onMounted, ref } from "vue";
 import { recipeStore } from "@/stores/recipeStore";
 import RecipePreviewCard from "@/components/RecipePreviewCard.vue";
+import router from "@/router";
 
 const store = recipeStore();
 const loading = ref(false);
 const recipesList = ref<Recipe[]>([]);
 const letters = ref("ABCDEFGHIJKLMNOPQRSTUVWXYZ".split(""));
 const selectedLetter = ref("");
+
+function routeToRecipe(recipe: Recipe): void {
+  console.log("routeToRecipe", recipe.id);
+  router.push({ name: "viewRecipe", params: { id: recipe.id } });
+}
 
 const filteredRecipes = computed(() => {
   if (selectedLetter.value) {

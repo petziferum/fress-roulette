@@ -15,20 +15,17 @@
         class="pa-10 ma-10"
         height="150px"
         style="cursor: pointer"
-        @click="$router.push('/')"
+        @click="router.push({ name: 'home' })"
       />
     </v-sheet>
     <v-spacer />
     <template v-slot:extension>
-    <v-toolbar>
-      <v-toolbar-items>
-        <v-btn block @click="$router.push('/')">
-          Home
-        </v-btn>
-      </v-toolbar-items>
-    </v-toolbar>
+      <v-toolbar>
+        <v-toolbar-items>
+          <v-btn @click="$router.push({ name: 'home'})"> Home </v-btn>
+        </v-toolbar-items>
+      </v-toolbar>
     </template>
-
   </v-app-bar>
 </template>
 
@@ -36,6 +33,7 @@
 import { computed, onMounted, ref } from "vue";
 import { useAppStore } from "@/stores/appStore";
 import { useDisplay } from "vuetify";
+import router from "@/router";
 
 const barImg = "/src/assets/whisky.jpg";
 const titleImg = "/src/assets/TITLE.png";

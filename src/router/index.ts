@@ -1,14 +1,16 @@
 import { createRouter, createWebHistory } from "vue-router";
 import UserDashboard from "@/views/MainViewUserDashboard.vue";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+import HomeView from "@/views/HomeView.vue";
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHistory(),
+
   routes: [
     {
       path: "/",
       name: "home",
-      component: () => import("@/views/HomeView.vue"),
+      component: HomeView,
       meta: {
         requiresAuth: false,
       },
@@ -93,6 +95,7 @@ const getCurrentUser = () => {
 };
 
 router.beforeEach(async (to, from, next) => {
+  console.log("beforeEach", to);
   if (to.matched.some((record) => record.meta.requiresAuth)) {
     if (await getCurrentUser()) {
       console.info("jupp kannst rein...");
