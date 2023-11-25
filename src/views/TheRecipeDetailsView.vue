@@ -93,7 +93,7 @@ import { useRoute } from "vue-router";
 import Recipe from "@/components/Models/Recipe.class";
 import router from "@/router";
 
-const id = defineProps(["id"]);
+const id = ref("");
 const editItemNumber = ref(null);
 const edit = ref(true);
 const editItemText = ref("");
@@ -109,8 +109,9 @@ const loading = computed({
 });
 onBeforeMount(function () {
   const route = useRoute();
-  store.loadRecipeById(route.params.name);
-  console.log("route params", route.params.name);
+  id.value = route.params.id as string;
+  store.loadRecipeById(id.value);
+  console.log("route params", id.value);
 });
 
 function cancel() {

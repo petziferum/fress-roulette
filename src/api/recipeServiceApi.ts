@@ -3,21 +3,18 @@ import { collection, doc, getDocs, getDoc, setDoc } from "firebase/firestore";
 import { db } from "@/plugins/firebase";
 import { recipeConverter } from "@/components/Models/Recipe.class";
 import { slugifyString } from "@/common/scripts";
-
-const DB_COLLECTION = "test";
+import { COLLECTION_NAME } from "@/plugins/firebase";
 
 export default class RecipeServiceApi {
   public static async updateRecipe(recipe: Recipe): Promise<Recipe> {
-    const recipeRef = doc(db, DB_COLLECTION, recipe.id!).withConverter(
+    const recipeRef = doc(db, COLLECTION_NAME, recipe.id!).withConverter(
       recipeConverter
     );
     return await setDoc(recipeRef, recipe).then(() => recipe);
   }
 
-  public static async getSingleRecipe(
-    recipeId: string
-  ): Promise<Recipe | undefined> {
-    const docRef = doc(db, DB_COLLECTION, recipeId).withConverter(
+  public static async getSingleRecipe(recipeId: string): Promise<Recipe | undefined> {
+    const docRef = doc(db, COLLECTION_NAME, recipeId).withConverter(
       recipeConverter
     );
     const docSnap = await getDoc(docRef);

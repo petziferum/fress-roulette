@@ -32,7 +32,10 @@ export const recipeStore = defineStore("recipeStore", () => {
           viewRecipe.value = res;
         }
       })
-      .then(() => (recipesLoading.value = false));
+      .catch((err) => {
+        console.log("error", err);
+      })
+      .finally(() => (recipesLoading.value = false));
   }
 
   function getSortedRecipeList(): Recipe[] {

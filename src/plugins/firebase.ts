@@ -20,7 +20,7 @@ import router from "@/router";
 import { computed } from "vue";
 import Recipe, { recipeConverter } from "@/components/Models/Recipe.class";
 import { userStore } from "@/stores/userStore";
-
+export const COLLECTION_NAME = "recipes";
 const firebaseConfig = {
   apiKey: "AIzaSyCPt03Bp5UBVXn72EVSWNAhvt4u0NI2m5M",
   authDomain: "recipes-petzi.firebaseapp.com",
@@ -109,7 +109,6 @@ export const getUserFirestoreData = async (userId: string) => {
 };
 
 export async function getUserRecipe(): Promise<Recipe[]> {
-  const COLLECTION_NAME = "reipes";
   const userRecipes: Recipe[] = [];
   if (user.value) {
     const userid = user.value.uid;
