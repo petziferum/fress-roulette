@@ -21,7 +21,7 @@
 
 <script lang="ts" setup>
 import { onBeforeMount, ref } from "vue";
-import SideBar from "@/components/SideBar.vue";
+import SideBar from "@/components/AppDrawer.vue";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import AppHeader from "@/components/AppHeader.vue";
 

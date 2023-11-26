@@ -5,11 +5,10 @@ import HomeView from "@/views/HomeView.vue";
 
 const router = createRouter({
   history: createWebHistory(),
-
   routes: [
     {
       path: "/",
-      name: "home",
+      name: "Home",
       component: HomeView,
       meta: {
         requiresAuth: false,
@@ -27,6 +26,17 @@ const router = createRouter({
       path: "/login",
       name: "login",
       component: () => import("@/views/LoginView.vue"),
+      beforeEnter: (to, from, next) => {
+        getCurrentUser()
+          .then((user) => {
+            if (user) {
+              next("/user/dashboard");
+            } else {
+              next();
+            }
+          })
+          .catch((error) => console.log(error));
+      },
     },
     {
       path: "/register",
@@ -78,6 +88,12 @@ const router = createRouter({
         requiresAuth: true,
       },
     },
+    {
+      path: "/logout",
+      name: "logout",
+      component: () => import("@/views/MainViewUserDashboard.vue"),
+    },
+
   ],
 });
 
@@ -95,15 +111,16 @@ const getCurrentUser = () => {
 };
 
 router.beforeEach(async (to, from, next) => {
-  console.log("beforeEach", to);
   if (to.matched.some((record) => record.meta.requiresAuth)) {
-    if (await getCurrentUser()) {
-      console.info("jupp kannst rein...");
-      next();
-    } else {
-      alert("Nicht angemeldet");
-      next("/login");
-    }
+    getCurrentUser().then((user) => {
+      if (user) {
+        console.info("jupp kannst rein...");
+        next();
+      } else {
+        alert("Nicht angemeldet");
+        next("/login");
+      }
+    });
   } else next();
 });
 

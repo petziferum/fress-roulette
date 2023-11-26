@@ -1,9 +1,13 @@
-import { createApp } from "vue";
+import { createApp, onBeforeMount } from "vue";
 import App from "./App.vue";
 import router from "./router";
 import vuetify from "./plugins/vuetify";
 import { loadFonts } from "./plugins/webfontloader";
 import { createPinia } from "pinia";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { userStore } from "@/stores/userStore";
+import firebase from "firebase/compat";
+import User = firebase.User;
 
 const pinia = createPinia();
 loadFonts();
@@ -22,4 +26,15 @@ app.config.errorHandler = (err, vm, info) => {
 app.use(router);
 app.use(pinia);
 app.use(vuetify);
+app.runWithContext(() => {
+  const userState = userStore();
+  onAuthStateChanged(getAuth(), (user) => {
+    if (user) {
+      console.log("User is logged in", user.displayName);
+      userState.userFirestoreData = user;
+    } else {
+      console.log("User is logged out");
+    }
+  });
+});
 app.mount("#app");

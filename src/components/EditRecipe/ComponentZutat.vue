@@ -111,7 +111,6 @@ const recipe = computed({
 });
 
 async function addIngredient(): Promise<void> {
-  console.clear();
   const { valid } = await (zutatForm.value || VForm).validate();
   console.log("valid", valid);
   if (valid) {
