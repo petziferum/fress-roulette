@@ -6,8 +6,6 @@ import { loadFonts } from "./plugins/webfontloader";
 import { createPinia } from "pinia";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { userStore } from "@/stores/userStore";
-import firebase from "firebase/compat";
-import User = firebase.User;
 
 const pinia = createPinia();
 loadFonts();

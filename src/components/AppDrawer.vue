@@ -1,5 +1,5 @@
 <template>
-  <VNavigationDrawer v-model="drawerState" temporary order="2">
+  <v-navigation-drawer v-model="drawerState" :temporary="true" order="2">
     <v-list>
       <v-list-item
         link
@@ -10,7 +10,7 @@
         :to="item.path"
       />
     </v-list>
-  </VNavigationDrawer>
+  </v-navigation-drawer>
 </template>
 
 <script setup>

@@ -22,7 +22,7 @@
     <template v-slot:extension>
       <v-toolbar>
         <v-toolbar-items>
-          <v-btn @click="$router.push({ name: 'Home'})"> Home </v-btn>
+          <v-btn @click="$router.push({ name: 'Home' })"> Home </v-btn>
         </v-toolbar-items>
       </v-toolbar>
     </template>

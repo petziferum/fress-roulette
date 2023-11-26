@@ -93,7 +93,6 @@ const router = createRouter({
       name: "logout",
       component: () => import("@/views/MainViewUserDashboard.vue"),
     },
-
   ],
 });
 
