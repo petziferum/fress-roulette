@@ -32,7 +32,7 @@
             <v-row>
               <v-col cols="12" md="4">
                 <v-list>
-                  <v-list-item v-for="z in recipe.ingredients" :key="z.nr">
+                  <v-list-item v-for="z in recipe.ingredients" :key="z.name">
                     <v-list-item-title>
                       <span v-if="z.menge">{{ z.menge }} - </span>
                       <span v-else> - - </span>{{ z.name }}
