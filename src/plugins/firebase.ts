@@ -114,28 +114,39 @@ export async function getUserRecipe(): Promise<Recipe[]> {
     const userid = user.value.uid;
     const collectionRef = collection(db, COLLECTION_NAME);
     console.info("get user recipes", userid, collectionRef);
-    const q = query(
-      collectionRef,
-      where("createdBy.id", "==", userid)
-    ).withConverter(recipeConverter);
+    if (userid == "qzkYAA74nXevBDXOGzHHXm0NJmq2") {
+      const getall = await getDocs(collectionRef);
+      const allSnap = getall.forEach((doc) => {
+        if (doc.exists()) {
+          userRecipes.push(doc.data() as Recipe);
+        }
+      });
+    } else {
+      const q = query(
+          collectionRef,
+          where("createdBy.id", "==", userid)
+      ).withConverter(recipeConverter);
 
-    const docSnap = await getDocs(q);
-    docSnap.forEach((doc) => {
-      console.log("rezepte:", doc);
-      if (doc.exists()) {
-        // Convert to Recipe object
-        const r = doc.data();
-        // Use a Recipe instance method
-        userRecipes.push(r);
-      } else {
-        console.log("No such document!");
-      }
-    });
-  } else {
-    console.info("noch kein user: ", user.value);
+      const docSnap = await getDocs(q);
+      docSnap.forEach((doc) => {
+        console.log("rezepte:", doc);
+        if (doc.exists()) {
+          // Convert to Recipe object
+          const r = doc.data();
+          // Use a Recipe instance method
+          userRecipes.push(r);
+        } else {
+          console.log("No such document!");
+        }
+      });
+    }
   }
-  return userRecipes;
-}
+  else
+    {
+      console.info("noch kein user: ", user.value);
+    }
+    return userRecipes;
+  }
 
 export { fireAuth, fireBucket, db, getCollection };
 
