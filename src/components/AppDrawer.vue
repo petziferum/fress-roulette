@@ -14,21 +14,24 @@
 </template>
 
 <script setup>
-import { computed, onBeforeMount, ref } from "vue";
+import { computed, onBeforeMount, reactive, ref, watch } from "vue";
 import { useAppStore } from "@/stores/appStore";
 import { userStore } from "@/stores/userStore";
 
 const appStore = useAppStore();
 const userState = userStore();
+const user = ref(userState.getStoreUser());
 const drawerState = computed({
   get: () => appStore.drawer,
   set: (value) => (appStore.drawer = value),
 });
-
+watch(user, (newValue, oldValue) => {
+  console.log("watch user", newValue, oldValue);
+});
 const listItems = computed(() => {
-  console.log("storeuser drawer", userState.getStoreUser());
+  console.log("storeuser drawer", user.value);
   return appStore.getAllDrawerItems().filter((item) => {
-    return (userState.getStoreUser() != null) === item.show;
+    return (user.value != null) === item.show;
   });
 });
 </script>
