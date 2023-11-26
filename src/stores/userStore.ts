@@ -19,9 +19,5 @@ export const userStore = defineStore("userStore", () => {
   const userLoading = ref(false);
   const userError = ref("");
 
-  function getStoreUser(): any {
-    return userFirestoreData.value;
-  }
-
-  return { userFirestoreData, userError , getStoreUser };
+  return { userFirestoreData, userError };
 });

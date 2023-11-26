@@ -27,8 +27,12 @@ app.use(vuetify);
 app.runWithContext(() => {
   const userState = userStore();
   onAuthStateChanged(getAuth(), (user) => {
+    console.log("MAIN.TS: storeUser: ", userState.userFirestoreData.value);
     if (user) {
       console.log("User is logged in", user.displayName);
+      if(userState.userFirestoreData.value === null) {
+        userState.userFirestoreData.value = {};
+      }
       userState.userFirestoreData.value = user;
     } else {
       console.log("User is logged out");

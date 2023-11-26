@@ -9,6 +9,9 @@
         :title="item.title"
         :to="item.path"
       />
+      <v-list-item>
+        {{ user }}
+      </v-list-item>
     </v-list>
   </v-navigation-drawer>
 </template>
@@ -20,18 +23,18 @@ import { userStore } from "@/stores/userStore";
 
 const appStore = useAppStore();
 const userState = userStore();
-const user = ref(userState.getStoreUser());
+const user = ref(userState.userFirestoreData);
 const drawerState = computed({
   get: () => appStore.drawer,
   set: (value) => (appStore.drawer = value),
 });
 watch(user, (newValue, oldValue) => {
-  console.log("watch user", newValue, oldValue);
+  console.log("watch user", user, newValue, oldValue);
 });
 const listItems = computed(() => {
   console.log("storeuser drawer", user.value);
   return appStore.getAllDrawerItems().filter((item) => {
-    return (user.value != null) === item.show;
+    return (userState.userFirestoreData != null) === item.show;
   });
 });
 </script>
