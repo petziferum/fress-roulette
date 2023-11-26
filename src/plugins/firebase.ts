@@ -115,7 +115,9 @@ export async function getUserRecipe(): Promise<Recipe[]> {
     const collectionRef = collection(db, COLLECTION_NAME);
     console.info("get user recipes", userid, collectionRef);
     if (userid == "qzkYAA74nXevBDXOGzHHXm0NJmq2") {
-      const getall = await getDocs(collectionRef);
+      const getall = await getDocs(
+        collectionRef.withConverter(recipeConverter)
+      );
       const allSnap = getall.forEach((doc) => {
         if (doc.exists()) {
           userRecipes.push(doc.data() as Recipe);
