@@ -108,7 +108,7 @@ onBeforeMount(function () {
 });
 
 function goBack() {
-  router.push({ name: "home" });
+  router.push("/");
 }
 
 function cancel() {

@@ -31,7 +31,7 @@ app.runWithContext(() => {
   onAuthStateChanged(getAuth(), (user) => {
     if (user) {
       console.log("User is logged in", user.displayName);
-      userState.userFirestoreData = user;
+      userState.userFirestoreData.value = user;
     } else {
       console.log("User is logged out");
     }

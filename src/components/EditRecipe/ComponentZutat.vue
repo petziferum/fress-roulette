@@ -92,8 +92,8 @@
 </template>
 
 <script setup lang="ts">
-import {computed, ref} from "vue";
-import {VForm} from "vuetify/components";
+import { computed, ref } from "vue";
+import { VForm } from "vuetify/components";
 
 const props = defineProps(["modelValue"]);
 const emitValue = defineEmits(["update:modelValue", "add"]);
@@ -131,7 +131,6 @@ async function addIngredient(): Promise<void> {
     zutatForm.value?.reset();
   }
 }
-
 </script>
 
 <style scoped></style>
