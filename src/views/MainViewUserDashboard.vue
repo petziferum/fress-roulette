@@ -12,7 +12,7 @@
       <v-col cols="12">
         <v-card elevation="6" color="secondary">
           <v-card-subtitle class="pa-5"
-            >{{ user.displayName }} - Eingelogged: {{ loggedIn }}<br>
+            >{{ user.displayName }} - Eingelogged: {{ loggedIn }}<br />
             <p>userError: {{ userState.userError }}</p>
             <v-btn @click="checkIfTextfieldIsValid" variant="tonal"
               >Validate Textfield</v-btn
@@ -32,7 +32,7 @@
                   <v-list-item>
                     <v-list-item-title>User Login</v-list-item-title>
                     <v-list-item-subtitle
-                    >passwort eingeben</v-list-item-subtitle
+                      >passwort eingeben</v-list-item-subtitle
                     >
                   </v-list-item>
                 </v-list>
@@ -98,17 +98,23 @@
             <v-spacer />
             <v-btn @click="fetchRecipes">Lade Rezepte</v-btn></v-card-title
           >
+          <v-data-table
+            :headers="headers"
+            :items="userRecipes"
+            :items-per-page="15"
+            class="elevation-1"
+          >
+            <template v-slot:item.action="{ item }">
+              <v-btn icon @click="editRecipe(item.id)"><v-icon small>mdi-pencil</v-icon></v-btn>
+            </template>
+          </v-data-table>
           <v-card-text v-for="recipe of userRecipes" :key="recipe.id">
-            <v-list density="compact">
-              <v-list-item v-for="(value, key) in recipe" :key="key">
-                <v-list-item-title>{{ key }}</v-list-item-title>
-                <v-list-item-subtitle>
-                  {{ value }}
-                </v-list-item-subtitle>
-              </v-list-item>
-            </v-list>
-            <v-btn @click="editRecipe(recipe.id)">Bearbeiten</v-btn>
-            <v-divider />
+            <v-expansion-panels multiple>
+              <wrapper-panel :title="recipe.recipeName">
+                <v-btn @click="editRecipe(recipe.id)">Bearbeiten</v-btn>
+                <v-divider />
+              </wrapper-panel>
+            </v-expansion-panels>
           </v-card-text>
         </v-card>
       </v-col>
@@ -123,6 +129,7 @@ import Recipe from "@/components/Models/Recipe.class";
 import { useRouter } from "vue-router";
 import AddRecipeDialog from "@/components/AddRecipeDialog.vue";
 import { userStore } from "@/stores/userStore";
+import WrapperPanel from "@/components/componenttest/WrapperPanel.vue";
 
 // Todo: Typing ref Values
 const router = useRouter();
@@ -133,6 +140,12 @@ const passField = ref();
 const userRecipes = ref<Recipe[]>([]);
 const editRoute = ref("/recipe/edit/");
 const userState = userStore();
+const headers = [
+  { title: "Rezept Name", key: "recipeName" },
+  { title: "Autor", key: "createdBy.name" },
+  { title: "Rating", key: "rating" },
+  { title: "Bearbeiten", key: "action" },
+];
 
 const required = computed(() => {
   return (v: string) => !!v || "Darf nicht leer sein";

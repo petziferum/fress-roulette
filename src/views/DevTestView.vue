@@ -8,7 +8,7 @@
         <v-btn @click="closePanels">Close all Panels</v-btn>{{ panels }}
       </v-col>
     </v-row>
-    <v-expansion-panels multiple v-model="panels">
+    <v-expansion-panels v-model="panels">
       <wrapper-panel title="Firestore löschen">
         <v-btn>löschen</v-btn>
       </wrapper-panel>
@@ -155,7 +155,7 @@ const closePanels = () => {
 
 onBeforeMount(() => store.initRecipes());
 
-const db = admin.firestore();
+
 
 </script>
 
