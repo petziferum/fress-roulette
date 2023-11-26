@@ -4,6 +4,7 @@
       <v-toolbar>
         <v-toolbar-items>
           <v-btn variant="text" @click="$router.go(-1)">Zurück</v-btn>
+          <v-btn variant="text" @click="setPetziAsCreator">Created By Petzi</v-btn>
         </v-toolbar-items>
       </v-toolbar>
       <v-card-title>{{ recipe.recipeName }}</v-card-title>
@@ -91,6 +92,14 @@ function saveUpdateRecipe(): void {
   RecipeServiceApi.updateRecipe(recipe.value).then((antwort) => {
     console.log("gespeichert", antwort);
   });
+}
+
+function setPetziAsCreator(): void {
+  recipe.value.createdBy = {
+    id: "qzkYAA74nXevBDXOGzHHXm0NJmq2",
+    name: "Petzi",
+  }
+  saveUpdateRecipe();
 }
 
 onBeforeMount(() => {
