@@ -98,24 +98,7 @@
             <v-spacer />
             <v-btn @click="fetchRecipes">Lade Rezepte</v-btn></v-card-title
           >
-          <v-data-table
-            :headers="headers"
-            :items="userRecipes"
-            :items-per-page="15"
-            class="elevation-1"
-          >
-            <template v-slot:item.action="{ item }">
-              <v-btn icon @click="editRecipe(item.id)"><v-icon small>mdi-pencil</v-icon></v-btn>
-            </template>
-          </v-data-table>
-          <v-card-text v-for="recipe of userRecipes" :key="recipe.id">
-            <v-expansion-panels multiple>
-              <wrapper-panel :title="recipe.recipeName">
-                <v-btn @click="editRecipe(recipe.id)">Bearbeiten</v-btn>
-                <v-divider />
-              </wrapper-panel>
-            </v-expansion-panels>
-          </v-card-text>
+          <RecipeDataTable :items="userRecipes" @editRecipe="editRecipe" />
         </v-card>
       </v-col>
     </v-row>
@@ -130,6 +113,7 @@ import { useRouter } from "vue-router";
 import AddRecipeDialog from "@/components/AddRecipeDialog.vue";
 import { useUserStore } from "@/stores/useUserStore";
 import WrapperPanel from "@/components/componenttest/WrapperPanel.vue";
+import RecipeDataTable from "@/components/RecipeDataTable.vue";
 
 // Todo: Typing ref Values
 const router = useRouter();
@@ -140,12 +124,6 @@ const passField = ref();
 const userRecipes = ref<Recipe[]>([]);
 const editRoute = ref("/recipe/edit/");
 const userState = useUserStore();
-const headers = [
-  { title: "Rezept Name", key: "recipeName" },
-  { title: "Autor", key: "createdBy.name" },
-  { title: "Rating", key: "rating" },
-  { title: "Bearbeiten", key: "action" },
-];
 
 const required = computed(() => {
   return (v: string) => !!v || "Darf nicht leer sein";
