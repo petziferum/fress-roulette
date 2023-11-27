@@ -75,15 +75,6 @@
               </v-table>
             </v-col>
           </v-row>
-          <v-row>
-            <v-col cols="12">
-              <div>User Store Data:</div>
-              <v-card-text>
-                <div>User aus Store</div>
-                <div>{{ userState.getStoreUser }}</div>
-              </v-card-text>
-            </v-col>
-          </v-row>
           <v-card-actions>
             <div class="text-caption">
               https://learnvue.co/tutorials/vue-firebase-authentication
