@@ -1,6 +1,6 @@
 
 import type { Difficulty } from "@/components/Models/Difficulty";
-import { userStore } from "@/stores/userStore";
+import { useUserStore } from "@/stores/useUserStore";
 
 export interface Description {
   nr: number;
@@ -180,7 +180,7 @@ export const recipeConverter = {
   },
   fromFirestore: (snapshot, options) => {
     const recipe = snapshot.data(options);
-    const userState = userStore();
+    const userState = useUserStore();
     let updated = false;
     let cb: CreatedBy;
     if (typeof recipe.createdBy === typeof "string" || !recipe.createdBy) {

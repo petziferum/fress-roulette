@@ -6,8 +6,15 @@
     :image="barImg"
     class="align-content-center text-white"
   >
-    <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
+    <v-app-bar-nav-icon variant="tonal" @click.stop="drawer = !drawer" />
     drawer: {{ drawer }} mobile: {{ mobile }}
+    <v-app-bar-nav-icon
+      v-if="userLoggedIn"
+      color="green"
+    >
+      <v-icon>mdi-account</v-icon></v-app-bar-nav-icon
+    >
+    <v-icon v-else color="red">mdi-robot-dead</v-icon>
     <v-spacer />
     <v-sheet class="myTitleBar">
       <v-img
@@ -34,10 +41,15 @@ import { computed, onMounted, ref } from "vue";
 import { useAppStore } from "@/stores/appStore";
 import { useDisplay } from "vuetify";
 import router from "@/router";
+import { useUserStore } from "@/stores/useUserStore";
 
 const barImg = "/src/assets/whisky.jpg";
 const titleImg = "/src/assets/TITLE.png";
 const store = useAppStore();
+const userStore = useUserStore();
+const userLoggedIn = computed(() => {
+  return userStore.userLoggedIn;
+});
 
 const drawer = computed({
   get: () => store.drawer,

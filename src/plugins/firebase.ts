@@ -19,7 +19,7 @@ import { getStorage } from "firebase/storage";
 import router from "@/router";
 import { computed } from "vue";
 import Recipe, { recipeConverter } from "@/components/Models/Recipe.class";
-import { userStore } from "@/stores/userStore";
+import { useUserStore } from "@/stores/useUserStore";
 export const COLLECTION_NAME = "recipes";
 const firebaseConfig = {
   apiKey: "AIzaSyCPt03Bp5UBVXn72EVSWNAhvt4u0NI2m5M",
@@ -65,7 +65,7 @@ export const user = computed(() => {
 });
 
 export const registerWithGoogle = () => {
-  const userState = userStore();
+  const userState = useUserStore();
   const provider = new GoogleAuthProvider();
   const auth = getAuth();
   signInWithPopup(auth, provider)
@@ -81,7 +81,7 @@ export const registerWithGoogle = () => {
 };
 
 export const getUserFirestoreData = async (userId: string) => {
-  const userState = userStore();
+  const userState = useUserStore();
   console.info("getUserFirestoreData", userId);
 
   const userStoreRef = doc(db, "users", userId);

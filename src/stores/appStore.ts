@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { useDisplay } from "vuetify";
 import { computed, ref } from "vue";
-import { userStore } from "@/stores/userStore";
+import { useUserStore } from "@/stores/useUserStore";
 
 export const useAppStore = defineStore("app", () => {
   const drawer = ref(true);
@@ -56,7 +56,7 @@ export const useAppStore = defineStore("app", () => {
   }
 
   const getDrawerItems = computed(async () => {
-    const userState = userStore();
+    const userState = useUserStore();
     console.log("store user: ", userState.userFirestoreData);
     if (userState.getStoreUser()) {
       console.log("logged in true", userState.getStoreUser().name);

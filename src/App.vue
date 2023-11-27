@@ -24,15 +24,16 @@ import { onBeforeMount, ref } from "vue";
 import SideBar from "@/components/AppDrawer.vue";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import AppHeader from "@/components/AppHeader.vue";
+import { useUserStore } from "@/stores/useUserStore";
 
-let auth;
 const isLoggedIn = ref(false);
 
 onBeforeMount(() => {
-  auth = getAuth();
+  let auth = getAuth();
+  const userState = useUserStore();
   onAuthStateChanged(auth, (user) => {
     isLoggedIn.value = !!user;
-    console.log("isloggedin", isLoggedIn.value);
+    userState.setUserFirestoreData(user);
   });
 });
 </script>

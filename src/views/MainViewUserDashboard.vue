@@ -128,7 +128,7 @@ import { getUserRecipe, user, logOut } from "@/plugins/firebase";
 import Recipe from "@/components/Models/Recipe.class";
 import { useRouter } from "vue-router";
 import AddRecipeDialog from "@/components/AddRecipeDialog.vue";
-import { userStore } from "@/stores/userStore";
+import { useUserStore } from "@/stores/useUserStore";
 import WrapperPanel from "@/components/componenttest/WrapperPanel.vue";
 
 // Todo: Typing ref Values
@@ -139,7 +139,7 @@ const alertMessage = ref<string | null>(null);
 const passField = ref();
 const userRecipes = ref<Recipe[]>([]);
 const editRoute = ref("/recipe/edit/");
-const userState = userStore();
+const userState = useUserStore();
 const headers = [
   { title: "Rezept Name", key: "recipeName" },
   { title: "Autor", key: "createdBy.name" },

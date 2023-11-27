@@ -19,10 +19,10 @@
 <script setup>
 import { computed, onBeforeMount, reactive, ref, watch } from "vue";
 import { useAppStore } from "@/stores/appStore";
-import { userStore } from "@/stores/userStore";
+import { useUserStore } from "@/stores/useUserStore";
 
 const appStore = useAppStore();
-const userState = userStore();
+const userState = useUserStore();
 const user = ref(userState.userFirestoreData);
 const drawerState = computed({
   get: () => appStore.drawer,
