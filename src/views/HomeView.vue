@@ -83,11 +83,11 @@
 <script lang="ts" setup>
 import Recipe from "@/components/Models/Recipe.class";
 import { computed, onMounted, ref } from "vue";
-import { recipeStore } from "@/stores/recipeStore";
+import { useRecipeStore } from "@/stores/useRecipeStore";
 import RecipePreviewCard from "@/components/RecipePreviewCard.vue";
 import router from "@/router";
 
-const store = recipeStore();
+const store = useRecipeStore();
 const loading = ref(false);
 const recipesList = ref<Recipe[]>([]);
 const letters = ref("ABCDEFGHIJKLMNOPQRSTUVWXYZ".split(""));

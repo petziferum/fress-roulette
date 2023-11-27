@@ -20,10 +20,10 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 import Recipe from "@/components/Models/Recipe.class";
-import { recipeStore } from "@/stores/recipeStore";
+import { useRecipeStore } from "@/stores/useRecipeStore";
 import { load } from "webfontloader";
 import RecipeRoulette from "@/components/componenttest/RecipeRoulette.vue";
-const store = recipeStore();
+const store = useRecipeStore();
 const loading = ref(false);
 const recipesList = computed(() => store.getSortedRecipeList());
 

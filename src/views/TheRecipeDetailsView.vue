@@ -80,7 +80,7 @@
   </v-container>
 </template>
 <script setup lang="ts">
-import { recipeStore } from "@/stores/recipeStore";
+import { useRecipeStore } from "@/stores/useRecipeStore";
 import { computed, nextTick, onBeforeMount, ref } from "vue";
 import { useRoute } from "vue-router";
 import Recipe from "@/components/Models/Recipe.class";
@@ -90,7 +90,7 @@ const id = ref("");
 const editItemNumber = ref(null);
 const edit = ref(true);
 const editItemText = ref("");
-const store = recipeStore();
+const store = useRecipeStore();
 const recipe = computed((): Recipe | undefined => store.viewRecipe);
 const loading = computed({
   get() {

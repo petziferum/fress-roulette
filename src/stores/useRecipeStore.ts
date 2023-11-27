@@ -5,11 +5,22 @@ import type Recipe from "@/components/Models/Recipe.class";
 
 // PINIA SETUP STORE
 
-export const recipeStore = defineStore("recipeStore", () => {
+export const useRecipeStore = defineStore("recipeStore", () => {
   const allRecipes = ref<Recipe[]>([]);
   const viewRecipe = ref<Recipe | undefined>(undefined);
   const recipesLoading = ref(false);
   const searchQuery = ref("");
+  const recipeImages = ref([]);
+
+  const getAllRecipeImages = () => {
+    RecipeServiceApi.getAllRecipeImages()
+      .then((res) => {
+        recipeImages.value = res;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   function loadAllRecipes(): Promise<void> {
     recipesLoading.value = true;
@@ -36,6 +47,17 @@ export const recipeStore = defineStore("recipeStore", () => {
       .finally(() => (setTimeout(() => recipesLoading.value = false, 100)));
   }
 
+  function saveUpdateRecipe(recipe: Recipe): void {
+    console.info("save", recipe);
+    RecipeServiceApi.updateRecipe(recipe).then((antwort) => {
+      console.log("gespeichert", antwort);
+    });
+  }
+
+  function updateRecipeImage(image: string) {
+    console.log("update image", image);
+    viewRecipe.value.imageSrc = image;
+  }
   function getSortedRecipeList(): Recipe[] {
     recipesLoading.value = true;
     const filteredList = allRecipes.value.filter((recipe) =>
@@ -68,5 +90,8 @@ export const recipeStore = defineStore("recipeStore", () => {
     recipesLoading,
     loadRecipeById,
     viewRecipe,
+    recipeImages,
+    getAllRecipeImages,
+    updateRecipeImage,
   };
 });
