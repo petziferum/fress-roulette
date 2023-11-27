@@ -10,6 +10,7 @@
           >
         </v-toolbar-items>
       </v-toolbar>
+      <v-img :src="recipe.imageSrc ? recipe.imageSrc : dummyImg" class="recipeImage" cover width="350" height="150" />
       <v-card-title>{{ recipe.recipeName }}</v-card-title>
       <v-card-subtitle
         >ID: {{ recipe.id }}<br />
@@ -69,6 +70,7 @@ const editMode = ref(false);
 const recipe = ref<Recipe>(Recipe.createEmptyRecipe());
 const router = useRoute();
 const currentComponent = ref(null);
+const dummyImg = "https://firebasestorage.googleapis.com/v0/b/recipes-petzi.appspot.com/o/recipes%2FQHZ3uF8zribNfFHaPgHH.png?alt=media&token=1f12b930-8400-4508-91ba-9194b0f883e1";
 const components = [
   { text: "Select Photo", component: photoSelectComponent },
   { text: "Upload new Photo", component: ThePhotoUploadComponent },
@@ -118,4 +120,12 @@ onBeforeMount(() => {
 });
 </script>
 
-<style scoped></style>
+<style scoped>
+.recipeImage {
+  position: relative;
+  float: right;
+  top: 0;
+  right: 0;
+  border: 3px solid black;
+}
+</style>

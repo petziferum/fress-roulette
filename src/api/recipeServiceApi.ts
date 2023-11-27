@@ -4,6 +4,8 @@ import { db } from "@/plugins/firebase";
 import { recipeConverter } from "@/components/Models/Recipe.class";
 import { slugifyString } from "@/common/scripts";
 import { COLLECTION_NAME } from "@/plugins/firebase";
+import { getStorage, ref, listAll, getDownloadURL } from "firebase/storage";
+const IMAGE_FOLDER = "recipes";
 
 export default class RecipeServiceApi {
   public static async updateRecipe(recipe: Recipe): Promise<Recipe> {
@@ -13,7 +15,9 @@ export default class RecipeServiceApi {
     return await setDoc(recipeRef, recipe).then(() => recipe);
   }
 
-  public static async getSingleRecipe(recipeId: string): Promise<Recipe | undefined> {
+  public static async getSingleRecipe(
+    recipeId: string
+  ): Promise<Recipe | undefined> {
     const docRef = doc(db, COLLECTION_NAME, recipeId).withConverter(
       recipeConverter
     );
@@ -62,4 +66,19 @@ export default class RecipeServiceApi {
       return "error";
     }
   }
+
+  public static getAllRecipeImages(): Promise<string[]> {
+    const storage = getStorage();
+    const recipeRef = ref(storage, IMAGE_FOLDER);
+    return listAll(recipeRef)
+      .then((res) => {
+        const urlPromises = res.items.map((itemRef) => getDownloadURL(itemRef));
+        return Promise.all(urlPromises);
+      })
+      .catch((error) => {
+        console.log("error", error);
+        return [];  // Return an empty array in case of error
+      });
+  }
+
 }
