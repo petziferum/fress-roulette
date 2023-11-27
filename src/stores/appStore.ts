@@ -28,13 +28,12 @@ export const useAppStore = defineStore("app", () => {
       subtitle: "login",
       show: false,
     },
-    { title: "About", to: "/about", icon: "mdi-head", subtitle: "Über mich" },
     {
       title: "DevTest",
       path: "/dev/test",
       icon: "mdi-test-tube",
       subtitle: "Test",
-      show: true,
+      show: false,
     },
     {
       title: "User Dashboard",
@@ -55,18 +54,17 @@ export const useAppStore = defineStore("app", () => {
     drawer.value = !drawer.value;
   }
 
-  const getDrawerItems = computed(async () => {
-    const userState = useUserStore();
-    console.log("store user: ", userState.userFirestoreData);
-    if (userState.getStoreUser()) {
-      console.log("logged in true", userState.getStoreUser().name);
-      return listItems.value.filter((item) => item.show);
-    } else {
-      return listItems.value.filter((item) => {
-        console.log("show", item.show);
-        return item.show === false || item.show === undefined;
-      });
+  const getDrawerItems = computed(() => {
+    const userStore = useUserStore();
+    const loginItem = listItems.value.find(item => item.title === 'Login');
+    const logoutItem = listItems.value.find(item => item.title === 'Logout');
+    if (loginItem && logoutItem) {
+      loginItem.show = !userStore.userFirestoreData.value;
+      logoutItem.show = !!userStore.userFirestoreData.value;
     }
+      return listItems.value.filter((item) => item.show);
+
+
   });
 
   const getAllDrawerItems = () => {

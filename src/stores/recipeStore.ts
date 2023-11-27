@@ -33,7 +33,7 @@ export const recipeStore = defineStore("recipeStore", () => {
       .catch((err) => {
         console.error("Es ist gerade ein Fehler aufgetreten:\n", err);
       })
-      .finally(() => (setTimeout(() => recipesLoading.value = false, 1000)));
+      .finally(() => (setTimeout(() => recipesLoading.value = false, 100)));
   }
 
   function getSortedRecipeList(): Recipe[] {

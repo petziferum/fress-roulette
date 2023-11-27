@@ -9,9 +9,6 @@
         :title="item.title"
         :to="item.path"
       />
-      <v-list-item>
-        {{ user }}
-      </v-list-item>
     </v-list>
   </v-navigation-drawer>
 </template>

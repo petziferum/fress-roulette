@@ -154,9 +154,6 @@ const closePanels = () => {
 };
 
 onBeforeMount(() => store.initRecipes());
-
-
-
 </script>
 
 <style scoped></style>

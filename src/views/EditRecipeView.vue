@@ -4,7 +4,6 @@
       <v-toolbar>
         <v-toolbar-items>
           <v-btn variant="text" @click="$router.go(-1)">Zurück</v-btn>
-          <v-btn variant="text" @click="setPetziAsCreator">Created By Petzi</v-btn>
         </v-toolbar-items>
       </v-toolbar>
       <v-card-title>{{ recipe.recipeName }}</v-card-title>
