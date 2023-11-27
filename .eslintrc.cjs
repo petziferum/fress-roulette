@@ -9,6 +9,9 @@ module.exports = {
     '@vue/eslint-config-typescript',
     '@vue/eslint-config-prettier'
   ],
+  rules: {
+    'vue/valid-v-slot': 'off',
+  },
   parserOptions: {
     ecmaVersion: 'latest'
   }
