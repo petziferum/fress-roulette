@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-card>
+    <v-card variant="outlined">
       <v-card-title>PhotoUploadComponent</v-card-title>
       <v-card-text>
         <v-form>

@@ -4,6 +4,10 @@
       <v-toolbar>
         <v-toolbar-items>
           <v-btn variant="text" @click="$router.go(-1)">Zurück</v-btn>
+          <v-spacer />
+          <v-btn variant="outlined" color="blue" @click="saveUpdateRecipe"
+            >Speichern</v-btn
+          >
         </v-toolbar-items>
       </v-toolbar>
       <v-card-title>{{ recipe.recipeName }}</v-card-title>
@@ -13,14 +17,14 @@
         <div>Erstellt am: {{ recipe.time }}</div></v-card-subtitle
       >
       <v-card-actions>
-        <v-spacer />
-        <v-btn variant="outlined" color="success" @click="editMode = !editMode"
-          >Bearbeiten</v-btn
-        >
-        <v-btn variant="outlined" color="blue" @click="saveUpdateRecipe"
-          >Speichern</v-btn
+        <v-btn
+          v-for="(entry, index) in components"
+          :key="index"
+          @click="currentComponent = entry.component"
+          >{{ entry.text }}</v-btn
         >
       </v-card-actions>
+      <component :is="currentComponent" />
       <template v-if="!editMode">
         <v-form ref="recipeForm">
           <v-row>
@@ -58,10 +62,17 @@ import { VForm } from "vuetify/components";
 import ComponentZutat from "@/components/EditRecipe/ComponentZutat.vue";
 import ComponentRecipeDescription from "@/components/EditRecipe/ComponentRecipeDescription.vue";
 import TagsSelect from "@/components/componenttest/TagsSelect.vue";
+import ThePhotoUploadComponent from "@/components/componenttest/ThePhotoUploadComponent.vue";
+import photoSelectComponent from "@/components/photoSelectComponent.vue";
 
 const editMode = ref(false);
 const recipe = ref<Recipe>(Recipe.createEmptyRecipe());
 const router = useRoute();
+const currentComponent = ref(null);
+const components = [
+  { text: "Select Photo", component: photoSelectComponent },
+  { text: "Upload new Photo", component: ThePhotoUploadComponent },
+];
 
 function loadRecipe(): void {
   RecipeServiceApi.getSingleRecipe(useRoute().params.id as string).then(
@@ -97,7 +108,7 @@ function setPetziAsCreator(): void {
   recipe.value.createdBy = {
     id: "qzkYAA74nXevBDXOGzHHXm0NJmq2",
     name: "Petzi",
-  }
+  };
   saveUpdateRecipe();
 }
 
