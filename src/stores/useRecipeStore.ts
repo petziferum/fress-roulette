@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import RecipeServiceApi from "@/api/recipeServiceApi";
 import { ref } from "vue";
+import { useRoute } from "vue-router";
 import type Recipe from "@/components/Models/Recipe.class";
 
 // PINIA SETUP STORE
@@ -8,6 +9,7 @@ import type Recipe from "@/components/Models/Recipe.class";
 export const useRecipeStore = defineStore("recipeStore", () => {
   const allRecipes = ref<Recipe[]>([]);
   const viewRecipe = ref<Recipe | undefined>(undefined);
+  const editRecipe = ref<Recipe | undefined>(undefined);
   const recipesLoading = ref(false);
   const searchQuery = ref("");
   const recipeImages = ref([]);
@@ -47,6 +49,17 @@ export const useRecipeStore = defineStore("recipeStore", () => {
       .finally(() => (setTimeout(() => recipesLoading.value = false, 100)));
   }
 
+  function loadEditRecipe(): void {
+    RecipeServiceApi.getSingleRecipe(useRoute().params.id as string).then(
+      (response) => {
+        console.log("response", response);
+        if (response) {
+          editRecipe.value = response;
+        }
+      }
+    );
+  }
+
   function saveUpdateRecipe(recipe: Recipe): void {
     console.info("save", recipe);
     RecipeServiceApi.updateRecipe(recipe).then((antwort) => {
@@ -56,7 +69,8 @@ export const useRecipeStore = defineStore("recipeStore", () => {
 
   function updateRecipeImage(image: string) {
     console.log("update image", image);
-    viewRecipe.value.imageSrc = image;
+    console.log("viewRecipe", viewRecipe.value);
+    Object.assign(viewRecipe.value, image);
   }
   function getSortedRecipeList(): Recipe[] {
     recipesLoading.value = true;
@@ -93,5 +107,7 @@ export const useRecipeStore = defineStore("recipeStore", () => {
     recipeImages,
     getAllRecipeImages,
     updateRecipeImage,
+    saveUpdateRecipe,
+    loadEditRecipe,
   };
 });

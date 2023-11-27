@@ -21,7 +21,7 @@
         <v-btn
           v-for="(entry, index) in components"
           :key="index"
-          @click="currentComponent = entry.component"
+          @click="setPhotoComponent(entry.component)"
           >{{ entry.text }}</v-btn
         >
       </v-card-actions>
@@ -65,7 +65,9 @@ import ComponentRecipeDescription from "@/components/EditRecipe/ComponentRecipeD
 import TagsSelect from "@/components/componenttest/TagsSelect.vue";
 import ThePhotoUploadComponent from "@/components/componenttest/ThePhotoUploadComponent.vue";
 import photoSelectComponent from "@/components/photoSelectComponent.vue";
+import { useRecipeStore } from "@/stores/useRecipeStore";
 
+const recipeStore = useRecipeStore();
 const editMode = ref(false);
 const recipe = ref<Recipe>(Recipe.createEmptyRecipe());
 const router = useRoute();
@@ -75,6 +77,10 @@ const components = [
   { text: "Select Photo", component: photoSelectComponent },
   { text: "Upload new Photo", component: ThePhotoUploadComponent },
 ];
+
+function setPhotoComponent(component: any): void {
+  currentComponent.value = component;
+}
 
 function loadRecipe(): void {
   RecipeServiceApi.getSingleRecipe(useRoute().params.id as string).then(
@@ -115,7 +121,7 @@ function setPetziAsCreator(): void {
 }
 
 onBeforeMount(() => {
-  loadRecipe();
+  recipeStore.loadEditRecipe();
   recipe.value.id = router.params.id as string;
 });
 </script>
