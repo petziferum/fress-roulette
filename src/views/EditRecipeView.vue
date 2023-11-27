@@ -26,6 +26,7 @@
         >
       </v-card-actions>
       <component :is="currentComponent" />
+      ImageSrc: {{ recipe.imageSrc }}
       <template v-if="!editMode">
         <v-form ref="recipeForm">
           <v-row>
@@ -55,7 +56,7 @@
 </template>
 
 <script setup lang="ts">
-import { onBeforeMount, ref } from "vue";
+import { computed, onBeforeMount, ref } from "vue";
 import { useRoute } from "vue-router";
 import Recipe from "@/components/Models/Recipe.class";
 import RecipeServiceApi from "@/api/recipeServiceApi";
@@ -69,7 +70,9 @@ import { useRecipeStore } from "@/stores/useRecipeStore";
 
 const recipeStore = useRecipeStore();
 const editMode = ref(false);
-const recipe = ref<Recipe>(Recipe.createEmptyRecipe());
+const recipe = computed(()=> {
+  return recipeStore.editRecipe;
+});
 const router = useRoute();
 const currentComponent = ref(null);
 const dummyImg = "https://firebasestorage.googleapis.com/v0/b/recipes-petzi.appspot.com/o/recipes%2FQHZ3uF8zribNfFHaPgHH.png?alt=media&token=1f12b930-8400-4508-91ba-9194b0f883e1";
@@ -121,7 +124,7 @@ function setPetziAsCreator(): void {
 }
 
 onBeforeMount(() => {
-  recipeStore.loadEditRecipe();
+  recipeStore.loadEditRecipe(router.params.id as string);
   recipe.value.id = router.params.id as string;
 });
 </script>

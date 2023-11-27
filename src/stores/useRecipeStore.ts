@@ -2,14 +2,14 @@ import { defineStore } from "pinia";
 import RecipeServiceApi from "@/api/recipeServiceApi";
 import { ref } from "vue";
 import { useRoute } from "vue-router";
-import type Recipe from "@/components/Models/Recipe.class";
+import Recipe from "@/components/Models/Recipe.class";
 
 // PINIA SETUP STORE
 
 export const useRecipeStore = defineStore("recipeStore", () => {
   const allRecipes = ref<Recipe[]>([]);
   const viewRecipe = ref<Recipe | undefined>(undefined);
-  const editRecipe = ref<Recipe | undefined>(undefined);
+  const editRecipe = ref<Recipe>(Recipe.createEmptyRecipe());
   const recipesLoading = ref(false);
   const searchQuery = ref("");
   const recipeImages = ref([]);
@@ -46,18 +46,16 @@ export const useRecipeStore = defineStore("recipeStore", () => {
       .catch((err) => {
         console.error("Es ist gerade ein Fehler aufgetreten:\n", err);
       })
-      .finally(() => (setTimeout(() => recipesLoading.value = false, 100)));
+      .finally(() => setTimeout(() => (recipesLoading.value = false), 100));
   }
 
-  function loadEditRecipe(): void {
-    RecipeServiceApi.getSingleRecipe(useRoute().params.id as string).then(
-      (response) => {
-        console.log("response", response);
-        if (response) {
-          editRecipe.value = response;
-        }
+  function loadEditRecipe(id: string): void {
+    RecipeServiceApi.getSingleRecipe(id as string).then((response) => {
+      console.log("response", response);
+      if (response) {
+        editRecipe.value = response;
       }
-    );
+    });
   }
 
   function saveUpdateRecipe(recipe: Recipe): void {
@@ -69,8 +67,8 @@ export const useRecipeStore = defineStore("recipeStore", () => {
 
   function updateRecipeImage(image: string) {
     console.log("update image", image);
-    console.log("viewRecipe", viewRecipe.value);
-    Object.assign(viewRecipe.value, image);
+    console.log("editRecipe", editRecipe.value);
+    editRecipe.value.imageSrc = image;
   }
   function getSortedRecipeList(): Recipe[] {
     recipesLoading.value = true;
@@ -105,6 +103,7 @@ export const useRecipeStore = defineStore("recipeStore", () => {
     loadRecipeById,
     viewRecipe,
     recipeImages,
+    editRecipe,
     getAllRecipeImages,
     updateRecipeImage,
     saveUpdateRecipe,

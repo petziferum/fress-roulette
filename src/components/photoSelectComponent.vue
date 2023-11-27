@@ -20,11 +20,14 @@
   </v-card>
 </template>
 <script setup lang="ts">
-import { onBeforeMount, ref } from "vue";
+import { computed, onBeforeMount, ref } from "vue";
 import { useRecipeStore } from "@/stores/useRecipeStore";
 
 const recipeStore = useRecipeStore();
-const imageList = recipeStore.recipeImages;
+const imageList = computed(()=> {
+  return recipeStore.recipeImages;
+});
+
 onBeforeMount(() => {
   recipeStore.getAllRecipeImages();
 });
