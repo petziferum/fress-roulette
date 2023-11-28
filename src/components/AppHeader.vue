@@ -38,8 +38,8 @@ import { useDisplay } from "vuetify";
 import router from "@/router";
 import { useUserStore } from "@/stores/useUserStore";
 
-const barImg = "/src/assets/whisky.jpg";
-const titleImg = "/src/assets/TITLE.png";
+const barImg = "https://firebasestorage.googleapis.com/v0/b/recipes-petzi.appspot.com/o/images%2F0d8f50f4-d9e3-4184-a9eb-09ad7f429ade.webp?alt=media&token=b1ff0cdc-9973-4ee9-b103-ecde22cbe5e7";
+const titleImg = "https://firebasestorage.googleapis.com/v0/b/recipes-petzi.appspot.com/o/images%2FTITLE.png?alt=media&token=1c227494-7def-420c-967c-98dc268fc3bb";
 const store = useAppStore();
 const userStore = useUserStore();
 const userLoggedIn = computed(() => {
