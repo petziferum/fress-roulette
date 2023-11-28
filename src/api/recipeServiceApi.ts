@@ -43,13 +43,24 @@ export default class RecipeServiceApi {
       throw new Error("recipeName is missing");
     }
     const id = slugifyString(recipe.recipeName.substring(0, 128));
+    recipe.id = id;
+    console.log("id of recipe = ", id);
     try {
-      const ref = doc(db, COLLECTION_NAME, id).withConverter(recipeConverter);
-      return await setDoc(ref, recipe).then(() => {
-        return ref.id;
-      });
+      const ref = setDoc(
+        doc(db, COLLECTION_NAME, id).withConverter(recipeConverter),
+        recipe
+      )
+        .then((refId) => {
+          console.log("converted", ref);
+          return refId;
+        })
+        .catch((e) => {
+          console.log("doc ref error", e);
+          return "error" + e;
+        });
     } catch (e) {
-      return "error";
+      console.log("try error", e);
+      return "error" + e;
     }
   }
 
@@ -77,8 +88,7 @@ export default class RecipeServiceApi {
       })
       .catch((error) => {
         console.log("error", error);
-        return [];  // Return an empty array in case of error
+        return []; // Return an empty array in case of error
       });
   }
-
 }

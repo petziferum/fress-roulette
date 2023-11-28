@@ -5,7 +5,7 @@
       <v-toolbar-items>
         <v-btn variant="outlined" size="small" @click="logOut">logout</v-btn>
         <v-spacer />
-        <add-recipe-dialog :user-id="user.uid" />
+        <add-recipe-dialog :user="user" />
       </v-toolbar-items>
     </v-toolbar>
     <v-row class="mt-12" justify="center">

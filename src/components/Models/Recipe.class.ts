@@ -162,9 +162,10 @@ export default class Recipe {
 }
 
 export const recipeConverter = {
-  toFirestore: (recipe) => {
+  toFirestore: (recipe: Recipe) => {
     console.log("toFirestore converter gestartet", recipe);
     return {
+      id: recipe.id,
       recipeName: recipe.recipeName,
       createdBy: recipe.createdBy,
       time: recipe.time,
@@ -196,7 +197,7 @@ export const recipeConverter = {
     });
 
     if (updated) {
-      recipe.meta = { changed: new Date(), changedBy: userState.getStoreUser() };
+      recipe.meta = { changed: new Date(), changedBy: userState.userFirestoreData.email };
     }
     return Recipe.createEmptyRecipe()
       .withId(snapshot.id)

@@ -7,9 +7,12 @@
     </template>
     <v-card v-if="!loading">
       <v-card-title>Möchtest du ein neues Rezept erstellen?</v-card-title>
-      <template v-if="userId != null">
-        <v-card-subtitle>User: {{ userId }}</v-card-subtitle>
-        <v-form ref="createRecipeForm">
+      <template v-if="user != null">
+        <v-card-subtitle
+          >User: {{ user.uid }}<br />
+          Name: {{ user.displayName }}</v-card-subtitle
+        >
+        <v-form ref="createRecipeForm" @submit.prevent="createRecipe">
           <v-card-text>
             <v-text-field
               label="Name des Gerichts"
@@ -17,10 +20,11 @@
               v-model="newRecipe.recipeName"
             ></v-text-field>
           </v-card-text>
+          {{ newRecipe.recipeName }}
           <v-card-actions>
             <v-spacer />
             <v-btn variant="text" color="red" @click="cancel">abbrechen</v-btn>
-            <v-btn variant="text" color="green" @click="createRecipe">weiter</v-btn>
+            <v-btn variant="text" color="green" type="submit">weiter</v-btn>
           </v-card-actions>
         </v-form>
       </template>
@@ -37,12 +41,10 @@ import Recipe from "@/components/Models/Recipe.class";
 import { useRouter } from "vue-router";
 import RecipeServiceApi from "@/api/recipeServiceApi";
 
-const props = defineProps(["userId"]);
+const props = defineProps(["user"]);
 const router = useRouter();
 const isOpen = ref(false);
-const newRecipe = ref(
-  Recipe.createEmptyRecipe().withActive(false).withCreatedBy(props.userId)
-);
+const newRecipe = ref(Recipe.createEmptyRecipe().withActive(false));
 const filledRule = ref([(v) => v != null || "Name muss ausgefüllt sein"]);
 const loading = ref(false);
 
@@ -54,14 +56,18 @@ function createRecipe() {
   let route = "/recipe/new/" + newRecipe.value.id;
   //Setze aktuelle Zeit in Rezept
   newRecipe.value.time = new Date(Date.now());
-  RecipeServiceApi.createNewEditRecipe(newRecipe.value) // id wird in createNewEditRecipe durch slugify gesetzt
+  newRecipe.value.createdBy = {
+    id: props.user.uid,
+    name: props.user.displayName,
+  };
+  RecipeServiceApi.createNewEditRecipe(newRecipe.value)
     .then((id) => {
       if (id != "error") {
         newRecipe.value.id = id;
         route = "/recipe/edit/" + id;
       } else {
         throw new Error(
-          "Fehler beim Erstellen des Rezepts, keine ID erstellt."
+          "Fehler beim Erstellen des Rezepts, keine ID erstellt." + id
         );
       }
     })
