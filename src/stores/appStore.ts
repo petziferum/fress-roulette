@@ -29,13 +29,6 @@ export const useAppStore = defineStore("app", () => {
       show: false,
     },
     {
-      title: "DevTest",
-      path: "/dev/test",
-      icon: "mdi-test-tube",
-      subtitle: "Test",
-      show: false,
-    },
-    {
       title: "User Dashboard",
       path: "/user/dashboard",
       icon: "mdi-kangaroo",
