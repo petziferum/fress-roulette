@@ -44,5 +44,6 @@ onBeforeMount(() => {
   background-repeat: repeat-y;
   background-position: center center;
   background-attachment: fixed;
+  background-color: #080c13;
 }
 </style>
