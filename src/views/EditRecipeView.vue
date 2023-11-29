@@ -7,7 +7,7 @@
           <v-btn variant="outlined" color="blue" @click="saveUpdateRecipe"
             >Speichern</v-btn
           >
-          <delete-button-dialog :recipe="recipe.id" />
+          <delete-button-dialog :recipe="recipe" @delete-recipe="deleteRecipe" />
         </v-toolbar-items>
       </v-toolbar>
       <v-img :src="recipe.imageSrc ? recipe.imageSrc : dummyImg" class="recipeImage" cover width="350" height="150" />
@@ -114,6 +114,10 @@ function saveUpdateRecipe(): void {
   RecipeServiceApi.updateRecipe(recipe.value).then((antwort) => {
     console.log("gespeichert", antwort);
   });
+}
+
+function deleteRecipe(id: string): void {
+  console.log("delete", id);
 }
 
 function setPetziAsCreator(): void {
