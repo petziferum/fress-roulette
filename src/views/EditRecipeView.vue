@@ -93,6 +93,8 @@ const components = [
   { text: "Upload new Photo", component: ThePhotoUploadComponent },
 ];
 
+//ToDo: bilder in die Tabelle einfügen.
+
 function setPhotoComponent(component: any): void {
   currentComponent.value = component;
 }
