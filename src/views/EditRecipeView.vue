@@ -4,10 +4,10 @@
       <v-toolbar>
         <v-toolbar-items>
           <v-btn variant="text" @click="$router.go(-1)">Zurück</v-btn>
-          <v-spacer />
           <v-btn variant="outlined" color="blue" @click="saveUpdateRecipe"
             >Speichern</v-btn
           >
+          <delete-button-dialog :recipe="recipe" />
         </v-toolbar-items>
       </v-toolbar>
       <v-img :src="recipe.imageSrc ? recipe.imageSrc : dummyImg" class="recipeImage" cover width="350" height="150" />
@@ -67,6 +67,7 @@ import TagsSelect from "@/components/componenttest/TagsSelect.vue";
 import ThePhotoUploadComponent from "@/components/componenttest/ThePhotoUploadComponent.vue";
 import photoSelectComponent from "@/components/photoSelectComponent.vue";
 import { useRecipeStore } from "@/stores/useRecipeStore";
+import DeleteButtonDialog from "@/components/DeleteButtonDialog.vue";
 
 const recipeStore = useRecipeStore();
 const editMode = ref(false);
