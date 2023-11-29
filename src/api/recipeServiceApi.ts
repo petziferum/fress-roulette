@@ -1,13 +1,24 @@
 import type Recipe from "@/components/Models/Recipe.class";
-import { collection, doc, getDocs, getDoc, setDoc } from "firebase/firestore";
-import { db } from "@/plugins/firebase";
+import {
+  collection,
+  doc,
+  getDocs,
+  getDoc,
+  setDoc,
+  deleteDoc,
+} from "firebase/firestore";
 import { recipeConverter } from "@/components/Models/Recipe.class";
 import { slugifyString } from "@/common/scripts";
-import { COLLECTION_NAME } from "@/plugins/firebase";
+import { COLLECTION_NAME, db } from "@/plugins/firebase";
 import { getStorage, ref, listAll, getDownloadURL } from "firebase/storage";
 const IMAGE_FOLDER = "recipes";
 
 export default class RecipeServiceApi {
+  public static async deleteRecipe(recipeId: string): Promise<void> {
+    await deleteDoc(doc(db, COLLECTION_NAME, recipeId)).then(() => {
+      console.log("Document successfully deleted!", recipeId);
+    });
+  }
   public static async updateRecipe(recipe: Recipe): Promise<Recipe> {
     const recipeRef = doc(db, COLLECTION_NAME, recipe.id!).withConverter(
       recipeConverter

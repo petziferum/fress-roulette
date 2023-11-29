@@ -7,10 +7,19 @@
           <v-btn variant="outlined" color="blue" @click="saveUpdateRecipe"
             >Speichern</v-btn
           >
-          <delete-button-dialog :recipe="recipe" @delete-recipe="deleteRecipe" />
+          <delete-button-dialog
+            :recipe="recipe"
+            @delete-recipe="deleteRecipe"
+          />
         </v-toolbar-items>
       </v-toolbar>
-      <v-img :src="recipe.imageSrc ? recipe.imageSrc : dummyImg" class="recipeImage" cover width="350" height="150" />
+      <v-img
+        :src="recipe.imageSrc ? recipe.imageSrc : dummyImg"
+        class="recipeImage"
+        cover
+        width="350"
+        height="150"
+      />
       <v-card-title>{{ recipe.recipeName }}</v-card-title>
       <v-card-subtitle
         >ID: {{ recipe.id }}<br />
@@ -57,7 +66,7 @@
 
 <script setup lang="ts">
 import { computed, onBeforeMount, ref } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import Recipe from "@/components/Models/Recipe.class";
 import RecipeServiceApi from "@/api/recipeServiceApi";
 import { VForm } from "vuetify/components";
@@ -71,12 +80,14 @@ import DeleteButtonDialog from "@/components/DeleteButtonDialog.vue";
 
 const recipeStore = useRecipeStore();
 const editMode = ref(false);
-const recipe = computed(()=> {
+const recipe = computed(() => {
   return recipeStore.editRecipe;
 });
-const router = useRoute();
+const router = useRouter();
+const route = useRoute();
 const currentComponent = ref(null);
-const dummyImg = "https://firebasestorage.googleapis.com/v0/b/recipes-petzi.appspot.com/o/recipes%2FQHZ3uF8zribNfFHaPgHH.png?alt=media&token=1f12b930-8400-4508-91ba-9194b0f883e1";
+const dummyImg =
+  "https://firebasestorage.googleapis.com/v0/b/recipes-petzi.appspot.com/o/recipes%2FQHZ3uF8zribNfFHaPgHH.png?alt=media&token=1f12b930-8400-4508-91ba-9194b0f883e1";
 const components = [
   { text: "Select Photo", component: photoSelectComponent },
   { text: "Upload new Photo", component: ThePhotoUploadComponent },
@@ -84,28 +95,6 @@ const components = [
 
 function setPhotoComponent(component: any): void {
   currentComponent.value = component;
-}
-
-function loadRecipe(): void {
-  RecipeServiceApi.getSingleRecipe(useRoute().params.id as string).then(
-    (response) => {
-      console.log("response", response);
-      if (response) {
-        const editRecipe = Recipe.createEmptyRecipe();
-        console.log(
-          "edit: ",
-          editRecipe,
-          "response recipe id:",
-          response.id,
-          "params id",
-          router.params.id,
-          "same?",
-          response.id === router.params.id
-        );
-        recipe.value = response!;
-      }
-    }
-  );
 }
 
 function saveUpdateRecipe(): void {
@@ -117,7 +106,9 @@ function saveUpdateRecipe(): void {
 }
 
 function deleteRecipe(id: string): void {
-  console.log("delete", id);
+  RecipeServiceApi.deleteRecipe(id).then(() => {
+    router.push({ name: "userdashboard" });
+  });
 }
 
 function setPetziAsCreator(): void {
@@ -129,8 +120,8 @@ function setPetziAsCreator(): void {
 }
 
 onBeforeMount(() => {
-  recipeStore.loadEditRecipe(router.params.id as string);
-  recipe.value.id = router.params.id as string;
+  recipeStore.loadEditRecipe(route.params.id as string);
+  recipe.value.id = route.params.id as string;
 });
 </script>
 
