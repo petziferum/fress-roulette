@@ -7,7 +7,7 @@
           <v-btn variant="outlined" color="blue" @click="saveUpdateRecipe"
             >Speichern</v-btn
           >
-          <delete-button-dialog :recipe="recipe" />
+          <delete-button-dialog :recipe="recipe.id" />
         </v-toolbar-items>
       </v-toolbar>
       <v-img :src="recipe.imageSrc ? recipe.imageSrc : dummyImg" class="recipeImage" cover width="350" height="150" />
