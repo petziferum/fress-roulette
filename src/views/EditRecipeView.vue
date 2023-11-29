@@ -102,6 +102,7 @@ function saveUpdateRecipe(): void {
   console.info("save", recipe.value);
   RecipeServiceApi.updateRecipe(recipe.value).then((antwort) => {
     console.log("gespeichert", antwort);
+    router.push({ name: "userdashboard" });
   });
 }
 
