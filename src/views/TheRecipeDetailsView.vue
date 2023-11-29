@@ -85,7 +85,7 @@ import { computed, nextTick, onBeforeMount, ref } from "vue";
 import { useRoute } from "vue-router";
 import Recipe from "@/components/Models/Recipe.class";
 import router from "@/router";
-
+//ToDo: Bild einfügen, löschen buttton entfernen, bearbeiten modus implementieren. Details anzeigen
 const id = ref("");
 const editItemNumber = ref(null);
 const edit = ref(true);
