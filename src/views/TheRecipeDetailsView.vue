@@ -16,18 +16,23 @@
               margin-right: 5px;
             "
             elevation="10"
+            rounded="xl"
           >
+            <v-img
+              :src="recipe.imageSrc"
+              cover
+              height="300px"
+              class="mt-0 pt-0"
+            />
             <v-toolbar class="mb-4">
               <v-toolbar-items>
                 <v-btn icon @click="goBack">
                   <v-icon>mdi-arrow-left</v-icon>
                 </v-btn>
-                <v-btn icon>
-                  <v-icon>mdi-delete</v-icon>
-                </v-btn>
               </v-toolbar-items>
-              <v-spacer />
-              <span class="text-h6 mx-4">{{ recipe.recipeName }}</span>
+              <div class="text-center">
+                <span class="text-h6 mx-4">{{ recipe.recipeName }}</span>
+              </div>
             </v-toolbar>
             <v-row>
               <v-col cols="12" md="4">
@@ -73,6 +78,18 @@
                 </v-card-text>
               </v-col>
             </v-row>
+            <v-row>
+              <v-card-text>
+                <div
+                  v-for="(value, key) in recipe"
+                  :key="key"
+                  class="pt-2 pl-3"
+                >
+                  {{ key }}: {{ value }}
+                  <v-divider thickness="4" />
+                </div>
+              </v-card-text>
+            </v-row>
           </v-card>
         </v-col>
       </template>
@@ -85,7 +102,6 @@ import { computed, nextTick, onBeforeMount, ref } from "vue";
 import { useRoute } from "vue-router";
 import Recipe from "@/components/Models/Recipe.class";
 import router from "@/router";
-//ToDo: Bild einfügen, löschen buttton entfernen, bearbeiten modus implementieren. Details anzeigen
 const id = ref("");
 const editItemNumber = ref(null);
 const edit = ref(true);
