@@ -9,6 +9,7 @@
       <v-spacer />
       <v-btn variant="text" color="red" @click="cancel">abbrechen</v-btn>
       <v-btn variant="text" color="green" type="submit">weiter</v-btn>
+    </v-card-actions>
   </v-card>
 </v-dialog>
 </template>
