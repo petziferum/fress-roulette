@@ -39,24 +39,7 @@
               </template>
             </v-col>
             <v-col cols="8">
-              <div v-if="!loggedIn" style="display: flex; flex-direction: row">
-                <v-text-field
-                  ref="passField"
-                  :rules="[required]"
-                  variant="outlined"
-                  label="passwort"
-                  v-model="password"
-                ></v-text-field>
-                <v-btn
-                  rounded="0"
-                  flat
-                  min-height="55"
-                  @click="checkIfTextfieldIsValid"
-                  variant="tonal"
-                  >login</v-btn
-                >
-              </div>
-              <div v-else>
+              <div>
                 <v-alert height="50%">angemeldet als {{ user.email }}</v-alert>
               </div>
             </v-col>
@@ -108,7 +91,6 @@ import RecipeDataTable from "@/components/RecipeDataTable.vue";
 
 // Todo: Typing ref Values
 const router = useRouter();
-const password = ref("");
 const alert = ref(false);
 const alertMessage = ref<string | null>(null);
 const passField = ref();
