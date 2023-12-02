@@ -58,13 +58,9 @@ export const useRecipeStore = defineStore("recipeStore", () => {
     });
   }
 
-  async function createNewRecipe(recipe: Recipe): Promise<string> {
+  async function createNewRecipe(recipe: Recipe): Promise<string | void> {
     console.info("save-update", recipe);
-    return RecipeServiceApi.createNewEditRecipe(recipe).then((savedId) => {
-      console.log("gespeichert", savedId);
-      editRecipe.value.id = savedId;
-      return savedId;
-    });
+    await RecipeServiceApi.createNewEditRecipe(recipe);
   }
 
   function updateRecipeImage(image: string) {

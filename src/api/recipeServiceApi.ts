@@ -11,6 +11,7 @@ import { recipeConverter } from "@/components/Models/Recipe.class";
 import { slugifyString } from "@/common/scripts";
 import { COLLECTION_NAME, db } from "@/plugins/firebase";
 import { getStorage, ref, listAll, getDownloadURL } from "firebase/storage";
+import router from "@/router";
 const IMAGE_FOLDER = "recipes";
 
 export default class RecipeServiceApi {
@@ -49,7 +50,7 @@ export default class RecipeServiceApi {
     return a;
   }
 
-  public static async createNewEditRecipe(recipe: Recipe): Promise<string> {
+  public static async createNewEditRecipe(recipe: Recipe): Promise<void> {
     if (!recipe.recipeName) {
       throw new Error("recipeName is missing");
     }
@@ -57,13 +58,10 @@ export default class RecipeServiceApi {
     recipe.id = id;
     console.log("id of recipe = ", id);
     try {
-      const ref = setDoc(
-        doc(db, COLLECTION_NAME, id).withConverter(recipeConverter),
-        recipe
-      )
-        .then((refId) => {
-          console.log("converted", ref);
-          return refId;
+      const ref = doc(db, COLLECTION_NAME, id).withConverter(recipeConverter);
+      await setDoc(ref, recipe).then((refId) => {
+          console.log("doc ref", refId);
+          router.push("/recipe/edit/" + id);
         })
         .catch((e) => {
           console.log("doc ref error", e);
@@ -71,7 +69,6 @@ export default class RecipeServiceApi {
         });
     } catch (e) {
       console.log("try error", e);
-      return "error" + e;
     }
   }
 

@@ -55,29 +55,15 @@ function cancel() {
 }
 
 function createRecipe() {
-  let route = "/recipe/new/";
   newRecipe.value.time = new Date(Date.now());
   newRecipe.value.createdBy = {
     id: props.user.uid,
     name: props.user.displayName,
   };
-  recipeStore.createNewRecipe(newRecipe.value)
-    .then((id) => {
-      if (id != "error") {
-        newRecipe.value.id = id;
-        route = "/recipe/edit/" + id;
-      } else {
-        throw new Error(
-          "Fehler beim Erstellen des Rezepts, keine ID erstellt." + id
-        );
-      }
-    })
-    .then(() => {
-      router.push(route); // Leitet weiter zur Edit View --> EditRecipeView.vue
-    })
-    .catch((error) => {
-      throw new Error("🤡 Fehler aufgetaucht: " + error);
-    });
+  const recipe: Recipe = Object.assign({}, newRecipe.value);
+  recipeStore.createNewRecipe(recipe).catch((error) => {
+    throw new Error("🤡 Fehler aufgetaucht: " + error);
+  });
 }
 </script>
 

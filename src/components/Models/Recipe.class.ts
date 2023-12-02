@@ -165,7 +165,6 @@ export const recipeConverter = {
   toFirestore: (recipe: Recipe) => {
     console.log("toFirestore converter gestartet", recipe);
     return {
-      id: recipe.id,
       recipeName: recipe.recipeName,
       createdBy: recipe.createdBy,
       time: recipe.time,

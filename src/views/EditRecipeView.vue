@@ -65,7 +65,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeMount, ref } from "vue";
+import { computed, onBeforeMount, onMounted, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import Recipe from "@/components/Models/Recipe.class";
 import RecipeServiceApi from "@/api/recipeServiceApi";
@@ -121,7 +121,7 @@ function setPetziAsCreator(): void {
   saveUpdateRecipe();
 }
 
-onBeforeMount(() => {
+onMounted(() => {
   recipeStore.loadEditRecipe(route.params.id as string);
   recipe.value.id = route.params.id as string;
 });
