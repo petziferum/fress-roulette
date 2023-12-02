@@ -59,8 +59,9 @@ export default class RecipeServiceApi {
     console.log("id of recipe = ", id);
     try {
       const ref = doc(db, COLLECTION_NAME, id).withConverter(recipeConverter);
-      await setDoc(ref, recipe).then((refId) => {
-          console.log("doc ref", refId);
+      await setDoc(ref, recipe)
+        .then(() => {
+          console.log("weiterleiten nach /recipe/edit/" + id);
           router.push("/recipe/edit/" + id);
         })
         .catch((e) => {
