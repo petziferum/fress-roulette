@@ -51,7 +51,7 @@ export const useRecipeStore = defineStore("recipeStore", () => {
 
   function loadEditRecipe(id: string): void {
     RecipeServiceApi.getSingleRecipe(id as string).then((response) => {
-      console.log("response", response);
+      console.log("load edit recipe response", response);
       if (response) {
         editRecipe.value = response;
       }
