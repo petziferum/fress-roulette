@@ -59,7 +59,7 @@ export const useRecipeStore = defineStore("recipeStore", () => {
   }
 
   function saveUpdateRecipe(recipe: Recipe): void {
-    console.info("save", recipe);
+    console.info("save-update", recipe);
     RecipeServiceApi.updateRecipe(recipe).then((antwort) => {
       console.log("gespeichert", antwort);
     });
