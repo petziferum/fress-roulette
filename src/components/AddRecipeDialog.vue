@@ -40,9 +40,11 @@ import { ref } from "vue";
 import Recipe from "@/components/Models/Recipe.class";
 import { useRouter } from "vue-router";
 import RecipeServiceApi from "@/api/recipeServiceApi";
+import { useRecipeStore } from "@/stores/useRecipeStore";
 
 const props = defineProps(["user"]);
 const router = useRouter();
+const recipeStore = useRecipeStore();
 const isOpen = ref(false);
 const newRecipe = ref(Recipe.createEmptyRecipe().withActive(false));
 const filledRule = ref([(v) => v != null || "Name muss ausgefüllt sein"]);
@@ -53,14 +55,13 @@ function cancel() {
 }
 
 function createRecipe() {
-  let route = "/recipe/new/" + newRecipe.value.id;
-  //Setze aktuelle Zeit in Rezept
+  let route = "/recipe/new/";
   newRecipe.value.time = new Date(Date.now());
   newRecipe.value.createdBy = {
     id: props.user.uid,
     name: props.user.displayName,
   };
-  RecipeServiceApi.createNewEditRecipe(newRecipe.value)
+  recipeStore.createNewRecipe(newRecipe.value)
     .then((id) => {
       if (id != "error") {
         newRecipe.value.id = id;
@@ -72,7 +73,7 @@ function createRecipe() {
       }
     })
     .then(() => {
-      router.push(route);
+      router.push(route); // Leitet weiter zur Edit View --> EditRecipeView.vue
     })
     .catch((error) => {
       throw new Error("🤡 Fehler aufgetaucht: " + error);
