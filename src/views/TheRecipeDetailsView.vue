@@ -44,6 +44,10 @@
               </div>
               <div class="text-h6">{{ recipe.rating }}/</div><span>5</span>
             </v-toolbar>
+            <v-card-subtitle>
+              <div class="subtitle-row">Autor: {{ recipe.createdBy.name }}</div>
+              <div class="subtitle-row">erstellt am: {{ new Date(recipe.time).toLocaleString() }}</div>
+            </v-card-subtitle>
             <v-row>
               <v-col cols="12" md="4">
                 <v-list>
@@ -142,4 +146,8 @@ function cancel() {
   editItemText.value = "";
 }
 </script>
-<style scoped></style>
+<style scoped>
+.subtitle-row {
+  font-weight: lighter;
+}
+</style>
