@@ -33,7 +33,7 @@
               <div class="text-center">
                 <span class="text-h6 mx-4">{{ recipe.recipeName }}</span>
               </div>
-              <div class="text-right">
+              <div class="text-end">
                 <v-rating
                   :model-value="recipe.rating"
                   hover
@@ -43,6 +43,7 @@
                 />
               </div>
               <div class="text-h6">{{ recipe.rating }}/</div><span>5</span>
+              <div class="text-black ml-5 text-right">Level: {{ recipe.difficulty }}</div>
             </v-toolbar>
             <v-card-subtitle>
               <div class="subtitle-row">Autor: {{ recipe.createdBy.name }}</div>
@@ -148,6 +149,6 @@ function cancel() {
 </script>
 <style scoped>
 .subtitle-row {
-  font-weight: lighter;
+  font-weight: initial;
 }
 </style>
