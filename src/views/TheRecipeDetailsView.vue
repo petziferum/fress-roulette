@@ -33,6 +33,16 @@
               <div class="text-center">
                 <span class="text-h6 mx-4">{{ recipe.recipeName }}</span>
               </div>
+              <div class="text-right">
+                <v-rating
+                  :model-value="recipe.rating"
+                  hover
+                  :length="5"
+                  color="blue"
+                  active-color="primary"
+                />
+              </div>
+              <div class="text-h6">{{ recipe.rating }}/</div><span>5</span>
             </v-toolbar>
             <v-row>
               <v-col cols="12" md="4">
