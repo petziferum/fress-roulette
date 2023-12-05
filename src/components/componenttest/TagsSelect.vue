@@ -22,6 +22,7 @@
               :items="tagItems"
               v-model="recipe.tags"
               v-model:search="searchValue"
+              v-model:active="searchValue"
               hide-selected
               label="Tags"
               @click="getTagItems"
@@ -85,7 +86,7 @@ function getTagItems(): void {
 }
 
 function addTagToRecipe(): void {
-  toast.success("Tag hinzugefügt", searchValue.value);
+  toast("Tag hinzugefügt: "+ searchValue.value);
   console.log("addTagToRecipe: ", searchValue.value);
   console.log("tagform value: ", searchField);
   if (!searchValue.value) {
@@ -93,8 +94,6 @@ function addTagToRecipe(): void {
   } else {
     recipe.value.tags.push(searchValue.value);
   }
-
-  searchValue.value = null;
 }
 </script>
 
