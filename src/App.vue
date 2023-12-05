@@ -28,7 +28,7 @@ import { useUserStore } from "@/stores/useUserStore";
 
 const isLoggedIn = ref(false);
 const stone = "https://firebasestorage.googleapis.com/v0/b/recipes-petzi.appspot.com/o/images%2Fbricks-3592117_1920.jpg?alt=media&token=84c59e67-cc3c-4028-8d33-2ba10b641de5"
-const marble = "https://firebasestorage.googleapis.com/v0/b/recipes-petzi.appspot.com/o/images%2Fmarble-4145542_1920.jpg?alt=media&token=fd94d6f1-9d6e-4652-92cb-6051504bd559"
+
 onBeforeMount(() => {
   let auth = getAuth();
   const userState = useUserStore();
