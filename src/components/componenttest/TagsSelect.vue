@@ -27,7 +27,9 @@
               @click="getTagItems"
             ></v-autocomplete
           ></v-col>
-          <v-col cols="2"><v-btn block variant="outlined" height="70%" rounded="0" type="submit">speichern</v-btn></v-col>
+          <v-col cols="2">
+            <v-btn block variant="outlined" height="70%" rounded="0" type="submit">Add</v-btn>
+          </v-col>
         </v-row>
       </v-form>
     </v-card-text>
@@ -44,11 +46,13 @@
 
 <script setup lang="ts">
 import { computed, ref } from "vue";
-import { db, getCollection } from "@/plugins/firebase";
+import { getCollection } from "@/plugins/firebase";
+import { toast } from "vue3-toastify";
 
 const props = defineProps(["modelValue"]);
 const emitValue = defineEmits(["update:modelValue"]);
-
+const tagform = ref();
+const searchField = ref();
 const tagItems = ref<string[]>(["erster Tag"]);
 const searchValue = ref();
 const model = ref();
@@ -81,9 +85,10 @@ function getTagItems(): void {
 }
 
 function addTagToRecipe(): void {
-  console.log("add ", searchValue.value);
+  toast.success("Tag hinzugefügt", searchValue.value);
+  console.log("addTagToRecipe: ", searchValue.value);
+  console.log("tagform value: ", searchField);
   if (!searchValue.value) {
-    message("leerer String");
     console.info("leerer String");
   } else {
     recipe.value.tags.push(searchValue.value);

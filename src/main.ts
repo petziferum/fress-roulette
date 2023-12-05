@@ -4,24 +4,20 @@ import router from "./router";
 import vuetify from "./plugins/vuetify";
 import { loadFonts } from "./plugins/webfontloader";
 import { createPinia } from "pinia";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { useUserStore } from "@/stores/useUserStore";
+import Vue3Toastify, { type ToastContainerOptions } from "vue3-toastify";
 
 const pinia = createPinia();
 loadFonts();
-/*
-createApp(App)
-  .use(router)
-  .use(pinia)
-  .use(vuetify)
-  .mount("#app");
-*/
 
 const app = createApp(App);
 app.config.errorHandler = (err, vm, info) => {
   console.error(`Error: ${err.toString()}\nInfo: ${info}`);
 };
+
 app.use(router);
 app.use(pinia);
 app.use(vuetify);
+app.use(Vue3Toastify, {
+  autoClose: 3000,
+} as ToastContainerOptions);
 app.mount("#app");
