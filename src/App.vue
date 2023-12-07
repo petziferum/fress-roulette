@@ -40,7 +40,7 @@ onBeforeMount(() => {
 </script>
 <style>
 .background {
-  background-size: contain;
+  background-size: cover;
   background-repeat: repeat-y;
   background-position: center center;
   background-attachment: fixed;
