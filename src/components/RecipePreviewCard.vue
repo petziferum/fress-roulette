@@ -92,7 +92,7 @@ const image = "src/assets/whisky.jpg";
   margin: 2em;
   transition: all 0.3s ease-in-out;
   transform: scale(1.1);
-  transform: translateX(10px);
+  transform: translatey(-10px);
   box-shadow: 0 0 10px 10px rgba(70,150,255, 0.5) !important;
 }
 .card-image {
