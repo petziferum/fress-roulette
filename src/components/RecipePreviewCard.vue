@@ -1,69 +1,80 @@
 <template>
-  <v-card
-    elevation="8"
-    rounded="xl"
-    class="base-card"
-    link
-    @click="$emit('viewRecipe')"
-  >
-    <v-row no-gutters>
-      <v-col cols="4">
-        <v-img cover class="card-image" :src="recipe.imageSrc" />
-      </v-col>
-      <v-col cols="8">
-        <v-card-item>
-          <v-card-title>{{ recipe.recipeName }}</v-card-title>
-        </v-card-item>
-        <v-card-text>
-          <v-row align="center" class="mx-0">
-            <v-rating
-              :value="recipe?.rating"
-              dense
-              half-increments
-              readonly
-              color="amber"
-              background-color="grey lighten-2"
-              class="mr-2"
-            ></v-rating>
-          </v-row>
-          <v-row>
-            <v-col cols="12">
-              <v-chip
-                size="small"
-                v-for="t in recipe?.tags"
-                :key="t"
-                class="mr-1"
-                >{{ t }}</v-chip
-              >
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col cols="12">
-              Zutaten:
-              <p>
-                <v-chip-group>
+  <v-hover>
+    <template v-slot:default="{ isHovering, props }">
+      <v-card
+        v-bind="props"
+        :elevation="isHovering ? 10 : 2"
+        rounded="xl"
+        :class="isHovering ? 'base-card-hover' : 'base-card'"
+        :color="isHovering ? 'blue' : 'white'"
+        link
+        @click="$emit('viewRecipe')"
+      >
+        <v-row no-gutters>
+          <v-col cols="4">
+            <v-img
+              cover
+              class="card-image"
+              :width="isHovering ? '400px' : '300px'"
+              :src="recipe.imageSrc"
+            />
+          </v-col>
+          <v-col cols="8">
+            <v-card-item>
+              <v-card-title>{{ recipe.recipeName }}</v-card-title>
+            </v-card-item>
+            <v-card-text>
+              <v-row align="center" class="mx-0">
+                <v-rating
+                  :value="recipe?.rating"
+                  dense
+                  half-increments
+                  readonly
+                  color="amber"
+                  background-color="grey lighten-2"
+                  class="mr-2"
+                ></v-rating>
+              </v-row>
+              <v-row>
+                <v-col cols="12">
                   <v-chip
-                    v-for="i in recipe?.ingredients"
-                    :key="i"
-                    variant="outlined"
-                    rounded="0"
                     size="small"
-                    >{{ i.name }}</v-chip
+                    v-for="t in recipe?.tags"
+                    :key="t"
+                    class="mr-1"
+                    >{{ t }}</v-chip
                   >
-                </v-chip-group>
-              </p>
-            </v-col>
-          </v-row>
-        </v-card-text>
-        <v-card-item>
-          <v-avatar size="30" class="mr-2">
-            <v-icon color="grey">mdi-account-cowboy-hat</v-icon>
-          </v-avatar>
-          {{ recipe.createdBy.name }}
-        </v-card-item>
-      </v-col>
-    </v-row>
-  </v-card>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col cols="12">
+                  Zutaten: hover: {{ isHovering }}
+                  <p>
+                    <v-chip-group>
+                      <v-chip
+                        v-for="i in recipe?.ingredients"
+                        :key="i"
+                        variant="outlined"
+                        rounded="0"
+                        size="small"
+                        >{{ i.name }}</v-chip
+                      >
+                    </v-chip-group>
+                  </p>
+                </v-col>
+              </v-row>
+            </v-card-text>
+            <v-card-item>
+              <v-avatar size="30" class="mr-2">
+                <v-icon color="grey">mdi-account-cowboy-hat</v-icon>
+              </v-avatar>
+              {{ recipe.createdBy.name }}
+            </v-card-item>
+          </v-col>
+        </v-row>
+      </v-card>
+    </template>
+  </v-hover>
 </template>
 
 <script setup lang="ts">
@@ -75,7 +86,15 @@ const image = "src/assets/whisky.jpg";
 
 <style scoped>
 .base-card {
-  margin: 1em;
+  margin: 2em;
+}
+.base-card-hover {
+  margin: 2em;
+  margin-left: 2em;
+  margin-right: 2em;
+  transition: all 0.3s ease-in-out;
+  transform: scale(1.1);
+  box-shadow: 0 0 10px 10px rgba(70,150,255, 0.5) !important;
 }
 .card-image {
   height: 100%;
