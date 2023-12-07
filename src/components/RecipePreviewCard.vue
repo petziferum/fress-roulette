@@ -48,7 +48,7 @@
               </v-row>
               <v-row>
                 <v-col cols="12">
-                  Zutaten: hover: {{ isHovering }}
+                  Zutaten:
                   <p>
                     <v-chip-group>
                       <v-chip
