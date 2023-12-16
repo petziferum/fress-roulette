@@ -42,9 +42,7 @@ export default class RecipeServiceApi {
   }
 
   public static async getRecipes(): Promise<Array<Recipe>> {
-    const c = await getDocs(
-      collection(db, "recipes").withConverter(recipeConverter)
-    );
+    const c = await getDocs(collection(db, "recipes").withConverter(recipeConverter));
     const a: Recipe[] = [];
     c.forEach((el) => a.push(el.data()));
     return a;

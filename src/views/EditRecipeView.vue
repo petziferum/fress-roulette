@@ -17,8 +17,6 @@
         :src="recipe.imageSrc ? recipe.imageSrc : dummyImg"
         class="recipeImage"
         cover
-        width="350"
-        height="150"
       />
       <v-card-title>{{ recipe.recipeName }}</v-card-title>
       <v-card-subtitle
@@ -26,14 +24,16 @@
         CreatedBy: {{ recipe.createdBy }}<br />
         <div>Erstellt am: {{ recipe.time }}</div></v-card-subtitle
       >
-      <v-card-actions>
+      <v-card-text class="my-5 bg-blue-accent-1">
         <v-btn
           v-for="(entry, index) in components"
+          variant="outlined"
+          elevation="2"
           :key="index"
           @click="setPhotoComponent(entry.component)"
           >{{ entry.text }}</v-btn
         >
-      </v-card-actions>
+      </v-card-text>
       <component :is="currentComponent" />
       ImageSrc: {{ recipe.imageSrc }}
       <template v-if="!editMode">
@@ -130,10 +130,14 @@ onMounted(() => {
 
 <style scoped>
 .recipeImage {
+  z-index:2;
   position: relative;
   float: right;
+  width:450px;
+  height:180px;
   top: 0;
   right: 0;
   border: 3px solid black;
+  border-radius: 15px;
 }
 </style>
