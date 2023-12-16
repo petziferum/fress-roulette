@@ -13,7 +13,6 @@
             dense
             @change="onFileInput"
           ></v-file-input>
-          <v-btn @click="uploadImage">upload</v-btn>
           <v-alert
             v-if="uploadStatus"
             :color="uploadStatus.type"
@@ -26,16 +25,18 @@
         </v-form>
       </v-card-text>
       <v-card-text v-if="fileinput">
-        <div height="100px">
+        <div height="100px" class="border">
           <v-img
-            style="border: 1px solid grey"
-            aspect-ratio="1"
-            max-width="100px"
-            contain
+            style="border: 5px; border-radius: 30px"
+            max-height="800px"
+            cover
             :src="imgsrc"
           ></v-img>
         </div>
       </v-card-text>
+      <v-card-actions>
+        <v-btn @click="uploadImage" block elevation="5" style="background-color:#699fda; color: white;" variant="elevated">upload</v-btn>
+      </v-card-actions>
     </v-card>
   </v-container>
 </template>

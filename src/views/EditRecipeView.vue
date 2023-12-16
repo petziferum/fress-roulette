@@ -11,7 +11,6 @@
             :recipe="recipe"
             @delete-recipe="deleteRecipe"
           />
-          <v-btn @click="showtoast">toast</v-btn>
         </v-toolbar-items>
       </v-toolbar>
       <v-img
@@ -124,10 +123,6 @@ function setPetziAsCreator(): void {
   saveUpdateRecipe();
 }
 
-function showtoast(): void {
-  const url = "https://www.youtube.com/watch?v=QH2-TGUlwu4";
-  toast.info("File uploaded! \n"+`${url}`, { dangerouslyHTMLString: true });
-}
 onMounted(() => {
   recipeStore.loadEditRecipe(route.params.id as string);
   recipe.value.id = route.params.id as string;
