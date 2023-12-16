@@ -2,13 +2,6 @@
   <v-card variant="outlined">
     <v-card-title>Photo Selction</v-card-title>
     <v-card-text>
-      <v-row>
-        <v-col>
-          <v-btn>Speichern</v-btn>
-        </v-col>
-      </v-row>
-    </v-card-text>
-    <v-card-text>
       <div class="imageGrid">
         <div class="elevatetImage" v-for="img in imageList" :key="img">
           <v-img :src="img" cover>

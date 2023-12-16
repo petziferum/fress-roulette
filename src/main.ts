@@ -21,5 +21,6 @@ app.use(pinia);
 app.use(vuetify);
 app.use(Vue3Toastify, {
   autoClose: 3000,
+  theme: "colored",
 } as ToastContainerOptions);
 app.mount("#app");

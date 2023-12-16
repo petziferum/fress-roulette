@@ -14,7 +14,13 @@
             @change="onFileInput"
           ></v-file-input>
           <v-btn @click="uploadImage">upload</v-btn>
-          <v-alert v-if="uploadStatus" :color="uploadStatus.type" class="mt-4" dense dismissible>
+          <v-alert
+            v-if="uploadStatus"
+            :color="uploadStatus.type"
+            class="mt-4"
+            dense
+            dismissible
+          >
             {{ uploadStatus.message }}
           </v-alert>
         </v-form>
@@ -34,13 +40,22 @@
   </v-container>
 </template>
 <script setup lang="ts">
+import { toast } from "vue3-toastify";
+
 interface UploadStatus {
   type: string;
   message: string;
 }
 
 import { ref } from "vue";
-import { getStorage, ref as fireRef, uploadBytes } from "firebase/storage";
+import {
+  getDownloadURL,
+  getStorage,
+  ref as fireRef,
+  uploadBytes,
+} from "firebase/storage";
+import { useRecipeStore } from "@/stores/useRecipeStore";
+import RecipeServiceApi from "@/api/recipeServiceApi";
 const fileRules = [(v) => !!v || "File is required"];
 const fileinput = ref();
 const storage = getStorage();
@@ -49,7 +64,7 @@ const loading = ref(false);
 const imgsrc = ref("");
 const MAX_FILE_SIZE = 8 * 1024 * 1024; // 10MB
 const folder = "recipes/";
-
+const recipeStore = useRecipeStore();
 const onFileInput = () => {
   const input = fileinput.value;
   if (input && input.files && input.files.length > 0) {
@@ -57,7 +72,14 @@ const onFileInput = () => {
     if (file.size > MAX_FILE_SIZE) {
       uploadStatus.value = { type: "error", message: "File too large!" };
       return;
-    } else uploadStatus.value = { type: "success", message: `File selected with size: ${(file.size/ (1024 * 1024)).toFixed(2)} MB` };
+    } else
+      uploadStatus.value = {
+        type: "success",
+        message: `File selected with size: ${(
+          file.size /
+          (1024 * 1024)
+        ).toFixed(2)} MB`,
+      };
     const fileReader = new FileReader();
     fileReader.onload = (e) => {
       imgsrc.value = e.target?.result as string;
@@ -67,24 +89,17 @@ const onFileInput = () => {
 };
 const uploadImage = async () => {
   const file = fileinput.value.files[0];
-  const storageRef = fireRef(storage, folder + file.name);
   if (!file) {
     uploadStatus.value = { type: "error", message: "No file selected!" };
     return;
   }
-  loading.value = true;
-  try {
-    await uploadBytes(storageRef, file).then((snapshot) => {
-      console.log("Uploaded a blob or file!", snapshot);
-      uploadStatus.value = { type: "success", message: `File +${file.name}+ uploaded!"` };
-    });
-  } catch (error) {
-    console.log("Fehler: ", error);
-    uploadStatus.value = { type: "error", message: error.message };
-  } finally {
+  recipeStore.recipesLoading = true;
+  await RecipeServiceApi.uploadNewRecipeImage(file).then((url) => {
+    recipeStore.updateRecipeImage(url);
+    toast.success("File uploaded! \n"+`${url}`, { icon: "mdi-fire", dangerouslyHTMLString: true });
+    uploadStatus.value = {type: "success", message: `Datei unter ${url} hochgeladen.`};
     reset();
-    loading.value = false;
-  }
+  });
 };
 const reset = () => {
   fileinput.value = "";

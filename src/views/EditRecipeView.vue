@@ -11,6 +11,7 @@
             :recipe="recipe"
             @delete-recipe="deleteRecipe"
           />
+          <v-btn @click="showtoast">toast</v-btn>
         </v-toolbar-items>
       </v-toolbar>
       <v-img
@@ -77,6 +78,7 @@ import ThePhotoUploadComponent from "@/components/componenttest/ThePhotoUploadCo
 import photoSelectComponent from "@/components/photoSelectComponent.vue";
 import { useRecipeStore } from "@/stores/useRecipeStore";
 import DeleteButtonDialog from "@/components/DeleteButtonDialog.vue";
+import { toast } from "vue3-toastify";
 
 const recipeStore = useRecipeStore();
 const editMode = ref(false);
@@ -122,6 +124,10 @@ function setPetziAsCreator(): void {
   saveUpdateRecipe();
 }
 
+function showtoast(): void {
+  const url = "https://www.youtube.com/watch?v=QH2-TGUlwu4";
+  toast.info("File uploaded! \n"+`${url}`, { dangerouslyHTMLString: true });
+}
 onMounted(() => {
   recipeStore.loadEditRecipe(route.params.id as string);
   recipe.value.id = route.params.id as string;

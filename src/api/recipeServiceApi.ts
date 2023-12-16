@@ -10,9 +10,12 @@ import {
 import { recipeConverter } from "@/components/Models/Recipe.class";
 import { slugifyString } from "@/common/scripts";
 import { COLLECTION_NAME, db } from "@/plugins/firebase";
-import { getStorage, ref, listAll, getDownloadURL } from "firebase/storage";
+import { getStorage, ref, listAll, getDownloadURL, ref as fireRef, uploadBytes } from "firebase/storage";
 import router from "@/router";
+import { toast } from "vue3-toastify";
+
 const IMAGE_FOLDER = "recipes";
+const storage = getStorage();
 
 export default class RecipeServiceApi {
   public static async deleteRecipe(recipeId: string): Promise<void> {
@@ -86,7 +89,6 @@ export default class RecipeServiceApi {
   }
 
   public static getAllRecipeImages(): Promise<string[]> {
-    const storage = getStorage();
     const recipeRef = ref(storage, IMAGE_FOLDER);
     return listAll(recipeRef)
       .then((res) => {
@@ -97,5 +99,18 @@ export default class RecipeServiceApi {
         console.log("error", error);
         return []; // Return an empty array in case of error
       });
+  }
+
+  public static async uploadNewRecipeImage(file: any): Promise<string> {
+    const folder = IMAGE_FOLDER + "/";
+    const storageRef = fireRef(storage, folder + file.name);
+    try {
+      const snapshot = await uploadBytes(storageRef, file);
+      const downloadUrl = await getDownloadURL(snapshot.ref);
+      console.log("Uploaded a blob or file!", downloadUrl);
+      return downloadUrl;
+    } catch (error) {
+      console.log("Fehler: ", error);
+    }
   }
 }

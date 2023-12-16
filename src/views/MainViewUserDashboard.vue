@@ -89,7 +89,6 @@ import { useUserStore } from "@/stores/useUserStore";
 import WrapperPanel from "@/components/componenttest/WrapperPanel.vue";
 import RecipeDataTable from "@/components/RecipeDataTable.vue";
 //Todo: Add Recipe funktioniert noch nicht. Daten werden in der Edit View nicht übernommen
-//Auch die Image Upload Funktionalität muss überarbeitet werden.
 const router = useRouter();
 const alert = ref(false);
 const alertMessage = ref<string | null>(null);

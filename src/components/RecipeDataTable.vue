@@ -2,7 +2,8 @@
   <v-data-table
     :headers="headers"
     :items="userRecipes"
-    :items-per-page="15"
+    :items-per-page="-1"
+    :sort-by="['Rezept Name']"
     class="elevation-1"
     width="100%"
   >
