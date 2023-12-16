@@ -12,14 +12,14 @@
     "type-check": "vue-tsc --noEmit"
   },
   "dependencies": {
-    "@mdi/font": "5.9.55",
+    "@mdi/font": "7.3.67",
     "firebase": "9.15.0",
-    "pinia": "^2.0.28",
+    "pinia": "^2.0.29",
     "roboto-fontface": "*",
-    "vue": "^3.3.8",
-    "vue-router": "^4.2.5",
+    "vue": "^3.3.10",
+    "vue-router": "^4.0.12",
     "vue3-toastify": "^0.1.14",
-    "vuetify": "^3.4.3",
+    "vuetify": "^3.4.5",
     "webfontloader": "^1.0.0"
   },
   "devDependencies": {
