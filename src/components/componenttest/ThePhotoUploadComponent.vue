@@ -48,9 +48,9 @@ const uploadStatus = ref<UploadStatus | null>(null);
 const loading = ref(false);
 const imgsrc = ref("");
 const MAX_FILE_SIZE = 8 * 1024 * 1024; // 10MB
-const folder = "images/";
+const folder = "recipes/";
 
-const onFileInput = (event) => {
+const onFileInput = () => {
   const input = fileinput.value;
   if (input && input.files && input.files.length > 0) {
     const file = input.files[0];
@@ -76,9 +76,10 @@ const uploadImage = async () => {
   try {
     await uploadBytes(storageRef, file).then((snapshot) => {
       console.log("Uploaded a blob or file!", snapshot);
+      uploadStatus.value = { type: "success", message: `File +${file.name}+ uploaded!"` };
     });
   } catch (error) {
-    console.log("error: ", error);
+    console.log("Fehler: ", error);
     uploadStatus.value = { type: "error", message: error.message };
   } finally {
     reset();

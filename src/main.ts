@@ -1,16 +1,17 @@
-import { createApp, onBeforeMount } from "vue";
+import { createApp } from "vue";
 import App from "./App.vue";
 import router from "./router";
 import vuetify from "./plugins/vuetify";
 import { loadFonts } from "./plugins/webfontloader";
 import { createPinia } from "pinia";
 import Vue3Toastify, { type ToastContainerOptions } from "vue3-toastify";
-import 'vue3-toastify/dist/index.css';
+import "vue3-toastify/dist/index.css";
 
 const pinia = createPinia();
 loadFonts();
 
 const app = createApp(App);
+
 app.config.errorHandler = (err, vm, info) => {
   console.error(`Error: ${err.toString()}\nInfo: ${info}`);
 };
