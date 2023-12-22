@@ -42,9 +42,6 @@
         </v-card>
       </v-col>
     </v-row>
-    <v-row>
-
-    </v-row>
     <v-row no-gutters>
       <template v-if="store.getSortedRecipeList().length > 0">
         <v-col
