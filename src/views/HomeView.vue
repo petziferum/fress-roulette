@@ -9,6 +9,7 @@
               label="Sche"
               variant="outlined"
               v-model="store.searchQuery"
+              clearable="true"
             ></v-text-field>
             <v-btn
               variant="tonal"
