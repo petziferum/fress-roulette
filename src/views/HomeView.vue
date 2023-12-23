@@ -9,7 +9,8 @@
               label="Sche"
               variant="outlined"
               v-model="store.searchQuery"
-              clearable="true"
+              append-inner-icon="mdi-close"
+              @click:append-inner="store.searchQuery = ''"
             ></v-text-field>
             <v-btn
               variant="tonal"
