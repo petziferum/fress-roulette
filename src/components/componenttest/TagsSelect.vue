@@ -22,9 +22,9 @@
               :items="tagItems"
               v-model="recipe.tags"
               v-model:search="searchValue"
-              v-model:active="searchValue"
               label="Tags"
               @click="getTagItems"
+              @update:focused="addTagToRecipe"
             ></v-autocomplete
           ></v-col>
           <v-col cols="2">
