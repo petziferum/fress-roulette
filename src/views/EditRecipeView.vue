@@ -35,7 +35,7 @@
       </v-card-text>
       <component :is="currentComponent" />
       ImageSrc: {{ recipe.imageSrc }}
-      <template v-if="!editMode">
+
         <v-form ref="recipeForm">
           <v-row>
             <v-col>
@@ -57,7 +57,6 @@
           <v-card-title>Zubereitungsschritte</v-card-title>
           <component-recipe-description v-model="recipe" />
         </v-card-text>
-      </template>
       {{ recipe }}
     </v-card>
   </v-container>
@@ -79,7 +78,6 @@ import DeleteButtonDialog from "@/components/DeleteButtonDialog.vue";
 import { toast } from "vue3-toastify";
 
 const recipeStore = useRecipeStore();
-const editMode = ref(false);
 const recipe = computed(() => {
   return recipeStore.editRecipe;
 });
