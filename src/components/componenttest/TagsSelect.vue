@@ -23,7 +23,6 @@
               v-model="recipe.tags"
               v-model:search="searchValue"
               v-model:active="searchValue"
-              hide-selected
               label="Tags"
               @click="getTagItems"
             ></v-autocomplete
@@ -40,7 +39,6 @@
         <li>model: {{ model }}</li>
         <li>rezept: {{ recipe }}</li>
       </ul>
-      log: {{ message() }}
     </v-card-text>
   </v-card>
 </template>
@@ -55,7 +53,7 @@ const emitValue = defineEmits(["update:modelValue"]);
 const tagform = ref();
 const searchField = ref();
 const tagItems = ref<string[]>(["erster Tag"]);
-const searchValue = ref();
+const searchValue = ref("");
 const model = ref();
 
 const recipe = computed({
@@ -66,13 +64,6 @@ const recipe = computed({
     emitValue("update:modelValue", value);
   },
 });
-
-function message(value: string): string {
-  setTimeout(() => {
-    value = "asdfa"
-  }, 1000)
-  return "laksjdöflkjasdf";
-}
 
 function getTagItems(): void {
   console.log("getTagItems");
