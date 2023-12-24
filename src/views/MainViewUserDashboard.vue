@@ -44,18 +44,25 @@
               </div>
             </v-col>
           </v-row>
-          <v-row>
+          <v-row ref="Userdaten">
             <v-col cols="12">
-              <v-table density="compact">
-                <tr v-for="(value, key) in user" :key="key">
-                  <th>
-                    {{ key }}
-                  </th>
-                  <td>
-                    {{ value }}
-                  </td>
-                </tr>
-              </v-table>
+              <v-expansion-panels>
+                <v-expansion-panel>
+                  <v-expansion-panel-title>Daten</v-expansion-panel-title>
+                  <v-expansion-panel-text>
+                    <v-table density="compact">
+                      <tr v-for="(value, key) in user" :key="key">
+                        <th>
+                          {{ key }}
+                        </th>
+                        <td>
+                          {{ value }}
+                        </td>
+                      </tr>
+                    </v-table>
+                  </v-expansion-panel-text>
+                </v-expansion-panel>
+              </v-expansion-panels>
             </v-col>
           </v-row>
           <v-card-actions>
