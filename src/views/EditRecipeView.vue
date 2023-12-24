@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-card>
+    <v-card :title="recipe.recipeName">
       <v-toolbar>
         <v-toolbar-items>
           <v-btn variant="text" @click="$router.go(-1)">Zurück</v-btn>
@@ -18,7 +18,6 @@
         class="recipeImage"
         cover
       />
-      <v-card-title>{{ recipe.recipeName }}</v-card-title>
       <v-card-subtitle
         >ID: {{ recipe.id }}<br />
         CreatedBy: {{ recipe.createdBy }}<br />
@@ -134,11 +133,9 @@ onMounted(() => {
   z-index:2;
   position: relative;
   float: right;
-  width:450px;
-  height:180px;
+  width:100%;
+  height:250px;
   top: 0;
   right: 0;
-  border: 3px solid black;
-  border-radius: 15px;
 }
 </style>
