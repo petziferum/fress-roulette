@@ -45,7 +45,8 @@
 
 <script setup lang="ts">
 import { computed, ref } from "vue";
-import { getCollection } from "@/plugins/firebase";
+import { db, getCollection } from "@/plugins/firebase";
+import { updateDoc, doc } from "firebase/firestore";
 import { toast } from "vue3-toastify";
 
 const props = defineProps(["modelValue"]);
@@ -65,6 +66,34 @@ const recipe = computed({
   },
 });
 
+function addTagToRecipe(): void {
+  if (!searchValue.value) {
+    return;
+  } else {
+    handleNewTag(searchValue.value)
+    recipe.value.tags.includes(searchValue.value) ? recipe.value.tags : recipe.value.tags.push(searchValue.value);
+    toast("Tag zu Rezept hinzugefügt: "+ searchValue.value);
+  }
+}
+
+function handleNewTag(inputTag: string): void {
+  if(inputTag === "") return;
+  const newTag = !tagItems.value.includes(inputTag);
+  if(newTag) {
+    saveTagToFirestoreCollection(inputTag)
+  }
+}
+
+function saveTagToFirestoreCollection(newTag: string): void {
+  const tagDoc = doc(db, "tags", "allTags");
+  updateDoc(tagDoc, {
+    tags: [...tagItems.value, newTag],
+  }).then(() => {
+    toast("Neuer Tag '" + newTag + "' in Firebase gespeichert");
+    getTagItems();
+});
+}
+
 function getTagItems(): void {
   console.log("getTagItems");
   getCollection("tags").then((res) => {
@@ -76,16 +105,7 @@ function getTagItems(): void {
   });
 }
 
-function addTagToRecipe(): void {
-  toast("Tag hinzugefügt: "+ searchValue.value);
-  console.log("addTagToRecipe: ", searchValue.value);
-  console.log("tagform value: ", searchField);
-  if (!searchValue.value) {
-    console.info("leerer String");
-  } else {
-    recipe.value.tags.push(searchValue.value);
-  }
-}
+
 </script>
 
 <style scoped></style>
