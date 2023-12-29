@@ -90,7 +90,7 @@ const components = [
   { text: "Select Photo", component: photoSelectComponent },
   { text: "Upload new Photo", component: ThePhotoUploadComponent },
 ];
-// Todo: Edit Recipe Seite mit Schwierigkeit und Tags überarbeiten
+
 
 
 function setPhotoComponent(component: any): void {
