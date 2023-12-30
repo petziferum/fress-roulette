@@ -36,36 +36,43 @@
       <component :is="currentComponent" />
       ImageSrc: {{ recipe.imageSrc }}
 
-        <v-form ref="recipeForm">
-          <v-row>
-            <v-col>
-              <v-text-field label="Rezept Name" v-model="recipe.recipeName" />
-            </v-col>
-          </v-row>
-        </v-form>
-        <v-card-text>
-          <tags-select v-model="recipe" />
-        </v-card-text>
-        <v-card-actions> Rating: {{ recipe.rating }} </v-card-actions>
-        <v-card-text>
-          Zutaten
-          <component-zutat v-model="recipe" />
-        </v-card-text>
+      <v-form ref="recipeForm">
+        <v-row>
+          <v-col>
+            <v-text-field label="Rezept Name" v-model="recipe.recipeName" />
+          </v-col>
+        </v-row>
+      </v-form>
+      <v-card-text>
+        <tags-select v-model="recipe" />
+      </v-card-text>
+      <v-card-actions>
+        Rating: {{ recipe.rating }}
+        <v-slider
+          v-model="recipe.rating"
+          max="10"
+          step="0.5"
+          thumb-label
+        ></v-slider>
+      </v-card-actions>
+      <v-card-text>
+        Zutaten
+        <component-zutat v-model="recipe" />
+      </v-card-text>
 
-        <!--- Zubereitungsschritte -->
-        <v-card-text>
-          <v-card-title>Zubereitungsschritte</v-card-title>
-          <component-recipe-description v-model="recipe" />
-        </v-card-text>
+      <!--- Zubereitungsschritte -->
+      <v-card-text>
+        <v-card-title>Zubereitungsschritte</v-card-title>
+        <component-recipe-description v-model="recipe" />
+      </v-card-text>
       {{ recipe }}
     </v-card>
   </v-container>
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeMount, onMounted, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import Recipe from "@/components/Models/Recipe.class";
 import RecipeServiceApi from "@/api/recipeServiceApi";
 import { VForm } from "vuetify/components";
 import ComponentZutat from "@/components/EditRecipe/ComponentZutat.vue";
@@ -91,10 +98,9 @@ const components = [
   { text: "Upload new Photo", component: ThePhotoUploadComponent },
 ];
 
-
-
 function setPhotoComponent(component: any): void {
-  currentComponent.value = component;H
+  currentComponent.value = component;
+  H;
 }
 
 function saveUpdateRecipe(): void {
@@ -128,11 +134,11 @@ onMounted(() => {
 
 <style scoped>
 .recipeImage {
-  z-index:2;
+  z-index: 2;
   position: relative;
   float: right;
-  width:100%;
-  height:250px;
+  width: 100%;
+  height: 250px;
   top: 0;
   right: 0;
 }
