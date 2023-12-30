@@ -175,7 +175,7 @@ export const recipeConverter = {
         : [],
       imageSrc: recipe.imageSrc ? recipe.imageSrc : "",
       tags: recipe.tags ? recipe.tags : [],
-      rating: recipe.rating ? recipe.rating : 3,
+      rating: recipe.rating ? recipe.rating : 0,
     };
   },
   fromFirestore: (snapshot, options) => {
@@ -209,7 +209,7 @@ export const recipeConverter = {
       .withDescription(recipe.description)
       .withRecipeDescription(recipe.recipeDescription)
       .withTags(recipe.tags)
-      .withRating(3.8)
+      .withRating(recipe.rating ?? 0)
       .withActive(recipe.active)
       .withDifficulty(recipe.difficulty)
       .withMeta(recipe.meta);

@@ -83,7 +83,7 @@ import photoSelectComponent from "@/components/photoSelectComponent.vue";
 import { useRecipeStore } from "@/stores/useRecipeStore";
 import DeleteButtonDialog from "@/components/DeleteButtonDialog.vue";
 import { toast } from "vue3-toastify";
-
+// ToDo: Rating schöner machen mit Farbwechsel und Sternchen.
 const recipeStore = useRecipeStore();
 const recipe = computed(() => {
   return recipeStore.editRecipe;
