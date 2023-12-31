@@ -46,15 +46,18 @@
       <v-card-text>
         <tags-select v-model="recipe" />
       </v-card-text>
-      <v-card-actions>
-        Rating: {{ recipe.rating }}
+      <v-card-text>
+        <div class="text-h2">Rating: {{ recipe.rating }}</div>
+
         <v-slider
           v-model="recipe.rating"
+          prepend-icon="mdi-emoticon-sick"
+          append-icon="mdi-star"
           max="10"
           step="0.5"
           thumb-label
         ></v-slider>
-      </v-card-actions>
+      </v-card-text>
       <v-card-text>
         Zutaten
         <component-zutat v-model="recipe" />
