@@ -39,12 +39,18 @@ const listItems = computed(() => {
 });
 </script>
 <style scoped>
-.itemslide:hover {
-  transform: translateX(10px);
-  transition: transform 0.3s ease-in-out;
-  background-image: linear-gradient(45deg, #ffffff 0%, #a6c1ee 51%, #ffffff 100%);
-}
 .itemslide {
-  transition: transform 0.3s ease-in-out;
+  transition: transform 0.3s ease-in-out, background-image 0.3s ease-in-out;
 }
+
+.itemslide:hover {
+  transition: transform 0.3s ease-in-out;
+  transform: translateX(10px);
+  background-image: radial-gradient(
+    ellipse at center,
+    rgba(95, 202, 193, 0.5) 0%,
+    rgba(255, 255, 255, 0.9) 70%
+  );
+}
+
 </style>
