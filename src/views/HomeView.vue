@@ -26,10 +26,10 @@
               variant="tonal"
               size="x-small"
               class="mr-1"
-              v-for="letter in letters"
-              @click.prevent="store.searchQuery = letter"
-              :key="letter"
-              >{{ letter }}</v-btn
+              v-for="tag in tags"
+              @click.prevent="store.searchQuery = tag"
+              :key="tag"
+              >{{ tag }}</v-btn
             >
           </v-card-subtitle>
           <div>
@@ -83,6 +83,7 @@ const store = useRecipeStore();
 const loading = ref(false);
 const recipesList = ref<Recipe[]>([]);
 const letters = ref("ABCDEFGHIJKLMNOPQRSTUVWXYZ".split(""));
+const tags = ref<string[]>(["Deftig", "Carbs","Fisch", "Süß", "Scharf", "Vegetarisch"]);
 const selectedLetter = ref("");
 
 function routeToRecipe(recipe: Recipe): void {

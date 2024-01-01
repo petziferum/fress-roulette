@@ -70,9 +70,11 @@ export const useRecipeStore = defineStore("recipeStore", () => {
   }
   function getSortedRecipeList(): Recipe[] {
     recipesLoading.value = true;
-    const filteredList = allRecipes.value.filter((recipe) =>
-      recipe.recipeName?.toLowerCase().includes(searchQuery.value.toLowerCase())
+    const filteredList = allRecipes.value;
+      /*.filter((recipe) =>
+      recipe.tags?.includes(searchQuery.value)
     );
+       */
 
     const sortedList = filteredList.sort((a, b) => {
       const nameA = a.recipeName?.toLowerCase();

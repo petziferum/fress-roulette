@@ -48,16 +48,16 @@
               </v-row>
               <v-row>
                 <v-col cols="12">
-                  Zutaten:
+                  Tags:
                   <p>
                     <v-chip-group>
                       <v-chip
-                        v-for="i in recipe?.ingredients"
+                        v-for="i in recipe?.tags"
                         :key="i"
                         variant="outlined"
                         rounded="0"
                         size="small"
-                        >{{ i.name }}</v-chip
+                        >{{ i }}</v-chip
                       >
                     </v-chip-group>
                   </p>
