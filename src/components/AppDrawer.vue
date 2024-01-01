@@ -1,14 +1,17 @@
 <template>
   <v-navigation-drawer v-model="drawerState" :temporary="true" order="2">
     <v-list>
-      <v-list-item
-        link
-        v-for="item in listItems"
-        :key="item.title"
-        :prepend-icon="item.icon"
-        :title="item.title"
-        :to="item.path"
-      />
+      <transition-group name="slide">
+        <v-list-item
+          link
+          class="itemslide"
+          v-for="item in listItems"
+          :key="item.title"
+          :prepend-icon="item.icon"
+          :title="item.title"
+          :to="item.path"
+        />
+      </transition-group>
     </v-list>
   </v-navigation-drawer>
 </template>
@@ -35,5 +38,13 @@ const listItems = computed(() => {
   });
 });
 </script>
-
-<style scoped></style>
+<style scoped>
+.itemslide:hover {
+  transform: translateX(10px);
+  transition: transform 0.3s ease-in-out;
+  background-image: linear-gradient(45deg, #ffffff 0%, #a6c1ee 51%, #ffffff 100%);
+}
+.itemslide {
+  transition: transform 0.3s ease-in-out;
+}
+</style>
