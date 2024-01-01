@@ -47,7 +47,7 @@
         <tags-select v-model="recipe" />
       </v-card-text>
       <v-card-text>
-        <div class="text-h2">Rating: {{ recipe.rating }}</div>
+        <div class="text-h4 text-shades-black">Rating: {{ recipe.rating }}</div>
 
         <v-slider
           v-model="recipe.rating"

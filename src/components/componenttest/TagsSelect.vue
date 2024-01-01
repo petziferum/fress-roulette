@@ -33,13 +33,6 @@
         </v-row>
       </v-form>
     </v-card-text>
-    <v-card-text>
-      <ul>
-        <li>searchValue: {{ searchValue }}</li>
-        <li>model: {{ model }}</li>
-        <li>rezept: {{ recipe }}</li>
-      </ul>
-    </v-card-text>
   </v-card>
 </template>
 
