@@ -6,7 +6,7 @@
           <v-card-title>HomeView</v-card-title>
           <v-card-subtitle>
             <v-text-field
-              label="Sche"
+              label="Search"
               variant="outlined"
               v-model="store.searchQuery"
               append-inner-icon="mdi-close"
@@ -27,7 +27,7 @@
               size="x-small"
               class="mr-1"
               v-for="tag in tags"
-              @click.prevent="store.searchQuery = tag"
+              @click.prevent="store.addFiltertag(tag)"
               :key="tag"
               >{{ tag }}</v-btn
             >
@@ -45,11 +45,11 @@
       </v-col>
     </v-row>
     <v-row no-gutters>
-      <template v-if="store.getSortedRecipeList().length > 0">
+      <template v-if="store.getFilteredRecipeList().length > 0">
         <v-col
           cols="12"
           lg="6"
-          v-for="r in store.getSortedRecipeList()"
+          v-for="r in store.getFilteredRecipeList()"
           :key="r.id"
         >
           <RecipePreviewCard @viewRecipe="routeToRecipe(r)" :recipe="r" />
@@ -101,6 +101,7 @@ const filteredRecipes = computed(() => {
   }
 });
 
+
 function fetchRecipes(): void {
   recipesList.value = [];
   loading.value = true;
@@ -109,7 +110,7 @@ function fetchRecipes(): void {
   console.log("fetchRecipes", store.allRecipes.values());
   setTimeout(() => {
     //store.allRecipes.forEach((r) => recipesList.value.push(r as Recipe));
-    recipesList.value = store.getSortedRecipeList();
+    recipesList.value = store.getFilteredRecipeList();
     loading.value = false;
   }, 500);
 }

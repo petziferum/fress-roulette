@@ -12,6 +12,7 @@ export const useRecipeStore = defineStore("recipeStore", () => {
   const editRecipe = ref<Recipe>(Recipe.createEmptyRecipe());
   const recipesLoading = ref(false);
   const searchQuery = ref("");
+  const filterTags = ref([]);
   const recipeImages = ref([]);
 
   const getAllRecipeImages = () => {
@@ -68,14 +69,18 @@ export const useRecipeStore = defineStore("recipeStore", () => {
     console.log("editRecipe", editRecipe.value);
     editRecipe.value.imageSrc = image;
   }
-  function getSortedRecipeList(): Recipe[] {
+  function addFiltertag(tag: string) {
+    if (!filterTags.value.includes(tag)) {
+      filterTags.value.push(tag);
+    }
+  }
+  function getFilteredRecipeList(): Recipe[] {
     recipesLoading.value = true;
     const filteredList = allRecipes.value;
-      /*.filter((recipe) =>
+    /*.filter((recipe) =>
       recipe.tags?.includes(searchQuery.value)
     );
        */
-
     const sortedList = filteredList.sort((a, b) => {
       const nameA = a.recipeName?.toLowerCase();
       const nameB = b.recipeName?.toLowerCase();
@@ -97,13 +102,15 @@ export const useRecipeStore = defineStore("recipeStore", () => {
   return {
     allRecipes,
     searchQuery,
-    getSortedRecipeList,
+    filterTags,
+    getFilteredRecipeList,
     loadAllRecipes,
     recipesLoading,
     loadRecipeById,
     viewRecipe,
     recipeImages,
     editRecipe,
+    addFiltertag,
     getAllRecipeImages,
     updateRecipeImage,
     createNewRecipe,
