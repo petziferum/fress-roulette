@@ -1,7 +1,7 @@
 <template>
   <v-dialog v-model="isOpen">
-    <template v-slot:activator>
-      <div class="rainbowbutton"></div>
+    <template v-slot:activator="{ props }">
+      <div class="rainbowbutton" v-bind="props"></div>
     </template>
     <v-card v-if="!loading">
       <v-card-title>Möchtest du ein neues Rezept erstellen?</v-card-title>
@@ -70,7 +70,8 @@ function createRecipe() {
   height: 50px;
   width: 100px;
   position: relative;
-  transform: translate(-150%, -50%);
+  margin-left: 50px;
+  transform: translate(-50%, -50%);
   top: 50%;
   left: 10%;
   border-radius: 5px;
