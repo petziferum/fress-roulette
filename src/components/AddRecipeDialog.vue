@@ -100,9 +100,9 @@ function createRecipe() {
     position: absolute;
     cursor: pointer;
     background-color: #1c1b29;
-    height: 93%;
+    height: 90%;
     width: 92%;
-    top: 3.5%;
+    top: 5%;
     left: 3.5%;
     border-radius: 5px;
     color: #ffffff;
