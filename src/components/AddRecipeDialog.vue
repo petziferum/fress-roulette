@@ -1,7 +1,7 @@
 <template>
   <v-dialog v-model="isOpen">
     <template v-slot:activator="{ props }">
-      <rainbow-button v-bind="props"/>
+      <rainbow-button v-bind="props" />
     </template>
     <v-card v-if="!loading">
       <v-card-title>Möchtest du ein neues Rezept erstellen?</v-card-title>
@@ -23,7 +23,9 @@
             <v-spacer />
             <v-tooltip text="Schließen ohne speichern" location="bottom">
               <template v-slot:activator="{ props }">
-            <v-btn variant="text" color="red" @click="cancel" v-bind="props">abbrechen</v-btn>
+                <v-btn variant="text" color="red" @click="cancel" v-bind="props"
+                  >abbrechen</v-btn
+                >
               </template>
             </v-tooltip>
             <v-btn variant="text" color="green" type="submit">weiter</v-btn>
