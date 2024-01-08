@@ -21,7 +21,11 @@
           {{ newRecipe.recipeName }}
           <v-card-actions>
             <v-spacer />
-            <v-btn variant="text" color="red" @click="cancel">abbrechen</v-btn>
+            <v-tooltip text="Schließen ohne speichern" location="bottom">
+              <template v-slot:activator="{ props }">
+            <v-btn variant="text" color="red" @click="cancel" v-bind="props">abbrechen</v-btn>
+              </template>
+            </v-tooltip>
             <v-btn variant="text" color="green" type="submit">weiter</v-btn>
           </v-card-actions>
         </v-form>
