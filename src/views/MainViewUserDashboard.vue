@@ -89,11 +89,10 @@
 <script lang="ts" setup>
 import { computed, onBeforeMount, ref } from "vue";
 import { getUserRecipe, user, logOut } from "@/plugins/firebase";
-import Recipe from "@/components/Models/Recipe.class";
+import type Recipe from "@/components/Models/Recipe.class";
 import { useRouter } from "vue-router";
 import AddRecipeDialog from "@/components/AddRecipeDialog.vue";
 import { useUserStore } from "@/stores/useUserStore";
-import WrapperPanel from "@/components/componenttest/WrapperPanel.vue";
 import RecipeDataTable from "@/components/RecipeDataTable.vue";
 const router = useRouter();
 const alert = ref(false);
