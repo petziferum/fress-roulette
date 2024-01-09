@@ -105,7 +105,6 @@ const components = [
 
 function setPhotoComponent(component: any): void {
   currentComponent.value = component;
-  H;
 }
 
 function saveUpdateRecipe(): void {
