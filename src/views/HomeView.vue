@@ -31,6 +31,13 @@
               :key="tag"
               >{{ tag }}</v-btn
             >
+            <v-btn
+              variant="tonal"
+              size="x-small"
+              class="mr-1"
+              @click.prevent="store.filterTags = []"
+              >Filter löschen</v-btn
+            >
           </v-card-subtitle>
           <div>
             <div style="height: 30px" class="text-center">
@@ -59,7 +66,7 @@
         <v-col cols="12">
           <v-card elevation="14" rounded="xl">
             <v-card-title
-              >Keine Rezepte mit Anfangsbuchstaben "{{ selectedLetter }}"
+              >Keine Rezepte mit Suchbegriff "{{ store.searchQuery }}" und Tag: "{{ store.filterTags }}"
               vorhanden</v-card-title
             >
             <v-card-text>
@@ -73,7 +80,7 @@
 </template>
 
 <script lang="ts" setup>
-import Recipe from "@/components/Models/Recipe.class";
+import type Recipe from "@/components/Models/Recipe.class";
 import { computed, onMounted, ref } from "vue";
 import { useRecipeStore } from "@/stores/useRecipeStore";
 import RecipePreviewCard from "@/components/RecipePreviewCard.vue";

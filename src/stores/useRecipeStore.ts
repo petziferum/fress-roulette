@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import RecipeServiceApi from "@/api/recipeServiceApi";
-import { ref } from "vue";
+import { type Ref, ref } from "vue";
 import { useRoute } from "vue-router";
 import Recipe from "@/components/Models/Recipe.class";
 
@@ -12,7 +12,7 @@ export const useRecipeStore = defineStore("recipeStore", () => {
   const editRecipe = ref<Recipe>(Recipe.createEmptyRecipe());
   const recipesLoading = ref(false);
   const searchQuery = ref("");
-  const filterTags = ref([]);
+  const filterTags: Ref<string[]> = ref([]);
   const recipeImages = ref([]);
 
   const getAllRecipeImages = () => {
@@ -76,11 +76,15 @@ export const useRecipeStore = defineStore("recipeStore", () => {
   }
   function getFilteredRecipeList(): Recipe[] {
     recipesLoading.value = true;
-    const filteredList = allRecipes.value;
-    /*.filter((recipe) =>
-      recipe.tags?.includes(searchQuery.value)
+    let filteredList = allRecipes.value;
+    if (filterTags.value.length > 0) {
+      filteredList = filteredList.filter((recipe) =>
+        recipe.tags?.some((tag) => filterTags.value.includes(tag))
+      );
+    }
+    filteredList = filteredList.filter((recipe) =>
+      recipe.recipeName?.toLowerCase().includes(searchQuery.value.toLowerCase())
     );
-       */
     const sortedList = filteredList.sort((a, b) => {
       const nameA = a.recipeName?.toLowerCase();
       const nameB = b.recipeName?.toLowerCase();
