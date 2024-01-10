@@ -4,7 +4,7 @@
       <v-col>
         <filter-chips
           :selected="selectedTags"
-          :status-ount="statusCount"
+          :status-count="statusCount"
           :filter-items="recipeTags"
         />
       </v-col>
@@ -28,14 +28,10 @@ const recipeTags = ref(["Abendessen", "Deftig", "Süß", "Vietnamesisch"]);
 // eslint-disable-next-line no-undef
 const statusCount = computed(() => {
   const map = new Map(
-    Object.keys(recipeTags).map((value) => {
+    recipeTags.value.map((value) => {
       const pValue = value;
-      return [
-        pValue,
-        props.recipeList.value.filter(
-          (value1: Recipe) => value1.tags[0] === pValue
-        ).length,
-      ];
+      const count = props.recipeList.filter((recipe: Recipe) => recipe.tags.includes(pValue)).length;
+      return [pValue, count];
     })
   );
   return map;

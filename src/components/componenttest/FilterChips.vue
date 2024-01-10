@@ -18,7 +18,6 @@
     </v-chip>
   </v-badge>
   {{ props.selected }}
-  count: {{ props.statusCount }}
 </template>
 <script setup lang="ts">
 
