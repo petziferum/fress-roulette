@@ -1,23 +1,25 @@
 <template>
   <v-badge
-    v-for="status in recipeTags"
-    :key="status"
+    v-for="item in recipeTags"
+    :key="item"
     class="ma-1"
-    :value="showBadge(status)"
     bordered
-    :content="getBadgeCount(status)"
+    :value="showBadge(item)"
+    :content="getBadgeCount(item)"
     overlap
   >
     <v-chip
       filter
-      :input-value="isSelected(status)"
-      :color="isSelected(status) ? 'primary' : ''"
-      @click="toggle(status)"
+      :input-value="isSelected(item)"
+      :color="isSelected(item) ? 'primary' : ''"
+      @click="toggle(item)"
     >
-      {{ status }}
-      <v-icon class="pr-2 success--text" right>{{ toIcon(status) }}</v-icon>
+      {{ item }}
+      <v-icon class="pr-2 success--text" right>{{ toIcon(item) }}</v-icon>
     </v-chip>
   </v-badge>
+  {{ props.selected }}
+  {{ props.statusCount }}
 </template>
 <script setup lang="ts">
 import { ref } from "vue";
@@ -27,23 +29,25 @@ const props = defineProps(["selected", "statusCount"]);
 const recipeTags = ref(["Deftig", "Abendessen", "Süß", "Vietnamesisch"]);
 
 function isSelected(item) {
-  return props.selected.indexOf(item) !== -1;
+  console.log(item);
+  return true;
+  //return props.selected.indexOf(item) !== -1;
 }
 
-function toIcon(status) {
-  if (status === "AVAILABLE") {
+function toIcon(item) {
+  if (item === "AVAILABLE") {
     return "mdi-storefront";
-  } else if (status === "ORDER") {
+  } else if (item === "ORDER") {
     return "mdi-truck";
-  } else if (status === "INSTOCK") {
+  } else if (item === "INSTOCK") {
     return "mdi-book";
   } else return "mdi-delete-restore";
 }
 
-function showBadge(status) {
+function showBadge(item) {
   //status = ProductStatus
   //return [ProductStatus.AVAILABLE, ProductStatus.INSTOCK].includes(status)
-  return !props.selected.includes(status) && getBadgeCount(status) != "0";
+  return !props.selected.includes(item) && getBadgeCount(item) != "0";
 }
 
 function getBadgeCount(s) {

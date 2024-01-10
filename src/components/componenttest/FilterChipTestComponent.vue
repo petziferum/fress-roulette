@@ -1,15 +1,18 @@
 <template>
-  <v-row>
-    <v-col>
-      <filter-chip-test-component
-        :selected="selectedTags"
-        :status-ount="statusCount"
-      />
-    </v-col>
-  </v-row>
+  <v-card title="Filter Chips">
+    <v-row>
+      <v-col>
+        <filter-chips
+          :selected="selectedTags"
+          :status-ount="statusCount"
+        />
+      </v-col>
+    </v-row>
+  </v-card>
 </template>
 <script setup lang="ts">
 import { ref, computed } from "vue";
+import filterChips from "@/components/componenttest/FilterChips.vue";
 
 const selectedTags = ref(["Abendessen"]);
 
