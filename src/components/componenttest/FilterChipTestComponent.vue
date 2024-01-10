@@ -1,14 +1,17 @@
 <template>
-<v-row>
-  <v-col>
-    <filter-chip-test-component :selected="selectedTags" :status-ount="statusCount" />
-  </v-col>
-</v-row>
+  <v-row>
+    <v-col>
+      <filter-chip-test-component
+        :selected="selectedTags"
+        :status-ount="statusCount"
+      />
+    </v-col>
+  </v-row>
 </template>
 <script setup lang="ts">
 import { ref, computed } from "vue";
 
-const selectedTags = ref(["Abendessen"])
+const selectedTags = ref(["Abendessen"]);
 
 // eslint-disable-next-line no-undef
 const statusCount = computed(() => {
@@ -21,8 +24,12 @@ const statusCount = computed(() => {
   );
   return map;
    */
-  return new Map([["AVAILABLE", 1], ["ORDER", 2], ["INSTOCK", 3], ["UNAVAILABLE", 4]]);
+  return new Map([
+    ["AVAILABLE", 1],
+    ["ORDER", 2],
+    ["INSTOCK", 3],
+    ["UNAVAILABLE", 4],
+  ]);
 });
 </script>
-<style scoped>
-</style>
+<style scoped></style>
