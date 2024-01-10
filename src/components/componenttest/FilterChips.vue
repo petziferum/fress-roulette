@@ -3,7 +3,6 @@
     v-for="item in recipeTags"
     :key="item"
     class="ma-1"
-    bordered
     :value="showBadge(item)"
     :content="getBadgeCount(item)"
     overlap
@@ -30,8 +29,7 @@ const recipeTags = ref(["Deftig", "Abendessen", "Süß", "Vietnamesisch"]);
 
 function isSelected(item) {
   console.log(item);
-  return true;
-  //return props.selected.indexOf(item) !== -1;
+  return props.selected.indexOf(item) !== -1;
 }
 
 function toIcon(item) {
