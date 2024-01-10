@@ -9,6 +9,18 @@
       </v-col>
     </v-row>
     <v-expansion-panels v-model="panels">
+      <wrapper-panel title="filterChips">
+        <v-row>
+          <v-col>
+            <filter-chip-test-component />
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col>
+            rezept in dev: {{ recipeArray }}
+          </v-col>
+        </v-row>
+      </wrapper-panel>
       <wrapper-panel title="Firestore löschen">
         <v-btn>löschen</v-btn>
       </wrapper-panel>
@@ -137,6 +149,7 @@ import EspWled from "@/components/componenttest/EspWled.vue";
 import WrapperPanel from "@/components/componenttest/WrapperPanel.vue";
 import RecipeTable from "@/components/componenttest/RecipeTable.vue";
 import ThePhotoUploadComponent from "@/components/componenttest/ThePhotoUploadComponent.vue";
+import FilterChipTestComponent from "@/components/componenttest/FilterChipTestComponent.vue";
 
 const dialog = ref(false);
 const panels = ref([0]);
@@ -145,7 +158,7 @@ const recipe = reactive({
   recipeName: "rezept 1",
   img: imgUrl,
   createdBy: "Petzi",
-  tags: ["deftig"],
+  tags: ["Abendessen","Deftig"],
 });
 const recipeArray = ref([recipe]);
 
