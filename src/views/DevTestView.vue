@@ -12,7 +12,7 @@
       <wrapper-panel title="filterChips">
         <v-row>
           <v-col>
-            <filter-chip-test-component />
+            <filter-chip-test-component :recipeList="recipeArray" />
           </v-col>
         </v-row>
         <v-row>

@@ -1,6 +1,6 @@
 <template>
   <v-badge
-    v-for="item in recipeTags"
+    v-for="item in filterItems"
     :key="item"
     class="ma-1"
     :value="showBadge(item)"
@@ -18,14 +18,11 @@
     </v-chip>
   </v-badge>
   {{ props.selected }}
-  {{ props.statusCount }}
+  count: {{ props.statusCount }}
 </template>
 <script setup lang="ts">
-import { ref } from "vue";
 
-const props = defineProps(["selected", "statusCount"]);
-
-const recipeTags = ref(["Deftig", "Abendessen", "Süß", "Vietnamesisch"]);
+const props = defineProps(["selected", "statusCount", "filterItems"]);
 
 function isSelected(item) {
   console.log(item);
