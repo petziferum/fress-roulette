@@ -68,6 +68,7 @@
               <v-avatar size="30" class="mr-2">
                 <v-icon color="grey">mdi-account-cowboy-hat</v-icon>
               </v-avatar>
+              Rezept erstellt von:
               {{ recipe.createdBy.name }}
             </v-card-item>
           </v-col>
