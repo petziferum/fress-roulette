@@ -24,17 +24,18 @@
               <v-card-title>{{ recipe.recipeName }}</v-card-title>
             </v-card-item>
             <v-card-text>
-              <v-row align="center" class="mx-0">
-                <v-rating
-                  :value="recipe?.rating"
-                  dense
-                  half-increments
-                  readonly
-                  color="amber"
-                  background-color="grey lighten-2"
-                  class="mr-2"
-                ></v-rating>
-              </v-row>
+              <v-rating
+                :model-value="recipe?.rating"
+                active-color="yellow"
+                length="10"
+                size="30"
+                half-increments
+                readonly
+                color="amber"
+                background-color="grey lighten-2"
+                class="mr-0"
+              ></v-rating>
+              {{ recipe.rating }}
               <v-row>
                 <v-col cols="12">
                   <v-chip
@@ -94,7 +95,7 @@ const image = "src/assets/whisky.jpg";
   transition: all 0.3s ease-in-out;
   transform: scale(1.1);
   transform: translatey(-10px);
-  box-shadow: 0 0 10px 10px rgba(70,150,255, 0.5) !important;
+  box-shadow: 0 0 10px 10px rgba(70, 150, 255, 0.5) !important;
 }
 .card-image {
   height: 100%;
