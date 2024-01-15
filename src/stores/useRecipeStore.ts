@@ -13,8 +13,19 @@ export const useRecipeStore = defineStore("recipeStore", () => {
   const recipesLoading = ref(false);
   const searchQuery = ref("");
   const filterTags: Ref<string[]> = ref([]);
+  const recipeTags: Ref<string[]> = ref([]);
   const recipeImages = ref([]);
 
+  const fetchRecipeTags = () => {
+    RecipeServiceApi.getRecipeTags()
+      .then((res) => {
+        console.log("tags geladen", res);
+        recipeTags.value = res;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
   const getAllRecipeImages = () => {
     RecipeServiceApi.getAllRecipeImages()
       .then((res) => {
@@ -107,13 +118,15 @@ export const useRecipeStore = defineStore("recipeStore", () => {
     allRecipes,
     searchQuery,
     filterTags,
-    getFilteredRecipeList,
-    loadAllRecipes,
     recipesLoading,
-    loadRecipeById,
     viewRecipe,
     recipeImages,
     editRecipe,
+    recipeTags,
+    getFilteredRecipeList,
+    loadAllRecipes,
+    loadRecipeById,
+    fetchRecipeTags,
     addFiltertag,
     getAllRecipeImages,
     updateRecipeImage,

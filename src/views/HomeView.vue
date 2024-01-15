@@ -12,6 +12,8 @@
               append-inner-icon="mdi-close"
               @click:append-inner="store.searchQuery = ''"
             ></v-text-field>
+          </v-card-subtitle>
+          <v-card-actions class="flex-0-0">
             <v-btn
               variant="tonal"
               elevation="8"
@@ -21,33 +23,27 @@
               @click.prevent="fetchRecipes"
               >fetch</v-btn
             >
-            <v-btn @click="store.searchQuery = ''">All</v-btn>
+            <v-btn @click="resetFilter">All</v-btn>
             <v-btn
               variant="tonal"
               size="x-small"
               class="mr-1"
-              v-for="tag in tags"
+              v-for="tag in store.recipeTags"
               @click.prevent="store.addFiltertag(tag)"
               :key="tag"
               >{{ tag }}</v-btn
             >
-            <v-btn
-              variant="tonal"
-              size="x-small"
-              class="mr-1"
-              @click.prevent="store.filterTags = []"
-              >Filter löschen</v-btn
-            >
-          </v-card-subtitle>
-          <div>
-            <div style="height: 30px" class="text-center">
-              <Transition name="fade">
-                <v-icon color="blue" size="30" v-if="loading"
+            <div>{{ store.recipeTags }}</div>
+            <div>
+              <div style="height: 30px" class="text-center">
+                <Transition name="fade">
+                  <v-icon color="blue" size="30" v-if="loading"
                   >mdi-loading mdi-spin</v-icon
-                >
-              </Transition>
+                  >
+                </Transition>
+              </div>
             </div>
-          </div>
+          </v-card-actions>
         </v-card>
       </v-col>
     </v-row>
@@ -90,7 +86,7 @@ const store = useRecipeStore();
 const loading = ref(false);
 const recipesList = ref<Recipe[]>([]);
 const letters = ref("ABCDEFGHIJKLMNOPQRSTUVWXYZ".split(""));
-const tags = ref<string[]>(["Deftig", "Carbs","Fisch", "Süß", "Scharf", "Vegetarisch"]);
+const tags = computed(() => store.recipeTags);
 const selectedLetter = ref("");
 
 function routeToRecipe(recipe: Recipe): void {
@@ -107,13 +103,16 @@ const filteredRecipes = computed(() => {
     return recipesList.value;
   }
 });
-
-
+function resetFilter(): void {
+  store.searchQuery = '';
+  store.filterTags =[];
+}
 function fetchRecipes(): void {
   recipesList.value = [];
   loading.value = true;
 
   store.loadAllRecipes();
+  store.fetchRecipeTags();
   console.log("fetchRecipes", store.allRecipes.values());
   setTimeout(() => {
     //store.allRecipes.forEach((r) => recipesList.value.push(r as Recipe));

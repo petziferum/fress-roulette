@@ -10,7 +10,14 @@ import {
 import { recipeConverter } from "@/components/Models/Recipe.class";
 import { slugifyString } from "@/common/scripts";
 import { COLLECTION_NAME, db } from "@/plugins/firebase";
-import { getStorage, ref, listAll, getDownloadURL, ref as fireRef, uploadBytes } from "firebase/storage";
+import {
+  getStorage,
+  ref,
+  listAll,
+  getDownloadURL,
+  ref as fireRef,
+  uploadBytes,
+} from "firebase/storage";
 import router from "@/router";
 import { toast } from "vue3-toastify";
 
@@ -45,7 +52,9 @@ export default class RecipeServiceApi {
   }
 
   public static async getRecipes(): Promise<Array<Recipe>> {
-    const c = await getDocs(collection(db, "recipes").withConverter(recipeConverter));
+    const c = await getDocs(
+      collection(db, "recipes").withConverter(recipeConverter)
+    );
     const a: Recipe[] = [];
     c.forEach((el) => a.push(el.data()));
     return a;
@@ -86,6 +95,11 @@ export default class RecipeServiceApi {
     } catch (e) {
       return "error";
     }
+  }
+  public static async getRecipeTags(): Promise<string[]> {
+    const ref = doc(db, "tags", "allTags");
+    const document = await getDoc(ref);
+    return document.data().tags as string[];
   }
 
   public static getAllRecipeImages(): Promise<string[]> {
