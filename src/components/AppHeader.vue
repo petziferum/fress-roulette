@@ -24,7 +24,7 @@
         <v-toolbar-items>
           <v-btn @click="$router.push({ name: 'Home' })"> Home </v-btn>
           <v-btn v-if="userLoggedIn" @click="router.push({name: 'userdashboard'})"><v-icon color="green">mdi-account</v-icon></v-btn>
-          <v-btn @click="router.push({ name: 'login' })" color="red" append-icon="mdi-robot-dead">login</v-btn>
+          <v-btn v-else @click="router.push({ name: 'login' })" color="red" append-icon="mdi-robot-dead">login</v-btn>
         </v-toolbar-items>
       </v-toolbar>
     </template>
