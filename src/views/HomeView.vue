@@ -13,7 +13,7 @@
               @click:append-inner="store.searchQuery = ''"
             ></v-text-field>
           </v-card-subtitle>
-          <v-card-actions class="flex-0-0">
+          <v-card-actions class="cloudStyle">
             <v-btn
               variant="tonal"
               elevation="8"
@@ -24,14 +24,16 @@
               >fetch</v-btn
             >
             <v-btn @click="resetFilter">All</v-btn>
-            <v-btn
+            <v-chip
               variant="tonal"
-              size="x-small"
+              size="small"
               class="mr-1"
               v-for="tag in store.recipeTags"
-              @click.prevent="store.addFiltertag(tag)"
+              filter
+              :color="isSelected(tag) ? 'primary' : 'grey'"
+              @click.prevent="toggle(tag)"
               :key="tag"
-              >{{ tag }}</v-btn
+              >{{ tag }}</v-chip
             >
             <div>{{ store.recipeTags }}</div>
             <div>
@@ -85,7 +87,6 @@ import router from "@/router";
 const store = useRecipeStore();
 const loading = ref(false);
 const recipesList = ref<Recipe[]>([]);
-const letters = ref("ABCDEFGHIJKLMNOPQRSTUVWXYZ".split(""));
 const tags = computed(() => store.recipeTags);
 const selectedLetter = ref("");
 
@@ -93,7 +94,17 @@ function routeToRecipe(recipe: Recipe): void {
   console.log("routeToRecipe", recipe.id);
   router.push({ name: "viewRecipe", params: { id: recipe.id } });
 }
-
+function isSelected(tag: string): boolean {
+  return store.filterTags.indexOf(tag) !== -1;
+}
+function getButtonStyle(tag) {
+  // Example: Change size based on some property of the tag
+  const size = 100;
+  return {
+    fontSize: size + 'px',
+    // Add other dynamic styles if needed
+  };
+}
 const filteredRecipes = computed(() => {
   if (selectedLetter.value) {
     return recipesList.value.filter((r) =>
@@ -158,4 +169,13 @@ onMounted(() => {
   opacity: 1;
   cursor: pointer;
 }
+.cloudStyle {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center; /* Adjust as needed */
+}
+
+/* Example dynamic styling function in your Vue component */
+
+
 </style>
