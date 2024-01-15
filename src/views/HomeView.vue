@@ -35,15 +35,12 @@
               :key="tag"
               >{{ tag }}</v-chip
             >
-            <div>{{ store.recipeTags }}</div>
-            <div>
-              <div style="height: 30px" class="text-center">
-                <Transition name="fade">
-                  <v-icon color="blue" size="30" v-if="loading"
+            <div style="height: 30px" class="ma-4 text-center">
+              <Transition name="fade">
+                <v-icon color="blue" size="30" v-if="loading"
                   >mdi-loading mdi-spin</v-icon
-                  >
-                </Transition>
-              </div>
+                >
+              </Transition>
             </div>
           </v-card-actions>
         </v-card>
@@ -64,8 +61,8 @@
         <v-col cols="12">
           <v-card elevation="14" rounded="xl">
             <v-card-title
-              >Keine Rezepte mit Suchbegriff "{{ store.searchQuery }}" und Tag: "{{ store.filterTags }}"
-              vorhanden</v-card-title
+              >Keine Rezepte mit Suchbegriff "{{ store.searchQuery }}" und Tag:
+              "{{ store.filterTags }}" vorhanden</v-card-title
             >
             <v-card-text>
               <v-icon color="brown" size="30">mdi-emoticon-sad</v-icon>
@@ -78,7 +75,7 @@
 </template>
 
 <script lang="ts" setup>
-import type Recipe from "@/components/Models/Recipe.class";
+import Recipe from "@/components/Models/Recipe.class";
 import { computed, onMounted, ref } from "vue";
 import { useRecipeStore } from "@/stores/useRecipeStore";
 import RecipePreviewCard from "@/components/RecipePreviewCard.vue";
@@ -97,11 +94,18 @@ function routeToRecipe(recipe: Recipe): void {
 function isSelected(tag: string): boolean {
   return store.filterTags.indexOf(tag) !== -1;
 }
+function toggle(tag: string): void {
+  if (store.filterTags.indexOf(tag) !== -1) {
+    store.filterTags = store.filterTags.filter((t) => t !== tag);
+  } else {
+    store.filterTags.push(tag);
+  }
+}
 function getButtonStyle(tag) {
   // Example: Change size based on some property of the tag
   const size = 100;
   return {
-    fontSize: size + 'px',
+    fontSize: size + "px",
     // Add other dynamic styles if needed
   };
 }
@@ -115,8 +119,8 @@ const filteredRecipes = computed(() => {
   }
 });
 function resetFilter(): void {
-  store.searchQuery = '';
-  store.filterTags =[];
+  store.searchQuery = "";
+  store.filterTags = [];
 }
 function fetchRecipes(): void {
   recipesList.value = [];
@@ -176,6 +180,4 @@ onMounted(() => {
 }
 
 /* Example dynamic styling function in your Vue component */
-
-
 </style>
