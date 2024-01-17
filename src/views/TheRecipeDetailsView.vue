@@ -42,23 +42,26 @@
                   active-color="primary"
                 />
               </div>
-              <div class="text-h6">{{ recipe.rating }}/</div><span>5</span>
-              <div class="text-black ml-5 text-right">Level: {{ recipe.difficulty }}</div>
+              <div class="text-h6">{{ recipe.rating }}/</div>
+              <span>5</span>
+              <div class="text-black ml-5 text-right">
+                Level: {{ recipe.difficulty }}
+              </div>
             </v-toolbar>
             <v-card-subtitle>
               <div class="subtitle-row">Autor: {{ recipe.createdBy.name }}</div>
-              <div class="subtitle-row">erstellt am: {{ new Date(recipe.time).toLocaleString() }}</div>
+              <div class="subtitle-row">
+                erstellt am: {{ new Date(recipe.time).toLocaleString() }}
+              </div>
             </v-card-subtitle>
             <v-card-text>
               <v-row>
                 <v-col class="font-weight-light text-blue-accent-1">
-                  Beschreibung: {{ recipe.description }}K
+                  Beschreibung: {{ recipe.description }}
                 </v-col>
               </v-row>
               <v-row>
-                <v-col>
-                  Typ: {{ recipe.type }}
-                </v-col>
+                <v-col> Typ: {{ recipe.type }} </v-col>
               </v-row>
             </v-card-text>
             <v-row>
@@ -105,7 +108,10 @@
                 </v-card-text>
               </v-col>
               <v-col cols="12" md="4">
-                <div class="text-h5 font-weight-thin">Schwierigkeit: {{ recipe.difficulty ? recipe.difficulty : "--"}}</div>
+                <div class="text-h5 font-weight-thin">
+                  Schwierigkeit:
+                  {{ recipe.difficulty ? recipe.difficulty : "--" }}
+                </div>
               </v-col>
             </v-row>
             <v-row>
