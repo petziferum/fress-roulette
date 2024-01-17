@@ -49,6 +49,18 @@
               <div class="subtitle-row">Autor: {{ recipe.createdBy.name }}</div>
               <div class="subtitle-row">erstellt am: {{ new Date(recipe.time).toLocaleString() }}</div>
             </v-card-subtitle>
+            <v-card-text>
+              <v-row>
+                <v-col class="font-weight-light text-blue-accent-1">
+                  Beschreibung: {{ recipe.description }}K
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col>
+                  Typ: {{ recipe.type }}
+                </v-col>
+              </v-row>
+            </v-card-text>
             <v-row>
               <v-col cols="12" md="4">
                 <v-list>
