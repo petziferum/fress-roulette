@@ -18,7 +18,7 @@
         class="recipeImage"
         cover
       />
-      <v-card-subtitle
+      <v-card-subtitle id="informations"
         >ID: {{ recipe.id }}<br />
         CreatedBy: {{ recipe.createdBy }}<br />
         <div>Erstellt am: {{ recipe.time }}</div></v-card-subtitle
@@ -46,7 +46,7 @@
       <v-card-text>
         <tags-select v-model="recipe" />
       </v-card-text>
-      <v-card-text>
+      <v-card-text id="rating">
         <div class="text-h4 text-shades-black">Rating: {{ recipe.rating }}</div>
         <div class="container">
           <v-rating class="stars" :model-value="recipe.rating" active-color="yellow" length="10" dense half-increments></v-rating>
@@ -60,7 +60,20 @@
           thumb-label
         ></v-slider>
       </v-card-text>
-      <v-card-text>
+      <v-card-text id="difficulty">
+        <div class="text-h4 text-shades-black">
+          Schwierigkeitsgrad: {{ recipe.difficulty }}
+        </div>
+        <v-slider
+          v-model="recipe.difficulty"
+          prepend-icon="mdi-emoticon-sick"
+          append-icon="mdi-emoticon-happy"
+          max="10"
+          step="0.5"
+          thumb-label
+        ></v-slider>
+      </v-card-text>
+      <v-card-text id="ingredients">
         Zutaten
         <component-zutat v-model="recipe" />
       </v-card-text>
@@ -88,7 +101,6 @@ import photoSelectComponent from "@/components/photoSelectComponent.vue";
 import { useRecipeStore } from "@/stores/useRecipeStore";
 import DeleteButtonDialog from "@/components/DeleteButtonDialog.vue";
 import { toast } from "vue3-toastify";
-// ToDo: Rating schöner machen mit Farbwechsel und Sternchen.
 const recipeStore = useRecipeStore();
 const recipe = computed(() => {
   return recipeStore.editRecipe;
