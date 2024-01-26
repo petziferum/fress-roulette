@@ -66,8 +66,8 @@
         </div>
         <v-slider
           v-model="recipe.difficulty"
-          prepend-icon="mdi-emoticon-sick"
-          append-icon="mdi-emoticon-happy"
+          prepend-icon="mdi-emoticon-happy"
+          append-icon="mdi-emoticon-sick"
           max="10"
           step="0.5"
           thumb-label
