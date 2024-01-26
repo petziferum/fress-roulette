@@ -121,7 +121,6 @@ function setPhotoComponent(component: any): void {
 
 function saveUpdateRecipe(): void {
   recipe.value.active = false;
-  console.info("save", recipe.value);
   RecipeServiceApi.updateRecipe(recipe.value).then((antwort) => {
     console.log("gespeichert", antwort);
     router.push({ name: "userdashboard" });
