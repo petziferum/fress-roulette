@@ -16,15 +16,27 @@
         style="cursor: pointer"
         @click="router.push({ name: 'home' })"
       />
-      <div class="subtitle">Das Rad entscheidet, was wir als nächstes fressen!</div>
+      <div class="subtitle">
+        Das Rad entscheidet, was wir als nächstes fressen!
+      </div>
     </v-sheet>
     <v-spacer />
     <template v-slot:extension>
       <v-toolbar>
         <v-toolbar-items>
           <v-btn @click="$router.push({ name: 'Home' })"> Home </v-btn>
-          <v-btn v-if="userLoggedIn" @click="router.push({name: 'userdashboard'})"><v-icon color="green">mdi-account</v-icon></v-btn>
-          <v-btn v-else @click="router.push({ name: 'login' })" color="red" append-icon="mdi-robot-dead">login</v-btn>
+          <v-btn
+            v-if="userLoggedIn"
+            @click="router.push({ name: 'userdashboard' })"
+            ><v-icon color="green">mdi-account</v-icon></v-btn
+          >
+          <v-btn
+            v-else
+            @click="router.push({ name: 'login' })"
+            color="red"
+            append-icon="mdi-robot-dead"
+            >login</v-btn
+          >
         </v-toolbar-items>
       </v-toolbar>
     </template>
@@ -38,8 +50,10 @@ import { useDisplay } from "vuetify";
 import router from "@/router";
 import { useUserStore } from "@/stores/useUserStore";
 
-const barImg = "https://firebasestorage.googleapis.com/v0/b/recipes-petzi.appspot.com/o/images%2F0d8f50f4-d9e3-4184-a9eb-09ad7f429ade.webp?alt=media&token=b1ff0cdc-9973-4ee9-b103-ecde22cbe5e7";
-const titleImg = "https://firebasestorage.googleapis.com/v0/b/recipes-petzi.appspot.com/o/images%2Ffress-roulette-logo02.png?alt=media&token=e69e0f23-7f8c-40a6-9532-24a62495d1da";
+const barImg =
+  "https://firebasestorage.googleapis.com/v0/b/recipes-petzi.appspot.com/o/images%2F0d8f50f4-d9e3-4184-a9eb-09ad7f429ade.webp?alt=media&token=b1ff0cdc-9973-4ee9-b103-ecde22cbe5e7";
+const titleImg =
+  "https://firebasestorage.googleapis.com/v0/b/recipes-petzi.appspot.com/o/images%2Ffress-roulette-logo02.png?alt=media&token=e69e0f23-7f8c-40a6-9532-24a62495d1da";
 const store = useAppStore();
 const userStore = useUserStore();
 const userLoggedIn = computed(() => {
