@@ -36,7 +36,7 @@ export default class Recipe {
   public active?: boolean;
   public tags?: string[];
   public rating?: number = 3.8;
-  public difficulty?: Difficulty;
+  public difficulty?: number = 1;
   public meta?: Meta;
 
   constructor(
@@ -52,7 +52,7 @@ export default class Recipe {
     active?: boolean,
     tags?: string[],
     rating?: number,
-    difficulty?: Difficulty
+    difficulty?: number
   ) {
     this.id = id;
     this.createdBy = createdBy;
@@ -133,7 +133,7 @@ export default class Recipe {
     return this;
   }
 
-  withDifficulty(value: Difficulty): Recipe {
+  withDifficulty(value: number): Recipe {
     this.difficulty = value;
     return this;
   }
@@ -176,6 +176,7 @@ export const recipeConverter = {
       imageSrc: recipe.imageSrc ? recipe.imageSrc : "",
       tags: recipe.tags ? recipe.tags : [],
       rating: recipe.rating ? recipe.rating : 0,
+      difficulty: recipe.difficulty ? recipe.difficulty : 0,
     };
   },
   fromFirestore: (snapshot, options) => {

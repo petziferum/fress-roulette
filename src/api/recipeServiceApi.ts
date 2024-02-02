@@ -31,6 +31,7 @@ export default class RecipeServiceApi {
     });
   }
   public static async updateRecipe(recipe: Recipe): Promise<Recipe> {
+    console.log("update Recipe", recipe);
     const recipeRef = doc(db, COLLECTION_NAME, recipe.id!).withConverter(
       recipeConverter
     );
