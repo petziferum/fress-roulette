@@ -20,7 +20,7 @@ Things that must be done:
 
 
 ## ToDo's
-
+- Animations
 - Rezept bearbeiten Komponente erstellen mit allen Textfeldern die benötigt werden
 
 
