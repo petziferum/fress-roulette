@@ -140,7 +140,7 @@ import Recipe from "@/components/Models/Recipe.class";
 import router from "@/router";
 const id = ref("");
 const editItemNumber = ref(null);
-const edit = ref(true);
+const edit = ref(false);
 const editItemText = ref("");
 const store = useRecipeStore();
 const recipe = computed((): Recipe | undefined => store.viewRecipe);
