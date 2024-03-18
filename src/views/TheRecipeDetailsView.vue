@@ -12,10 +12,10 @@
             style="
               position: relative;
               top: -50px;
-              margin-left: 5px;
-              margin-right: 5px;
+              margin-left: 0px;
+              margin-right: 0px;
             "
-            elevation="10"
+            elevation="0"
             rounded="xl"
           >
             <v-img
@@ -82,8 +82,8 @@
                   class="text-body-1 ma-4"
                 >
                   <v-row>
-                    <v-col cols="1">{{ text.nr }}.</v-col>
-                    <v-col cols="10">
+                    <v-col cols="2">{{ text.nr }}.</v-col>
+                    <v-col cols="9">
                       <template v-if="editItemNumber === text.nr">
                         <v-textarea v-model="editItemText"></v-textarea>
                         <v-spacer />
@@ -96,7 +96,7 @@
                       </template>
                       <template v-else>{{ text.text }} </template></v-col
                     >
-                    <v-col cols="1">
+                    <v-col cols="2">
                       <template v-if="edit">
                         <v-btn icon flat
                           ><v-icon size="small">mdi-pencil</v-icon></v-btn
@@ -108,7 +108,7 @@
                 </v-card-text>
               </v-col>
               <v-col cols="12" md="4">
-                <div class="text-h5 font-weight-thin">
+                <div class="text-h5 px-4 font-weight-thin">
                   Schwierigkeit:
                   {{ recipe.difficulty ? recipe.difficulty : "--" }}
                 </div>
