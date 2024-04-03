@@ -18,9 +18,10 @@
     "pinia": "^2.1.7",
     "roboto-fontface": "*",
     "vue": "^3.4.21",
+    "moment": "^2.30.1",
     "vue-router": "^4.0.12",
     "vue3-toastify": "^0.1.14",
-    "vuetify": "^3.5.9",
+    "vuetify": "^3.5.14",
     "webfontloader": "^1.0.0"
   },
   "devDependencies": {
