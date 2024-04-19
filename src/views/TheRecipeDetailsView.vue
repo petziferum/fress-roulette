@@ -27,15 +27,7 @@
                 @click="showImage"
               />
             </transition>
-            <v-dialog v-model="isOverlayVisible" persistent max-width="100%">
-              <v-card>
-                <v-img
-                  :src="recipe.imageSrc"
-                  cover
-                  @click.stop="isOverlayVisible = false"
-                ></v-img>
-              </v-card>
-            </v-dialog>
+            <image-overlay ref="imageoverlay" :image-src="recipe.imageSrc" :is-overlay-visible="isOverlayVisible" @close="isOverlayVisible = false" />
             <v-toolbar class="mb-4">
               <v-toolbar-items>
                 <v-btn icon @click="goBack">
@@ -150,6 +142,7 @@ import { computed, onBeforeMount, ref } from "vue";
 import { useRoute } from "vue-router";
 import type Recipe from "@/components/Models/Recipe.class";
 import router from "@/router";
+import ImageOverlay from "@/components/commons/ImageOverlay.vue";
 const id = ref("");
 const editItemNumber = ref(null);
 const edit = ref(false);
@@ -157,7 +150,7 @@ const editItemText = ref("");
 const store = useRecipeStore();
 const recipe = computed((): Recipe | undefined => store.viewRecipe);
 const isOverlayVisible = ref(false);
-
+const imageoverlay = ref(null);
 
 const loading = computed({
   get() {
@@ -174,7 +167,7 @@ onBeforeMount(function () {
   console.log("route params", id.value);
 });
 function showImage() {
-  isOverlayVisible.value = true;
+  imageoverlay.value.isOpen = true;
 }
 function goBack() {
   if (window.history.length > 1) {
