@@ -18,12 +18,24 @@
             elevation="0"
             rounded="xl"
           >
-            <v-img
-              :src="recipe.imageSrc"
-              cover
-              height="300px"
-              class="mt-0 pt-0"
-            />
+            <transition name="fade">
+              <v-img
+                :src="recipe.imageSrc"
+                cover
+                height="300px"
+                class="mt-0 pt-0"
+                @click="showImage"
+              />
+            </transition>
+            <v-dialog v-model="isOverlayVisible" persistent max-width="100%">
+              <v-card>
+                <v-img
+                  :src="recipe.imageSrc"
+                  cover
+                  @click.stop="isOverlayVisible = false"
+                ></v-img>
+              </v-card>
+            </v-dialog>
             <v-toolbar class="mb-4">
               <v-toolbar-items>
                 <v-btn icon @click="goBack">
@@ -144,6 +156,9 @@ const edit = ref(false);
 const editItemText = ref("");
 const store = useRecipeStore();
 const recipe = computed((): Recipe | undefined => store.viewRecipe);
+const isOverlayVisible = ref(false);
+
+
 const loading = computed({
   get() {
     return store.recipesLoading;
@@ -158,12 +173,14 @@ onBeforeMount(function () {
   store.loadRecipeById(id.value);
   console.log("route params", id.value);
 });
-
+function showImage() {
+  isOverlayVisible.value = true;
+}
 function goBack() {
   if (window.history.length > 1) {
     router.go(-1); // go back to the previous page in history
   } else {
-    router.push('/'); // go back to home page if no history is available
+    router.push("/"); // go back to home page if no history is available
   }
 }
 
@@ -175,5 +192,13 @@ function cancel() {
 <style scoped>
 .subtitle-row {
   font-weight: initial;
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>
