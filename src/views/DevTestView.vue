@@ -11,6 +11,7 @@
     <v-expansion-panels v-model="panels">
       <wrapper-panel title="Hover Card">
         <hover-card-effect />
+        <hover-card-effect />
       </wrapper-panel>
       <wrapper-panel title="filterChips">
         <v-row>

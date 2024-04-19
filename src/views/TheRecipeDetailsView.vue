@@ -134,9 +134,9 @@
 </template>
 <script setup lang="ts">
 import { useRecipeStore } from "@/stores/useRecipeStore";
-import { computed, nextTick, onBeforeMount, ref } from "vue";
+import { computed, onBeforeMount, ref } from "vue";
 import { useRoute } from "vue-router";
-import Recipe from "@/components/Models/Recipe.class";
+import type Recipe from "@/components/Models/Recipe.class";
 import router from "@/router";
 const id = ref("");
 const editItemNumber = ref(null);
@@ -160,7 +160,11 @@ onBeforeMount(function () {
 });
 
 function goBack() {
-  router.push("/");
+  if (window.history.length > 1) {
+    router.go(-1); // go back to the previous page in history
+  } else {
+    router.push('/'); // go back to home page if no history is available
+  }
 }
 
 function cancel() {
