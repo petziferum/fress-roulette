@@ -18,16 +18,29 @@
             elevation="0"
             rounded="xl"
           >
-            <transition name="fade">
-              <v-img
-                :src="recipe.imageSrc"
-                cover
-                height="300px"
-                class="mt-0 pt-0"
-                @click="showImage"
-              />
-            </transition>
-            <image-overlay ref="imageoverlay" :image-src="recipe.imageSrc" :is-overlay-visible="isOverlayVisible" @close="isOverlayVisible = false" />
+            <v-hover>
+              <template v-slot:default="{ isHovering, props }">
+                <v-img
+                  v-bind="props"
+                  :src="recipe.imageSrc"
+                  cover
+                  :height="isHovering ? '600px' : '300px'"
+                  class="mt-0 pt-0 image"
+                  @click="openImage"
+                >
+                  <v-overlay
+                    :model-value="isHovering"
+                    class="align-center justify-center"
+                    scrim="#036358"
+                    contained
+                  >
+                    <v-icon size="large" class="text-white">mdi-eye</v-icon>
+                  </v-overlay>
+                </v-img>
+              </template>
+            </v-hover>
+
+            <ImageOverlay ref="imageOverlay" :imageSrc="recipe.imageSrc" />
             <v-toolbar class="mb-4">
               <v-toolbar-items>
                 <v-btn icon @click="goBack">
@@ -143,14 +156,14 @@ import { useRoute } from "vue-router";
 import type Recipe from "@/components/Models/Recipe.class";
 import router from "@/router";
 import ImageOverlay from "@/components/commons/ImageOverlay.vue";
-const id = ref("");
+
+const imageOverlay = ref(null);
 const editItemNumber = ref(null);
 const edit = ref(false);
 const editItemText = ref("");
 const store = useRecipeStore();
 const recipe = computed((): Recipe | undefined => store.viewRecipe);
-const isOverlayVisible = ref(false);
-const imageoverlay = ref(null);
+const id = ref("");
 
 const loading = computed({
   get() {
@@ -166,9 +179,7 @@ onBeforeMount(function () {
   store.loadRecipeById(id.value);
   console.log("route params", id.value);
 });
-function showImage() {
-  imageoverlay.value.isOpen = true;
-}
+
 function goBack() {
   if (window.history.length > 1) {
     router.go(-1); // go back to the previous page in history
@@ -176,13 +187,19 @@ function goBack() {
     router.push("/"); // go back to home page if no history is available
   }
 }
-
+function openImage() {
+  imageOverlay.value.open();
+}
 function cancel() {
   editItemNumber.value = null;
   editItemText.value = "";
 }
 </script>
 <style scoped>
+.image {
+  transition: height 0.5s ease-in-out;
+  cursor: pointer;
+}
 .subtitle-row {
   font-weight: initial;
 }

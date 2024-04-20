@@ -9,6 +9,9 @@
       </v-col>
     </v-row>
     <v-expansion-panels v-model="panels">
+      <wrapper-panel title="Dialog Test">
+        <dialog-test-component />
+      </wrapper-panel>
       <wrapper-panel title="Hover Card">
         <hover-card-effect />
         <hover-card-effect />
@@ -155,6 +158,7 @@ import RecipeTable from "@/components/componenttest/RecipeTable.vue";
 import ThePhotoUploadComponent from "@/components/componenttest/ThePhotoUploadComponent.vue";
 import FilterChipTestComponent from "@/components/componenttest/FilterChipTestComponent.vue";
 import HoverCardEffect from "@/components/componenttest/HoverCardEffect.vue";
+import DialogTestComponent from "@/components/componenttest/DialogTestComponent.vue";
 
 const dialog = ref(false);
 const panels = ref([0]);
