@@ -1,8 +1,11 @@
 <template>
   <v-app>
-    <app-header />
+    <app-header style="position: relative; z-index: 10" />
     <side-bar></side-bar>
-    <v-main :style="{ 'background-image': 'url(' + stone + ')' }" class="background">
+    <v-main
+      :style="{ 'background-image': 'url(' + stone + ')' }"
+      class="background"
+    >
       <v-row justify="center">
         <v-col cols="12" lg="8">
           <router-view />
@@ -27,7 +30,8 @@ import AppHeader from "@/components/AppHeader.vue";
 import { useUserStore } from "@/stores/useUserStore";
 
 const isLoggedIn = ref(false);
-const stone = "https://firebasestorage.googleapis.com/v0/b/recipes-petzi.appspot.com/o/images%2Fbricks-3592117_1920.jpg?alt=media&token=84c59e67-cc3c-4028-8d33-2ba10b641de5"
+const stone =
+  "https://firebasestorage.googleapis.com/v0/b/recipes-petzi.appspot.com/o/images%2Fbricks-3592117_1920.jpg?alt=media&token=84c59e67-cc3c-4028-8d33-2ba10b641de5";
 
 onBeforeMount(() => {
   let auth = getAuth();
@@ -40,6 +44,7 @@ onBeforeMount(() => {
 </script>
 <style>
 .background {
+  transform: translate(0, -100px);
   background-size: cover;
   background-repeat: repeat-y;
   background-position: center center;
