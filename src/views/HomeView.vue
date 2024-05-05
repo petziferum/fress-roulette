@@ -75,7 +75,7 @@
 </template>
 
 <script lang="ts" setup>
-import Recipe from "@/components/Models/Recipe.class";
+import type Recipe from "@/components/Models/Recipe.class";
 import { computed, onMounted, ref } from "vue";
 import { useRecipeStore } from "@/stores/useRecipeStore";
 import RecipePreviewCard from "@/components/RecipePreviewCard.vue";

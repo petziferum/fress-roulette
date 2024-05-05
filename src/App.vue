@@ -44,10 +44,11 @@ onBeforeMount(() => {
 </script>
 <style>
 .background {
+  width: 100%;
   transform: translate(0, -100px);
-  background-size: cover;
+
   background-repeat: repeat-y;
-  background-position: center center;
+  background-position: center;
   background-attachment: fixed;
   background-color: #080c13;
 }
