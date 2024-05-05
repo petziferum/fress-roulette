@@ -3,7 +3,9 @@
     <v-toolbar style="text-align: center">
       <v-toolbar-title>User Dashboard</v-toolbar-title>
       <v-toolbar-items>
-        <v-btn variant="outlined" class="mr-5" size="small" @click="logOut">logout</v-btn>
+        <v-btn variant="outlined" class="mr-5" size="small" @click="logOut"
+          >logout</v-btn
+        >
         <v-spacer />
         <add-recipe-dialog :user="user" />
       </v-toolbar-items>

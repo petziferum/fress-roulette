@@ -9,10 +9,13 @@
       >
         <v-row no-gutters>
           <v-col cols="12" md="5">
-            <v-text-field variant="outlined" v-model="recipe.recipeName" label="Rezept Name" />
+            <v-text-field
+              variant="outlined"
+              v-model="recipe.recipeName"
+              label="Rezept Name"
+            />
           </v-col>
-          <v-col cols="12"
-                 md="5"
+          <v-col cols="12" md="5"
             ><v-autocomplete
               variant="outlined"
               id="searchField"
@@ -28,7 +31,14 @@
             ></v-autocomplete
           ></v-col>
           <v-col cols="2">
-            <v-btn block variant="outlined" height="70%" rounded="0" type="submit">Add</v-btn>
+            <v-btn
+              block
+              variant="outlined"
+              height="70%"
+              rounded="0"
+              type="submit"
+              >Add</v-btn
+            >
           </v-col>
         </v-row>
       </v-form>
@@ -63,17 +73,19 @@ function addTagToRecipe(): void {
   if (!searchValue.value) {
     return;
   } else {
-    handleNewTag(searchValue.value)
-    recipe.value.tags.includes(searchValue.value) ? recipe.value.tags : recipe.value.tags.push(searchValue.value);
-    toast("Tag zu Rezept hinzugefügt: "+ searchValue.value);
+    handleNewTag(searchValue.value);
+    recipe.value.tags.includes(searchValue.value)
+      ? recipe.value.tags
+      : recipe.value.tags.push(searchValue.value);
+    toast("Tag zu Rezept hinzugefügt: " + searchValue.value);
   }
 }
 
 function handleNewTag(inputTag: string): void {
-  if(inputTag === "") return;
+  if (inputTag === "") return;
   const newTag = !tagItems.value.includes(inputTag);
-  if(newTag) {
-    saveTagToFirestoreCollection(inputTag)
+  if (newTag) {
+    saveTagToFirestoreCollection(inputTag);
   }
 }
 
@@ -84,7 +96,7 @@ function saveTagToFirestoreCollection(newTag: string): void {
   }).then(() => {
     toast("Neuer Tag '" + newTag + "' in Firebase gespeichert");
     getTagItems();
-});
+  });
 }
 
 function getTagItems(): void {
@@ -97,8 +109,6 @@ function getTagItems(): void {
     });
   });
 }
-
-
 </script>
 
 <style scoped></style>

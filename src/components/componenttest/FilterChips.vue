@@ -20,7 +20,6 @@
   {{ props.selected }}
 </template>
 <script setup lang="ts">
-
 const props = defineProps(["selected", "statusCount", "filterItems"]);
 
 function isSelected(item) {

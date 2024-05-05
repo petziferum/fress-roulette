@@ -23,9 +23,7 @@
           </v-col>
         </v-row>
         <v-row>
-          <v-col>
-            rezept in dev: {{ recipeArray }}
-          </v-col>
+          <v-col> rezept in dev: {{ recipeArray }} </v-col>
         </v-row>
       </wrapper-panel>
       <wrapper-panel title="Firestore löschen">
@@ -167,7 +165,7 @@ const recipe = reactive({
   recipeName: "rezept 1",
   img: imgUrl,
   createdBy: "Petzi",
-  tags: ["Abendessen","Deftig"],
+  tags: ["Abendessen", "Deftig"],
 });
 const recipeArray = ref([recipe]);
 

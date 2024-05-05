@@ -49,15 +49,13 @@ export const useAppStore = defineStore("app", () => {
 
   const getDrawerItems = computed(() => {
     const userStore = useUserStore();
-    const loginItem = listItems.value.find(item => item.title === 'Login');
-    const logoutItem = listItems.value.find(item => item.title === 'Logout');
+    const loginItem = listItems.value.find((item) => item.title === "Login");
+    const logoutItem = listItems.value.find((item) => item.title === "Logout");
     if (loginItem && logoutItem) {
       loginItem.show = !userStore.userFirestoreData.value;
       logoutItem.show = !!userStore.userFirestoreData.value;
     }
-      return listItems.value.filter((item) => item.show);
-
-
+    return listItems.value.filter((item) => item.show);
   });
 
   const getAllDrawerItems = () => {

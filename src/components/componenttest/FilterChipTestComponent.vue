@@ -30,7 +30,9 @@ const statusCount = computed(() => {
   const map = new Map(
     recipeTags.value.map((value) => {
       const pValue = value;
-      const count = props.recipeList.filter((recipe: Recipe) => recipe.tags.includes(pValue)).length;
+      const count = props.recipeList.filter((recipe: Recipe) =>
+        recipe.tags.includes(pValue)
+      ).length;
       return [pValue, count];
     })
   );

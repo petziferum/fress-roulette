@@ -1,9 +1,7 @@
 <template>
   <div class="rainbowbutton"></div>
 </template>
-<script setup lang="ts">
-
-</script>
+<script setup lang="ts"></script>
 <style scoped>
 .rainbowbutton {
   height: 50px;

@@ -7,7 +7,7 @@
 import { ref } from "vue";
 
 defineProps({
-  imageSrc: String
+  imageSrc: String,
 });
 const isOpen = ref(false);
 function open() {

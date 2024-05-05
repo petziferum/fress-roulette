@@ -5,7 +5,13 @@
       <div class="imageGrid">
         <div class="elevatetImage" v-for="img in imageList" :key="img">
           <v-img :src="img" cover>
-            <v-btn variant="tonal" block rounded="0" height="100%" @click="selectImageForRecipe(img)"></v-btn>
+            <v-btn
+              variant="tonal"
+              block
+              rounded="0"
+              height="100%"
+              @click="selectImageForRecipe(img)"
+            ></v-btn>
           </v-img>
         </div>
       </div>
@@ -17,7 +23,7 @@ import { computed, onBeforeMount, ref } from "vue";
 import { useRecipeStore } from "@/stores/useRecipeStore";
 
 const recipeStore = useRecipeStore();
-const imageList = computed(()=> {
+const imageList = computed(() => {
   return recipeStore.recipeImages;
 });
 

@@ -1,4 +1,3 @@
-
 import type { Difficulty } from "@/components/Models/Difficulty";
 import { useUserStore } from "@/stores/useUserStore";
 
@@ -197,7 +196,10 @@ export const recipeConverter = {
     });
 
     if (updated) {
-      recipe.meta = { changed: new Date(), changedBy: userState.userFirestoreData.email };
+      recipe.meta = {
+        changed: new Date(),
+        changedBy: userState.userFirestoreData.email,
+      };
     }
     return Recipe.createEmptyRecipe()
       .withId(snapshot.id)

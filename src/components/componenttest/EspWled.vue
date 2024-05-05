@@ -2,12 +2,12 @@
   <v-row>
     <v-col>
       <v-card>
-        <v-card-title>
-          WLED
-        </v-card-title>
+        <v-card-title> WLED </v-card-title>
         <v-btn @click="powerSwitch">on/off</v-btn>
         <v-btn @click="setEffect(4)">Effect</v-btn>
-        <v-slider max="255" v-model="brightness" @end="setBrightness" />{{ brightness}}
+        <v-slider max="255" v-model="brightness" @end="setBrightness" />{{
+          brightness
+        }}
       </v-card>
     </v-col>
   </v-row>
@@ -29,8 +29,8 @@ function powerSwitch(): void {
 }
 
 function setEffect(value: number): void {
-  fetch("http://192.168.1.24/win&FX="+value);
-};
+  fetch("http://192.168.1.24/win&FX=" + value);
+}
 
 function setBrightness(): void {
   console.log("setBrightness", brightness.value);

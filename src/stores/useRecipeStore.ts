@@ -25,7 +25,7 @@ export const useRecipeStore = defineStore("recipeStore", () => {
       .catch((err) => {
         console.log(err);
       });
-  }
+  };
   const getAllRecipeImages = () => {
     RecipeServiceApi.getAllRecipeImages()
       .then((res) => {

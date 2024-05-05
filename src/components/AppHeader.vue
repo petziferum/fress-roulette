@@ -6,7 +6,11 @@
     :image="barImg"
     class="align-content-center text-white"
   >
-    <v-app-bar-nav-icon variant="tonal" style="position: relative; z-index: 30" @click.stop="drawer = !drawer" />
+    <v-app-bar-nav-icon
+      variant="tonal"
+      style="position: relative; z-index: 30"
+      @click.stop="drawer = !drawer"
+    />
     <img
       alt="titleImg"
       :src="titleImg"
@@ -14,24 +18,25 @@
       @click="router.push({ name: 'home' })"
     />
     <div class="subtitle">
-      Das Rad entscheidet,<br /> was wir als nächstes fressen!
+      Das Rad entscheidet,<br />
+      was wir als nächstes fressen!
     </div>
     <v-spacer />
-     <template v-slot:extension>
+    <template v-slot:extension>
       <v-toolbar style="z-index: 0">
         <v-toolbar-items>
           <v-btn @click="$router.push({ name: 'Home' })"> Home </v-btn>
           <v-btn
             v-if="userLoggedIn"
             @click="router.push({ name: 'userdashboard' })"
-          ><v-icon color="green">mdi-account</v-icon></v-btn
+            ><v-icon color="green">mdi-account</v-icon></v-btn
           >
           <v-btn
             v-else
             @click="router.push({ name: 'login' })"
             color="red"
             append-icon="mdi-robot-dead"
-          >login</v-btn
+            >login</v-btn
           >
         </v-toolbar-items>
       </v-toolbar>

@@ -35,7 +35,14 @@
         </div>
       </v-card-text>
       <v-card-actions>
-        <v-btn @click="uploadImage" block elevation="5" style="background-color:#699fda; color: white;" variant="elevated">upload</v-btn>
+        <v-btn
+          @click="uploadImage"
+          block
+          elevation="5"
+          style="background-color: #699fda; color: white"
+          variant="elevated"
+          >upload</v-btn
+        >
       </v-card-actions>
     </v-card>
   </v-container>
@@ -97,8 +104,14 @@ const uploadImage = async () => {
   recipeStore.recipesLoading = true;
   await RecipeServiceApi.uploadNewRecipeImage(file).then((url) => {
     recipeStore.updateRecipeImage(url);
-    toast.success("File uploaded! \n"+`${url}`, { icon: "mdi-fire", dangerouslyHTMLString: true });
-    uploadStatus.value = {type: "success", message: `Datei unter ${url} hochgeladen.`};
+    toast.success("File uploaded! \n" + `${url}`, {
+      icon: "mdi-fire",
+      dangerouslyHTMLString: true,
+    });
+    uploadStatus.value = {
+      type: "success",
+      message: `Datei unter ${url} hochgeladen.`,
+    };
     reset();
   });
 };

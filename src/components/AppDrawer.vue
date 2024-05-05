@@ -52,5 +52,4 @@ const listItems = computed(() => {
     rgba(255, 255, 255, 0.9) 70%
   );
 }
-
 </style>

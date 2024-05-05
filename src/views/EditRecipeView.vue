@@ -49,7 +49,14 @@
       <v-card-text id="rating">
         <div class="text-h4 text-shades-black">Rating: {{ recipe.rating }}</div>
         <div class="container">
-          <v-rating class="stars" :model-value="recipe.rating" active-color="yellow" length="10" dense half-increments></v-rating>
+          <v-rating
+            class="stars"
+            :model-value="recipe.rating"
+            active-color="yellow"
+            length="10"
+            dense
+            half-increments
+          ></v-rating>
         </div>
         <v-slider
           v-model="recipe.rating"
@@ -150,15 +157,15 @@ onMounted(() => {
 <style scoped>
 @keyframes float {
   0% {
-    box-shadow: 0 5px 15px 0px rgba(0,0,0,0.6);
+    box-shadow: 0 5px 15px 0px rgba(0, 0, 0, 0.6);
     transform: translatey(0px);
   }
   50% {
-    box-shadow: 0 25px 15px 0px rgba(0,0,0,0.2);
+    box-shadow: 0 25px 15px 0px rgba(0, 0, 0, 0.2);
     transform: translatey(-20px);
   }
   100% {
-    box-shadow: 0 5px 15px 0px rgba(0,0,0,0.6);
+    box-shadow: 0 5px 15px 0px rgba(0, 0, 0, 0.6);
     transform: translatey(0px);
   }
 }
@@ -175,7 +182,7 @@ onMounted(() => {
   box-sizing: border-box;
   border: 0px white solid;
   overflow: hidden;
-  box-shadow: 0 5px 15px 0px rgba(0,0,0,0.6);
+  box-shadow: 0 5px 15px 0px rgba(0, 0, 0, 0.6);
   transform: translatey(0px);
   animation: float 6s ease-in-out infinite;
 }

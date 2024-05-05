@@ -11,7 +11,9 @@
             </v-form>
           </v-card-text>
           <v-card-text>
-            <v-btn variant="outlined" @click="registerWithGoogle">Login mit Google</v-btn>
+            <v-btn variant="outlined" @click="registerWithGoogle"
+              >Login mit Google</v-btn
+            >
           </v-card-text>
         </v-card>
       </v-col>
@@ -20,9 +22,7 @@
 </template>
 
 <script setup lang="ts">
-
-import {registerWithGoogle} from "@/plugins/firebase";
-
+import { registerWithGoogle } from "@/plugins/firebase";
 </script>
 
 <style scoped></style>

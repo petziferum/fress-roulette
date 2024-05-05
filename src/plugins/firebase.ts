@@ -125,8 +125,8 @@ export async function getUserRecipe(): Promise<Recipe[]> {
       });
     } else {
       const q = query(
-          collectionRef,
-          where("createdBy.id", "==", userid)
+        collectionRef,
+        where("createdBy.id", "==", userid)
       ).withConverter(recipeConverter);
 
       const docSnap = await getDocs(q);
@@ -142,13 +142,11 @@ export async function getUserRecipe(): Promise<Recipe[]> {
         }
       });
     }
+  } else {
+    console.info("noch kein user: ", user.value);
   }
-  else
-    {
-      console.info("noch kein user: ", user.value);
-    }
-    return userRecipes;
-  }
+  return userRecipes;
+}
 
 export { fireAuth, fireBucket, db, getCollection };
 
