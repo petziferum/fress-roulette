@@ -3,7 +3,7 @@
     <v-row>
       <v-col>
         <filter-chips
-          :selected="selectedTags"
+          v-model="selectedTags"
           :status-count="statusCount"
           :filter-items="recipeTags"
         />

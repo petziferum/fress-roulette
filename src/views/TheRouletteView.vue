@@ -19,13 +19,11 @@
 </template>
 <script setup lang="ts">
 import { computed, ref } from "vue";
-import Recipe from "@/components/Models/Recipe.class";
 import { useRecipeStore } from "@/stores/useRecipeStore";
-import { load } from "webfontloader";
 import RecipeRoulette from "@/components/componenttest/RecipeRoulette.vue";
 const store = useRecipeStore();
 const loading = ref(false);
-const recipesList = computed(() => store.getSortedRecipeList());
+const recipesList = computed(() => store.getFilteredRecipeList());
 
 function fetchRecipes(): void {
   store.loadAllRecipes().then(() => console.log("promise fertig"));

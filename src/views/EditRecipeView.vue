@@ -107,7 +107,6 @@ import ThePhotoUploadComponent from "@/components/componenttest/ThePhotoUploadCo
 import photoSelectComponent from "@/components/photoSelectComponent.vue";
 import { useRecipeStore } from "@/stores/useRecipeStore";
 import DeleteButtonDialog from "@/components/DeleteButtonDialog.vue";
-import { toast } from "vue3-toastify";
 const recipeStore = useRecipeStore();
 const recipe = computed(() => {
   return recipeStore.editRecipe;

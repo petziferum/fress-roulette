@@ -19,7 +19,6 @@ import {
   uploadBytes,
 } from "firebase/storage";
 import router from "@/router";
-import { toast } from "vue3-toastify";
 
 const IMAGE_FOLDER = "recipes";
 const storage = getStorage();

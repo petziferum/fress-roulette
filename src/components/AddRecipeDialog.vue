@@ -42,13 +42,10 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import Recipe from "@/components/Models/Recipe.class";
-import { useRouter } from "vue-router";
-import RecipeServiceApi from "@/api/recipeServiceApi";
 import { useRecipeStore } from "@/stores/useRecipeStore";
 import RainbowButton from "@/components/commons/rainbowButton.vue";
 
 const props = defineProps(["user"]);
-const router = useRouter();
 const recipeStore = useRecipeStore();
 const isOpen = ref(false);
 const newRecipe = ref(Recipe.createEmptyRecipe().withActive(false));

@@ -17,14 +17,15 @@
       <v-icon class="pr-2 success--text" right>{{ toIcon(item) }}</v-icon>
     </v-chip>
   </v-badge>
-  {{ props.selected }}
+  {{ selected }}
 </template>
 <script setup lang="ts">
-const props = defineProps(["selected", "statusCount", "filterItems"]);
+const props = defineProps(["statusCount", "filterItems"]);
+const selected = defineModel<[string]>();
 
 function isSelected(item) {
   console.log(item);
-  return props.selected.indexOf(item) !== -1;
+  return selected.value.indexOf(item) !== -1;
 }
 
 function toIcon(item) {
@@ -40,7 +41,7 @@ function toIcon(item) {
 function showBadge(item) {
   //status = ProductStatus
   //return [ProductStatus.AVAILABLE, ProductStatus.INSTOCK].includes(status)
-  return !props.selected.includes(item) && getBadgeCount(item) != "0";
+  return !selected.value.includes(item) && getBadgeCount(item) != "0";
 }
 
 function getBadgeCount(s) {
@@ -55,11 +56,11 @@ function getBadgeCount(s) {
 }
 
 function toggle(productStatus) {
-  const index = props.selected.indexOf(productStatus);
+  const index = selected.value.indexOf(productStatus);
   if (index !== -1) {
-    props.selected.splice(index, 1);
+    selected.value.splice(index, 1);
   } else {
-    props.selected.push(productStatus);
+    selected.value.push(productStatus);
   }
 }
 </script>
