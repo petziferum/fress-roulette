@@ -9,9 +9,8 @@ import {
 } from "firebase/firestore";
 import { recipeConverter } from "@/components/Models/Recipe.class";
 import { slugifyString } from "@/common/scripts";
-import { COLLECTION_NAME, db } from "@/plugins/firebase";
+import { COLLECTION_NAME, db, fireBucket } from "@/plugins/firebase";
 import {
-  getStorage,
   ref,
   listAll,
   getDownloadURL,
@@ -21,7 +20,6 @@ import {
 import router from "@/router";
 
 const IMAGE_FOLDER = "recipes";
-const storage = getStorage();
 
 export default class RecipeServiceApi {
   public static async deleteRecipe(recipeId: string): Promise<void> {
@@ -97,7 +95,8 @@ export default class RecipeServiceApi {
     const document = await getDoc(ref);
     return document.data().tags as string[];
   }
-  public static getAllRecipeImages(): Promise<string[]> {
+  public static async getAllRecipeImages(): Promise<string[]> {
+    const storage = fireBucket;
     const recipeRef = ref(storage, IMAGE_FOLDER);
     return listAll(recipeRef)
       .then((res) => {
@@ -110,6 +109,7 @@ export default class RecipeServiceApi {
       });
   }
   public static async uploadNewRecipeImage(file: any): Promise<string> {
+    const storage = fireBucket;
     const folder = IMAGE_FOLDER + "/";
     const storageRef = fireRef(storage, folder + file.name);
     try {

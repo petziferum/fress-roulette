@@ -37,22 +37,24 @@ const firebaseApp = initializeApp(firebaseConfig);
 const fireBucket = getStorage(firebaseApp);
 const fireAuth = getAuth(firebaseApp);
 const db = getFirestore(firebaseApp);
+
+// Helper function to get collection
 const getCollection = async (name: string) => {
   const docRef = query(collection(db, name));
   return getDocs(docRef);
 };
 
 export function logOut() {
-  const auth = getAuth();
-  signOut(auth).then(() => {
+  signOut(fireAuth).then(() => {
     router.push("/");
   });
 }
+
 export const user = computed(() => {
-  const user = getAuth().currentUser;
-  if (user) {
-    console.log("user eingelogged", user.uid);
-    return user;
+  const currentUser = fireAuth.currentUser;
+  if (currentUser) {
+    console.log("user eingelogged", currentUser.uid);
+    return currentUser;
   } else {
     console.log("user nicht eingelogged");
     return null;
@@ -61,10 +63,9 @@ export const user = computed(() => {
 
 export const registerWithGoogle = () => {
   const provider = new GoogleAuthProvider();
-  const auth = getAuth();
   const userStore = useUserStore();
 
-  signInWithPopup(auth, provider)
+  signInWithPopup(fireAuth, provider)
     .then((result) => {
       const user = result.user;
       getUserFirestoreData(user.uid);
@@ -109,7 +110,7 @@ export async function getUserRecipe(): Promise<Recipe[]> {
     const userid = user.value.uid;
     const collectionRef = collection(db, COLLECTION_NAME);
     console.info("get user recipes", userid, collectionRef);
-    if (userid == "qzkYAA74nXevBDXOGzHHXm0NJmq2") {
+    if (userid === "qzkYAA74nXevBDXOGzHHXm0NJmq2") {
       const getall = await getDocs(
         collectionRef.withConverter(recipeConverter)
       );
@@ -128,10 +129,7 @@ export async function getUserRecipe(): Promise<Recipe[]> {
       docSnap.forEach((doc) => {
         console.log("rezepte:", doc);
         if (doc.exists()) {
-          // Convert to Recipe object
-          const r = doc.data();
-          // Use a Recipe instance method
-          userRecipes.push(r);
+          userRecipes.push(doc.data());
         } else {
           console.log("No such document!");
         }
@@ -147,7 +145,7 @@ export async function getUserStateFromFirebase(id: string): Promise<UserState> {
   console.log("hole User state aus Firebase für User: ", id);
   const docRef = doc(db, "users", id);
   const docSnap = await getDoc(docRef);
-  if(docSnap.exists()) {
+  if (docSnap.exists()) {
     const data = docSnap.data();
     return new UserState(
       data.firstName,
@@ -165,5 +163,4 @@ export async function getUserStateFromFirebase(id: string): Promise<UserState> {
 }
 
 export { fireAuth, fireBucket, db, getCollection };
-
 export default firebaseApp;
