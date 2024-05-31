@@ -6,7 +6,7 @@ import { loadFonts } from "./plugins/webfontloader";
 import { createPinia } from "pinia";
 import Vue3Toastify, { type ToastContainerOptions } from "vue3-toastify";
 import "vue3-toastify/dist/index.css";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { getAuth } from "firebase/auth";
 import { useUserStore } from "@/stores/useUserStore";
 
 const pinia = createPinia();
@@ -14,7 +14,6 @@ loadFonts();
 
 let app: ReturnType<typeof createApp>;
 const auth = getAuth();
-
 
 auth.onAuthStateChanged((user) => {
   if (!app) {

@@ -1,5 +1,7 @@
 import { defineStore } from "pinia";
 import { ref, watch } from "vue";
+import UserState from "@/stores/types/UserState.class";
+import { getUserStateFromFirebase } from "@/plugins/firebase";
 
 export interface stateInterface {
   userFirestoreData: {
@@ -17,6 +19,7 @@ export const useUserStore = defineStore("userStore", () => {
   const userFirestoreData = ref(null);
   const userLoggedIn = ref(false);
   const user = ref({});
+  const userState = ref<UserState>(UserState.createEmptyUserState());
   const userLoading = ref(false);
   const userError = ref("");
 
@@ -29,10 +32,16 @@ export const useUserStore = defineStore("userStore", () => {
 
   function setUserFirestoreData(data) {
     userFirestoreData.value = data;
+    const userId = data.uid;
+    getUserStateFromFirebase(userId).then((user) => {
+      user.id = userId;
+      userState.value = user;
+    });
   }
   return {
     userFirestoreData,
     user,
+    userState,
     userError,
     userLoggedIn,
     userLoading,

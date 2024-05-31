@@ -2,7 +2,6 @@ import { initializeApp } from "firebase/app";
 import {
   getAuth,
   GoogleAuthProvider,
-  onAuthStateChanged,
   signInWithPopup,
   signOut,
 } from "firebase/auth";
@@ -20,17 +19,18 @@ import router from "@/router";
 import { computed } from "vue";
 import Recipe, { recipeConverter } from "@/components/Models/Recipe.class";
 import { useUserStore } from "@/stores/useUserStore";
+import UserState from "@/stores/types/UserState.class";
+
 export const COLLECTION_NAME = "recipes";
 const firebaseConfig = {
   apiKey: "AIzaSyCPt03Bp5UBVXn72EVSWNAhvt4u0NI2m5M",
   authDomain: "recipes-petzi.firebaseapp.com",
-  databaseURL:
-    "https://recipes-petzi-default-rtdb.europe-west1.firebasedatabase.app",
+  databaseURL: "https://recipes-petzi-default-rtdb.europe-west1.firebasedatabase.app",
   projectId: "recipes-petzi",
   storageBucket: "recipes-petzi.appspot.com",
   messagingSenderId: "214936827568",
   appId: "1:214936827568:web:345c47274d065fe45c6d75",
-  measurementId: "G-15T3BLM6BP",
+  measurementId: "G-15T3BLM6BP"
 };
 
 const firebaseApp = initializeApp(firebaseConfig);
@@ -49,25 +49,21 @@ export function logOut() {
   });
 }
 export const user = computed(() => {
-  let user = getAuth().currentUser;
+  const user = getAuth().currentUser;
   if (user) {
     console.log("user eingelogged", user.uid);
-    getUserFirestoreData(user.uid);
     return user;
   } else {
-    onAuthStateChanged(getAuth(), (authUser) => {
-      console.info("authstatechanged", authUser);
-      user = authUser;
-      getUserFirestoreData(user!.uid);
-    });
-    return user;
+    console.log("user nicht eingelogged");
+    return null;
   }
 });
 
 export const registerWithGoogle = () => {
-  const userState = useUserStore();
   const provider = new GoogleAuthProvider();
   const auth = getAuth();
+  const userStore = useUserStore();
+
   signInWithPopup(auth, provider)
     .then((result) => {
       const user = result.user;
@@ -76,14 +72,13 @@ export const registerWithGoogle = () => {
     })
     .catch((error) => {
       console.error("Fehler", error.message);
-      userState.userError = error.message;
+      userStore.userError = error.message;
     });
 };
 
 export const getUserFirestoreData = async (userId: string) => {
-  const userState = useUserStore();
   console.info("getUserFirestoreData", userId);
-
+  const userStore = useUserStore();
   const userStoreRef = doc(db, "users", userId);
   const userDocSnap = await getDoc(userStoreRef);
   if (userDocSnap.exists()) {
@@ -98,10 +93,10 @@ export const getUserFirestoreData = async (userId: string) => {
       userName: d.userName,
     };
     console.log("user store data: ", data);
-    userState.userFirestoreData = data;
+    userStore.userFirestoreData = data;
     console.log(
       "userFirestoreData aus firebase.ts",
-      userState.userFirestoreData
+      userStore.userFirestoreData
     );
   } else {
     console.log("user wurde nicht gefunden", userId);
@@ -118,7 +113,7 @@ export async function getUserRecipe(): Promise<Recipe[]> {
       const getall = await getDocs(
         collectionRef.withConverter(recipeConverter)
       );
-      const allSnap = getall.forEach((doc) => {
+      getall.forEach((doc) => {
         if (doc.exists()) {
           userRecipes.push(doc.data() as Recipe);
         }
@@ -146,6 +141,27 @@ export async function getUserRecipe(): Promise<Recipe[]> {
     console.info("noch kein user: ", user.value);
   }
   return userRecipes;
+}
+
+export async function getUserStateFromFirebase(id: string): Promise<UserState> {
+  console.log("hole User state aus Firebase für User: ", id);
+  const docRef = doc(db, "users", id);
+  const docSnap = await getDoc(docRef);
+  if(docSnap.exists()) {
+    const data = docSnap.data();
+    return new UserState(
+      data.firstName,
+      data.lastName,
+      data.email,
+      data.lastLogin,
+      data.recipes,
+      data.id,
+      data.userName
+    );
+  } else {
+    console.log("No such document!");
+    return UserState.createEmptyUserState();
+  }
 }
 
 export { fireAuth, fireBucket, db, getCollection };
