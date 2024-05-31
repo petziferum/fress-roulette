@@ -36,7 +36,6 @@ export default class RecipeServiceApi {
     );
     return await setDoc(recipeRef, recipe).then(() => recipe);
   }
-
   public static async getSingleRecipe(
     recipeId: string
   ): Promise<Recipe | undefined> {
@@ -50,7 +49,6 @@ export default class RecipeServiceApi {
       console.log("Nichts gefunden mit id: ", recipeId);
     }
   }
-
   public static async getRecipes(): Promise<Array<Recipe>> {
     const c = await getDocs(
       collection(db, "recipes").withConverter(recipeConverter)
@@ -59,7 +57,6 @@ export default class RecipeServiceApi {
     c.forEach((el) => a.push(el.data()));
     return a;
   }
-
   public static async createNewEditRecipe(recipe: Recipe): Promise<void> {
     if (!recipe.recipeName) {
       throw new Error("recipeName is missing");
@@ -82,7 +79,6 @@ export default class RecipeServiceApi {
       console.log("try error", e);
     }
   }
-
   public static async saveNewRecipe(recipe: Recipe): Promise<string> {
     //const recipeDbObject = recipeConverter.toFirestore(recipe);
     try {
@@ -101,7 +97,6 @@ export default class RecipeServiceApi {
     const document = await getDoc(ref);
     return document.data().tags as string[];
   }
-
   public static getAllRecipeImages(): Promise<string[]> {
     const recipeRef = ref(storage, IMAGE_FOLDER);
     return listAll(recipeRef)
@@ -114,7 +109,6 @@ export default class RecipeServiceApi {
         return []; // Return an empty array in case of error
       });
   }
-
   public static async uploadNewRecipeImage(file: any): Promise<string> {
     const folder = IMAGE_FOLDER + "/";
     const storageRef = fireRef(storage, folder + file.name);

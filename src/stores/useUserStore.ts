@@ -32,6 +32,7 @@ export const useUserStore = defineStore("userStore", () => {
   }
   return {
     userFirestoreData,
+    user,
     userError,
     userLoggedIn,
     userLoading,
