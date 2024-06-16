@@ -105,7 +105,7 @@ const editRoute = ref("/recipe/edit/");
 const userState = useUserStore();
 
 const required = computed(() => {
-  return (v: string) => !!v || "Darf nicht leer sein";
+  return (v: string) => !!v || "Darf nicht leer sein.";
 });
 
 async function checkIfTextfieldIsValid() {
