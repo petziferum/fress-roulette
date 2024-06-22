@@ -7,10 +7,13 @@
           <v-card-subtitle>
             <v-text-field
               label="Search"
-              variant="outlined"
+              variant="filled"
               v-model="store.searchQuery"
               append-inner-icon="mdi-close"
-              @click:append-inner="store.searchQuery = ''"
+              @click:append-inner.prevent="clearSearch"
+              @focus="onFocus"
+              @blur="onBlur"
+              :class="{ 'popout': isFocused }"
             ></v-text-field>
           </v-card-subtitle>
           <v-card-actions class="cloudStyle">
@@ -87,6 +90,17 @@ const recipesList = ref<Recipe[]>([]);
 const tags = computed(() => store.recipeTags);
 const selectedLetter = ref("");
 
+const isFocused = ref(false);
+
+const onFocus = () => {
+  isFocused.value = true;
+};
+const onBlur = () => {
+  isFocused.value = false;
+};
+const clearSearch = () => {
+  store.searchQuery = "";
+};
 function routeToRecipe(recipe: Recipe): void {
   console.log("routeToRecipe", recipe.id);
   router.push({ name: "viewRecipe", params: { id: recipe.id } });
@@ -154,9 +168,33 @@ onMounted(() => {
   position: relative;
 }
 
+.popout {
+  position: fixed;
+  top: 50px;
+  left: 5%;
+  transform: translateY(100%);
+  width: 90%;
+  z-index: 1000; /* Adjust if necessary */
+  transition: all 0.5s ease-in-out;
+  background-color: white; /* Ensure the background covers content behind */
+  padding: 10px; /* Optional: adjust padding to your needs */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional: add shadow for better visibility */
+}
+.v-text-field--popout {
+  position: fixed;
+  top: 50px;
+  left: 25%;
+  transform: translateX(-50%);
+  width: 50%;
+  z-index: 1000;
+  background-color: white;
+  padding: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+}
 .overlay {
   position: absolute;
-  top: 0;
+  top: 3em;
   left: 0;
   width: 100%;
   height: 100%;
