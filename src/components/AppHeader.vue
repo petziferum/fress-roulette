@@ -17,9 +17,11 @@
       class="pa-10 ma-10 titleImg"
       @click="router.push({ name: 'home' })"
     />
+    <div class="subtitleContainer">
     <div class="subtitle">
       Das Rad entscheidet,<br />
       was wir als nächstes fressen!
+    </div>
     </div>
     <v-spacer />
     <template v-slot:extension>
@@ -95,17 +97,34 @@ const mobile = computed(() => {
   z-index: 10;
   width: 400px;
 }
-.subtitle {
+@media (max-width: 600px) {
+  .titleImg {
+    width: 300px;
+  }
+}
+.subtitleContainer {
   position: absolute;
+  display: flex;
   z-index: 20;
-  top: 40%;
-  left: 50%;
-  transform: translate(-60%, -50%);
-  font-size: 1.9rem;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  border: 1px solid red;
+}
+.subtitle {
+  position: relative;
+  z-index: 20;
+  transform: translate(0, 0);
+  font-size: 1.5rem;
   font-weight: bolder;
   color: #ffffff;
   text-shadow: 5px 5px 10px rgba(0, 0, 0, 1);
-  width: 100%;
-  text-align: center;
+  border: 1px solid green;
+}
+@media (max-width: 600px) {
+  .subtitle {
+    font-size: 1rem;
+    align-self: flex-end;
+  }
 }
 </style>
