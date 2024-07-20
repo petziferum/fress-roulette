@@ -62,6 +62,7 @@
           <v-col cols="2">
             <v-text-field
               id="menge"
+              ref="mengeField"
               variant="outlined"
               label="Menge"
               :rules="filledRule"
@@ -92,7 +93,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, nextTick, ref } from "vue";
 import { VForm } from "vuetify/components";
 
 const props = defineProps(["modelValue"]);
@@ -100,6 +101,7 @@ const emitValue = defineEmits(["update:modelValue", "add"]);
 const filledRule = ref([(v) => v != null || "Name muss ausgefüllt sein"]);
 const editItem = ref(null);
 const zutatForm = ref<typeof VForm>();
+const mengeField = ref(null);
 
 const recipe = computed({
   get() {
@@ -129,6 +131,7 @@ async function addIngredient(): Promise<void> {
       recipe.value.ingredients[tempNr] = newItem;
     }
     zutatForm.value?.reset();
+    await nextTick(() => mengeField.value.focus());
   }
 }
 </script>
