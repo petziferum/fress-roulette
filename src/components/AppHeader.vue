@@ -109,7 +109,6 @@ const mobile = computed(() => {
   width: 100%;
   height: 100%;
   text-align: center;
-  border: 1px solid red;
 }
 .subtitle {
   position: relative;
@@ -119,7 +118,6 @@ const mobile = computed(() => {
   font-weight: bolder;
   color: #ffffff;
   text-shadow: 5px 5px 10px rgba(0, 0, 0, 1);
-  border: 1px solid green;
 }
 @media (max-width: 600px) {
   .subtitle {
