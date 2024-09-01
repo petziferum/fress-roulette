@@ -20,6 +20,7 @@
           >
             <v-hover>
               <template v-slot:default="{ isHovering, props }">
+                <!-- Title Image -->
                 <v-img
                   v-bind="props"
                   :src="recipe.imageSrc"
@@ -41,7 +42,27 @@
             </v-hover>
 
             <ImageOverlay ref="imageOverlay" :imageSrc="recipe.imageSrc" />
+
+            <!-- Further Images Slider -->
+            <v-card class="elevation-6 my-2">
+              <v-carousel
+                v-if="recipe.additionalImages.length"
+                cycle
+                direction="vertical"
+                height="180"
+              >
+                <v-carousel-item
+                  v-for="(img, index) in recipe.additionalImages"
+                  cover
+                  :src="img"
+                  :key="index"
+                >
+                </v-carousel-item>
+              </v-carousel>
+            </v-card>
+
             <v-toolbar class="mb-4">
+              <!-- Recipe Details -->
               <v-toolbar-items>
                 <v-btn icon @click="goBack">
                   <v-icon>mdi-arrow-left</v-icon>

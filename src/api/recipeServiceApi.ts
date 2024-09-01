@@ -42,11 +42,29 @@ export default class RecipeServiceApi {
     );
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
+      console.log("rezept geladen", docSnap.data());
       return docSnap.data();
     } else {
       console.log("Nichts gefunden mit id: ", recipeId);
     }
   }
+  /*
+  public static async loadImagesFromFirebase() {
+    const storage = getStorage();
+    const imagesRef = storageRef(storage, `recipes/${id.value}`);
+
+    // Load all images
+    try {
+      const imageList = await listAll(imagesRef);
+      const imageUrls = await Promise.all(
+        imageList.items.map((item) => getDownloadURL(item))
+      );
+      recipe.value.imageSrc = imageUrls[0]; // First image as title image
+      recipe.value.additionalImages = imageUrls.slice(1); // Remaining as additional images
+    } catch (error) {
+      console.error("Error loading images from Firebase:", error);
+    }
+  }*/
   public static async getRecipes(): Promise<Array<Recipe>> {
     const c = await getDocs(
       collection(db, "recipes").withConverter(recipeConverter)

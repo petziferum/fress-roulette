@@ -27,6 +27,7 @@ export default class Recipe {
   public createdBy?: CreatedBy;
   public time?: Date;
   public imageSrc?: string;
+  public additionalImages?: string[];
   public description?: string;
   public recipeName: string = "";
   public type?: string;
@@ -43,6 +44,7 @@ export default class Recipe {
     createdBy?: CreatedBy,
     time?: Date,
     imageSrc?: string,
+    additionalImages?: string[],
     description?: string,
     recipeName: string = "",
     type?: string,
@@ -58,6 +60,7 @@ export default class Recipe {
     this.recipeName = recipeName;
     this.time = time;
     this.imageSrc = imageSrc;
+    this.additionalImages = additionalImages;
     this.description = description;
     this.type = type;
     this.ingredients = ingredients;
@@ -100,6 +103,11 @@ export default class Recipe {
 
   withImageSrc(value: string): Recipe {
     this.imageSrc = value ?? "";
+    return this;
+  }
+
+  withAdditionalImages(value: string[]): Recipe {
+    this.additionalImages = value ?? [];
     return this;
   }
 
@@ -173,6 +181,7 @@ export const recipeConverter = {
         ? recipe.recipeDescription
         : [],
       imageSrc: recipe.imageSrc ? recipe.imageSrc : "",
+      additionalImages: recipe.additionalImages ? recipe.additionalImages : [],
       tags: recipe.tags ? recipe.tags : [],
       rating: recipe.rating ? recipe.rating : 0,
       difficulty: recipe.difficulty ? recipe.difficulty : 0,
@@ -208,6 +217,7 @@ export const recipeConverter = {
       .withTime(recipe.time ?? new Date(Date.now()))
       .withIngredients(recipe.ingredients)
       .withImageSrc(recipe.imageSrc)
+      .withAdditionalImages(recipe.additionalImages)
       .withType(recipe.type)
       .withDescription(recipe.description)
       .withRecipeDescription(recipe.recipeDescription)
