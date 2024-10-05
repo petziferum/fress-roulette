@@ -1,6 +1,6 @@
 <template>
-  <v-app>
-    <app-header style="position: relative; z-index: 10" />
+  <v-app style="background-color: red">
+    <app-header/>
     <side-bar></side-bar>
     <v-main
       :style="{ 'background-image': 'url(' + stone + ')' }"
@@ -12,12 +12,20 @@
         </v-col>
       </v-row>
     </v-main>
-    <v-footer class="flex-column" border>
-      <div v-if="userStore.userLoggedIn">Angemeldet</div>
-      <div v-else>Nicht angemeldet</div>
-      <div class="px-4 py-2 bg-black text-center w-100">
-        {{ new Date().getFullYear() }} — <strong>Petziferum</strong>
-      </div>
+    <v-footer border>
+      <v-row>
+        <v-col>
+          <div v-if="userStore.userLoggedIn">Angemeldet</div>
+          <div v-else>Nicht angemeldet</div>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col>
+          <div class="px-4 py-2 bg-black text-center w-100">
+            {{ new Date().getFullYear() }} — <strong>Petziferum</strong>
+          </div>
+        </v-col>
+      </v-row>
     </v-footer>
   </v-app>
 </template>
