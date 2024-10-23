@@ -13,14 +13,12 @@
       </v-row>
     </v-main>
     <v-footer border>
-      <v-row>
-        <v-col>
+      <v-row justify="center" no-gutters>
+        <v-col class="text-center">
           <div v-if="userStore.userLoggedIn">Angemeldet</div>
           <div v-else>Nicht angemeldet</div>
         </v-col>
-      </v-row>
-      <v-row>
-        <v-col>
+        <v-col cols="12">
           <div class="px-4 py-2 bg-black text-center w-100">
             {{ new Date().getFullYear() }} — <strong>Petziferum</strong>
           </div>
@@ -42,8 +40,6 @@ const userStore = useUserStore();
 <style>
 .background {
   width: 100%;
-  transform: translate(0, -100px);
-
   background-repeat: repeat-y;
   background-position: center;
   background-attachment: fixed;

@@ -1,9 +1,9 @@
 <template>
-  <v-card class="bg-transparent">
+  <v-card class="bg-transparent mt-12">
     <v-row justify="center">
       <v-col cols="12" md="10">
         <v-card>
-          <v-card-title>HomeView</v-card-title>
+          <v-card-title>Rezepte</v-card-title>
           <v-card-subtitle>
             <v-text-field
               label="Search"
