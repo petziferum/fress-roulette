@@ -146,23 +146,11 @@
                 </v-card-text>
               </v-col>
               <v-col cols="12" md="4">
-                <div class="text-h5 px-4 font-weight-thin">
+                <div class="text-h5 px-4 mb-12 font-weight-thin">
                   Schwierigkeit:
                   {{ recipe.difficulty ? recipe.difficulty : "--" }}
                 </div>
               </v-col>
-            </v-row>
-            <v-row>
-              <v-card-text>
-                <div
-                  v-for="(value, key) in recipe"
-                  :key="key"
-                  class="pt-2 pl-3"
-                >
-                  {{ key }}: {{ value }}
-                  <v-divider thickness="4" />
-                </div>
-              </v-card-text>
             </v-row>
           </v-card>
         </v-col>
