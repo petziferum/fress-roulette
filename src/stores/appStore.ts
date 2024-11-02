@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 import { useDisplay } from "vuetify";
 import { computed, ref } from "vue";
 import { useUserStore } from "@/stores/useUserStore";
+import { PRICETAG_NAME } from "@/router";
 
 export const useAppStore = defineStore("app", () => {
   const drawer = ref(true);
@@ -33,6 +34,13 @@ export const useAppStore = defineStore("app", () => {
       path: "/user/dashboard",
       icon: "mdi-kangaroo",
       subtitle: "dashboard",
+      show: true,
+    },
+    {
+      title: PRICETAG_NAME,
+      path: PRICETAG_NAME,
+      icon: "mdi-tag",
+      subtitle: "Pricetag",
       show: true,
     },
     {

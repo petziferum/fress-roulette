@@ -3,6 +3,7 @@ import UserDashboard from "@/views/MainViewUserDashboard.vue";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import HomeView from "@/views/HomeView.vue";
 
+export const PRICETAG_NAME = "Pricetag";
 const router = createRouter({
   history: createWebHistory(),
   routes: [
@@ -92,6 +93,11 @@ const router = createRouter({
       path: "/logout",
       name: "logout",
       component: () => import("@/views/MainViewUserDashboard.vue"),
+    },
+    {
+      path: "/pricetag",
+      name: PRICETAG_NAME,
+      component: () => import("@/components/pricetag/ThePricetagView.vue"),
     },
   ],
 });
