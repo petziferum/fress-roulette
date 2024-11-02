@@ -7,7 +7,7 @@
           <v-card-subtitle>Preise checken</v-card-subtitle>
           <v-row>
             <v-col cols="12">
-              <v-select :items="marktItems" label="Markt" />
+              <v-select :items="marktItems" label="Markt" v-model="selectedMarkt" />
             </v-col>
             <v-col cols="12" md="6">
               <v-form ref="tagform">
@@ -20,7 +20,7 @@
                 />
                 <v-text-field label="Beschreibung" v-model="description" />
                 <v-text-field label="Preis" type="number" v-model="price" />
-                <v-text-field label="datum" v-model="date" />
+                <v-text-field label="datum" v-model="formattedDate" />
               </v-form>
             </v-col>
             <v-col>
@@ -34,7 +34,7 @@
 </template>
 <script setup lang="ts">
 
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import PricetagServiceApi from "@/components/pricetag/PricetagService.api";
 import { db } from "@/plugins/firebase";
 import { collection, getDocs, query, where } from "firebase/firestore";
@@ -46,6 +46,16 @@ const description = ref("");
 const marktItems = ref(["Aldi", "Lidl", "Rewe", "Edeka"]);
 const selectedMarkt = ref("");
 const suggestedProductNames = ref<string[]>([]);
+
+const formattedDate = computed(() => {
+  return date.value.toLocaleString("de-DE", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+});
 
 async function findProductname() {
   if (!productname.value) return;
@@ -79,7 +89,9 @@ function getProduct() {
   console.log("fetch Product", productname.value);
   PricetagServiceApi.getProduct(productname.value).then((result) => {
     console.log("result", result);
-    price.value=result.price;
+    price.value = result.price;
+    description.value = result.description;
+    selectedMarkt.value = result.markt;
   });
 }
 </script>
