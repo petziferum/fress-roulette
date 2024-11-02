@@ -71,29 +71,39 @@
               <div class="text-center">
                 <span class="text-h6 mx-4">{{ recipe.recipeName }}</span>
               </div>
-              <div class="text-end">
-                <v-rating
-                  :model-value="recipe.rating"
-                  hover
-                  :length="5"
-                  color="blue"
-                  active-color="primary"
-                />
-              </div>
-              <div class="text-h6">{{ recipe.rating }}/</div>
-              <span>5</span>
-              <div class="text-black ml-5 text-right">
-                Level: {{ recipe.difficulty }}
-              </div>
             </v-toolbar>
             <v-card-subtitle>
               <div class="subtitle-row">Autor: {{ recipe.createdBy.name }}</div>
               <div class="subtitle-row">
                 erstellt am: {{ new Date(recipe.time).toLocaleString() }}
               </div>
+              <div class="d-flex align-center flex-column my-auto">
+                Rating
+                <div class="text-h4 mt-1">
+                  {{ recipe.rating }}
+                  <span class="text-h6 ml-n3">/10</span>
+                </div>
+                <v-rating
+                  :model-value="recipe.rating"
+                  :length="10"
+                  density="compact"
+                  color="blue"
+                  active-color="primary"
+                />
+              </div>
             </v-card-subtitle>
             <v-card-text>
               <v-row>
+                <v-col cols="12">
+                  <div
+                    class="text-grey-darken-1 d-flex align-center flex-column my-auto"
+                  >
+                    Schwierigkeit:
+                    <div class="text-h5 mt-1">
+                      {{ recipe.difficulty ? recipe.difficulty : "--" }}
+                    </div>
+                  </div>
+                </v-col>
                 <v-col class="font-weight-light text-blue-accent-1">
                   Beschreibung: {{ recipe.description }}
                 </v-col>
@@ -144,12 +154,6 @@
                   </v-row>
                   <v-divider />
                 </v-card-text>
-              </v-col>
-              <v-col cols="12" md="4">
-                <div class="text-h5 px-4 mb-12 font-weight-thin">
-                  Schwierigkeit:
-                  {{ recipe.difficulty ? recipe.difficulty : "--" }}
-                </div>
               </v-col>
             </v-row>
           </v-card>
