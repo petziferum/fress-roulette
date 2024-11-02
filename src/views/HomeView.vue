@@ -13,7 +13,6 @@
               @click:append-inner.prevent="clearSearch"
               @focus="onFocus"
               @blur="onBlur"
-              :class="{ 'popout': isFocused }"
             ></v-text-field>
           </v-card-subtitle>
           <v-card-actions class="cloudStyle">
@@ -159,7 +158,6 @@ onMounted(() => {
 .fade-leave-active {
   transition: opacity 0.9s ease-in-out;
 }
-
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
@@ -167,41 +165,15 @@ onMounted(() => {
 .image-wrapper {
   position: relative;
 }
-
-.popout {
-  position: fixed;
-  top: 50px;
-  left: 5%;
-  transform: translateY(100%);
-  width: 90%;
-  z-index: 1000; /* Adjust if necessary */
-  transition: all 0.5s ease-in-out;
-  background-color: white; /* Ensure the background covers content behind */
-  padding: 10px; /* Optional: adjust padding to your needs */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional: add shadow for better visibility */
-}
-.v-text-field--popout {
-  position: fixed;
-  top: 50px;
-  left: 25%;
-  transform: translateX(-50%);
-  width: 50%;
-  z-index: 1000;
-  background-color: white;
-  padding: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  box-sizing: border-box;
-}
 .overlay {
   position: absolute;
   top: 3em;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: rgba(0, 0, 0, 1);
   color: white;
-  opacity: 0;
-  transition: opacity 0.2s ease;
+  opacity: 1;
   display: flex;
   justify-content: center;
   align-items: center;
