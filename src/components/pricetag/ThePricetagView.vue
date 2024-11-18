@@ -6,25 +6,75 @@
           <v-card-title>Preisliste</v-card-title>
           <v-card-subtitle>Preise checken</v-card-subtitle>
           <v-row>
-            <v-col cols="12">
-              <v-select :items="marktItems" label="Markt" v-model="selectedMarkt" />
-            </v-col>
-            <v-col cols="12" md="6">
+            <v-col cols="12" md="12">
               <v-form ref="tagform">
                 <v-combobox
                   label="Produktname"
                   v-model="productname"
                   :items="suggestedProductNames"
                   @input="findProductname"
-                  @update:focused="selectProductname"
+                  clearable
+                  @update:modelValue="selectProductname"
                 />
                 <v-text-field label="Beschreibung" v-model="description" />
-                <v-text-field label="Preis" type="number" v-model="price" />
-                <v-text-field label="datum" v-model="formattedDate" />
+                <v-btn
+                  v-if="!editmode"
+                  block
+                  variant="outlined"
+                  color="green"
+                  @click="enterEditMode"
+                  text="Neuen Preis hinzufügen"
+                />
+                <template v-if="editmode">
+                  <v-select
+                    :items="marktItems"
+                    label="Markt"
+                    v-model="pricetagEntry.location"
+                  />
+                  <v-text-field
+                    label="Preis"
+                    type="number"
+                    v-model="pricetagEntry.price"
+                  />
+                  <v-text-field label="datum" v-model="formattedDate" />
+                </template>
               </v-form>
+              <v-btn
+                v-if="editmode"
+                block
+                color="red"
+                variant="outlined"
+                class="mb-3"
+                @click="editmode = false"
+                text="Abbrechen"
+              />
+              <v-btn
+                v-if="editmode"
+                block
+                variant="outlined"
+                @click="addPricetag"
+                text="Speichern"
+              />
             </v-col>
-            <v-col>
-              <v-btn block variant="outlined" @click="addPricetag">Neuen Preis hinzufügen</v-btn>
+          </v-row>
+          <v-row>
+            <v-col cols="12">
+              <div class="d-flex flex-column">
+                <v-chip
+                  v-for="tag in entries"
+                  ripple
+                  class="mb-2 mx-2 d-flex"
+                  elevation="3"
+                  size="small"
+                  :key="tag.date"
+                >
+                  <div class="d-inline-flex justify-space-between" style="width: 100%">
+                    <div style="width:100px">{{ tag.date.toDate().toLocaleDateString() }}</div>
+                    <div style="width:100px">{{ tag.location }}</div>
+                    <div style="width:100px; font-weight: bold">{{ tag.price }} €</div>
+                  </div>
+                </v-chip>
+              </div>
             </v-col>
           </v-row>
         </v-card>
@@ -33,8 +83,7 @@
   </v-container>
 </template>
 <script setup lang="ts">
-
-import { computed, ref } from "vue";
+import { computed, reactive, ref } from "vue";
 import PricetagServiceApi from "@/components/pricetag/PricetagService.api";
 import { db } from "@/plugins/firebase";
 import { collection, getDocs, query, where } from "firebase/firestore";
@@ -43,9 +92,33 @@ const productname = ref("");
 const price = ref("");
 const date = ref(new Date(Date.now()));
 const description = ref("");
-const marktItems = ref(["Aldi", "Lidl", "Rewe", "Edeka"]);
+const editmode = ref(false);
+const marktItems = ref([
+  "Aldi",
+  "Lidl",
+  "Rewe",
+  "Edeka",
+  "Dm",
+  "Müller",
+  "H&M",
+  "Asia-Markt Riemarcaden",
+  "IShop",
+  "Penny",
+  "Netto",
+  "Kaufland",
+  "Rischart",
+  "McDonalds",
+  "Hasis",
+  "Traublinger",
+]);
 const selectedMarkt = ref("");
 const suggestedProductNames = ref<string[]>([]);
+const pricetagEntry = reactive({
+  price: "",
+  date: new Date(),
+  location: "",
+});
+const entries = ref([]);
 
 const formattedDate = computed(() => {
   return date.value.toLocaleString("de-DE", {
@@ -64,8 +137,14 @@ async function findProductname() {
   //const q = query(productsRef, where("productName", ">=", productname.value.toLowerCase()), where("productName", "<=", productname.value.toLowerCase() + "\uf8ff"));
   const querySnapshot = await getDocs(productsRef);
   suggestedProductNames.value = querySnapshot.docs
-    .map(doc => doc.data().productName)
-    .filter(name => name.toLowerCase().startsWith(productname.value.toLowerCase()));
+    .map((doc) => doc.data().productName)
+    .filter((name) =>
+      name.toLowerCase().startsWith(productname.value.toLowerCase())
+    );
+}
+
+function enterEditMode() {
+  editmode.value = true;
 }
 
 function selectProductname() {
@@ -75,21 +154,34 @@ function selectProductname() {
 
 function addPricetag() {
   console.log(productname.value, price.value, date.value, selectedMarkt.value);
+  entries.value.push(pricetagEntry);
   PricetagServiceApi.saveNewPriceTag({
     productName: productname.value,
     description: description.value,
-    price: price.value,
-    date: date.value,
-    markt: selectedMarkt.value,
-  }).then((result) => {
-    console.log("result", result);
+    entries: entries.value,
+  }).then(() => {
+    getProduct();
+    editmode.value = false;
+    pricetagEntry.price = "";
+    pricetagEntry.location = "";
+    pricetagEntry.date = new Date();
   });
 }
 function getProduct() {
+  entries.value = [];
   console.log("fetch Product", productname.value);
   PricetagServiceApi.getProduct(productname.value).then((result) => {
-    console.log("result", result);
     price.value = result.price;
+    if (result.entries) {
+      entries.value = result.entries;
+    } else {
+      const newEntry = {
+        date: result.date,
+        location: result.markt,
+        price: result.price,
+      };
+      entries.value.push(newEntry);
+    }
     description.value = result.description;
     selectedMarkt.value = result.markt;
   });
