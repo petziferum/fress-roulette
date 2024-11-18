@@ -99,6 +99,7 @@ const marktItems = ref([
   "Rewe",
   "Edeka",
   "Dm",
+  "Rossmann",
   "Müller",
   "H&M",
   "Asia-Markt Riemarcaden",
