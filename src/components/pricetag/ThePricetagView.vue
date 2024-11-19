@@ -59,29 +59,23 @@
           </v-row>
           <v-row>
             <v-col cols="12">
-              <div class="d-flex flex-column">
-                <v-chip
+              <v-list>
+                <v-list-item
                   v-for="tag in entries"
                   ripple
-                  class="mb-2 mx-2 d-flex"
+                  class="mb-2 mx-2"
                   elevation="3"
-                  size="small"
                   :key="tag.date"
                 >
-                  <div
-                    class="d-inline-flex justify-space-between"
-                    style="width: 100%"
-                  >
-                    <div style="width: 100px">
-                      {{ tag.date.toDate().toLocaleDateString() }}
-                    </div>
-                    <div style="width: 100px">{{ tag.location }}</div>
-                    <div style="width: 100px; font-weight: bold">
-                      {{ tag.price }} €
-                    </div>
-                  </div>
-                </v-chip>
-              </div>
+                  <v-list-item-title class="d-flex justify-space-between">
+                    <span>{{ getDate(tag.date) }}</span
+                    ><span>{{ tag.location }}</span>
+                    <span>
+                      <strong>{{ tag.price }} €</strong>
+                    </span>
+                  </v-list-item-title>
+                </v-list-item>
+              </v-list>
             </v-col>
           </v-row>
         </v-card>
@@ -90,10 +84,10 @@
   </v-container>
 </template>
 <script setup lang="ts">
-import { computed, reactive, ref } from "vue";
+import { reactive, ref } from "vue";
 import PricetagServiceApi from "@/components/pricetag/PricetagService.api";
 import { db } from "@/plugins/firebase";
-import { collection, getDocs, query, where } from "firebase/firestore";
+import { collection, getDocs, Timestamp } from "firebase/firestore";
 
 const productname = ref("");
 const price = ref("");
@@ -123,11 +117,14 @@ const selectedMarkt = ref("");
 const suggestedProductNames = ref<string[]>([]);
 const pricetagEntry = reactive({
   price: "",
-  date: new Date(),
+  date: Timestamp.fromDate(new Date()),
   location: "",
 });
 const entries = ref([]);
 
+function getDate(date: Timestamp) {
+  return new Date(date.seconds * 1000).toLocaleDateString();
+}
 async function findProductname() {
   if (!productname.value) return;
   // Firebase query to find matching product names
@@ -169,19 +166,21 @@ function getProduct() {
   entries.value = [];
   console.log("fetch Product", productname.value);
   PricetagServiceApi.getProduct(productname.value).then((result) => {
-    price.value = result.price;
-    if (result.entries) {
-      entries.value = result.entries;
-    } else {
-      const newEntry = {
-        date: result.date,
-        location: result.markt,
-        price: result.price,
-      };
-      entries.value.push(newEntry);
+    if (result) {
+      price.value = result.price;
+      if (result.entries) {
+        entries.value = result.entries;
+      } else {
+        const newEntry = {
+          date: result.date,
+          location: result.markt,
+          price: result.price,
+        };
+        entries.value.push(newEntry);
+      }
+      description.value = result.description;
+      selectedMarkt.value = result.markt;
     }
-    description.value = result.description;
-    selectedMarkt.value = result.markt;
   });
 }
 </script>
