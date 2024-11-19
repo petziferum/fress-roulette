@@ -36,7 +36,7 @@
                     type="number"
                     v-model="pricetagEntry.price"
                   />
-                  <v-text-field label="datum" v-model="formattedDate" />
+                  <v-date-picker label="datum" v-model="pricetagEntry.date" />
                 </template>
               </v-form>
               <v-btn
@@ -68,10 +68,17 @@
                   size="small"
                   :key="tag.date"
                 >
-                  <div class="d-inline-flex justify-space-between" style="width: 100%">
-                    <div style="width:100px">{{ tag.date.toDate().toLocaleDateString() }}</div>
-                    <div style="width:100px">{{ tag.location }}</div>
-                    <div style="width:100px; font-weight: bold">{{ tag.price }} €</div>
+                  <div
+                    class="d-inline-flex justify-space-between"
+                    style="width: 100%"
+                  >
+                    <div style="width: 100px">
+                      {{ tag.date.toDate().toLocaleDateString() }}
+                    </div>
+                    <div style="width: 100px">{{ tag.location }}</div>
+                    <div style="width: 100px; font-weight: bold">
+                      {{ tag.price }} €
+                    </div>
                   </div>
                 </v-chip>
               </div>
