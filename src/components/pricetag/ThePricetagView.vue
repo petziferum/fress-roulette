@@ -36,7 +36,6 @@
             /></v-card-title>
             <v-card-text>{{ description }}</v-card-text>
             <v-card-text>
-              Preise
               <div class="d-flex flex-column">
                 <v-chip
                   v-for="tag in entries"
@@ -54,6 +53,7 @@
                       {{ tag.date.toDate().toLocaleDateString() }}
                     </div>
                     <div style="width: 100px">{{ tag.location }}</div>
+                    <div style="width: 50px">{{ tag.amount ? tag.amount : "" }}g</div>
                     <div style="width: 100px; font-weight: bold">
                       {{ tag.price }} €
                     </div>
@@ -79,6 +79,7 @@
               label="Markt"
               v-model="pricetagEntry.location"
             />
+            <v-text-field label="Menge in g" v-model="pricetagEntry.amount" suffix="g" />
             <v-text-field
               label="Preis"
               :rules="required"
@@ -122,6 +123,7 @@
               label="Markt"
               v-model="pricetagEntry.location"
             />
+            <v-text-field label="Menge in g" v-model="pricetagEntry.amount" suffix="g" />
             <v-text-field
               label="Preis"
               :rules="required"
