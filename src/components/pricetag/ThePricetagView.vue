@@ -195,7 +195,7 @@ const prictagform = ref<HTMLFormElement>();
 const toast = useToast();
 let pricetagEntry = reactive({
   price: "",
-  date: new Date(),
+  date: Timestamp.fromDate(new Date()),
   location: "",
 });
 const entries = ref([]);
@@ -211,6 +211,10 @@ const formattedDate = computed(() => {
 const lesemodus = computed(() => {
   return !editmode.value && !creationMode.value && productname.value;
 });
+
+function getDate(date: Timestamp) {
+  return new Date(date.seconds * 1000).toLocaleDateString();
+}
 async function findProductname() {
   if (!searchName.value) return;
   const productsRef = collection(db, "pricetags");
@@ -296,6 +300,7 @@ async function getProduct(name: string): Promise<void> {
     console.log("fetch Product", name);
     PricetagServiceApi.getProduct(name)
       .then((result) => {
+        if(result) {
         price.value = result.price;
         productname.value = result.productName;
         if (result.entries) {
@@ -310,6 +315,7 @@ async function getProduct(name: string): Promise<void> {
         }
         description.value = result.description;
         selectedMarkt.value = result.markt;
+        }
       })
       .catch(() => {
         editmode.value = false;
