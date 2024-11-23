@@ -150,7 +150,7 @@
               text="Speichern"
             />
           </v-form>
-          {{ entries}}
+          {{prictageEntryEdit}}
         </v-col>
         <v-col cols="12"> </v-col>
       </v-row>
@@ -196,6 +196,7 @@ import {
   where,
 } from "firebase/firestore";
 import { useToast } from "vue-toastification";
+import PricetagEntry from "@/components/pricetag/PricetagEntry";
 
 const searchName = ref("");
 const productname = ref("");
@@ -234,12 +235,7 @@ const editform = ref<HTMLFormElement>();
 const createform = ref<HTMLFormElement>();
 const prictagform = ref<HTMLFormElement>();
 const toast = useToast();
-let prictageEntryEdit = reactive({
-  price: "",
-  date: Timestamp.now(),
-  amount: "",
-  location: "",
-});
+let prictageEntryEdit = ref<PricetagEntry>(new PricetagEntry);
 const entries = ref([]);
 const formattedDate = computed(() => {
   return date.value.toLocaleString("de-DE", {
@@ -289,51 +285,16 @@ function clearResult() {
   editform.value.reset();
   prictagform.value.reset();
 }
+function resetPricetagEntryEdit() {
+  prictageEntryEdit.value = new PricetagEntry();
+}
 function exitEdit() {
   editmode.value = false;
   creationMode.value = false;
   creationMode.value = false;
-  prictageEntryEdit = {
-    price: "",
-    date: Timestamp.now(),
-    amount: "",
-    location: "",
-  };
+  resetPricetagEntryEdit();
 }
-async function addPricetag() {
-  const { valid: validname } = await editform.value.validate();
-  const { valid: validtag } = await prictagform.value.validate();
-  console.log("addPrictag valid: ", validname, validtag);
-  if (validname && validtag) {
-    console.log("speichere neuen Preis", productname.value, prictageEntryEdit);
-    entries.value.push(prictageEntryEdit);
-    PricetagServiceApi.saveNewPriceTag({
-      productName: productname.value,
-      description: description.value,
-      entries: entries.value,
-    }).then(async () => {
-      entries.value = [];
-      await PricetagServiceApi.getProduct(productname.value).then((result) => {
-        price.value = result.price;
-        productname.value = result.productName;
-        if (result.entries) {
-          entries.value = result.entries;
-        } else {
-          const newEntry = {
-            date: result.date,
-            location: result.markt,
-            price: result.price,
-          };
-          entries.value.push(newEntry);
-        }
-        description.value = result.description;
-        selectedMarkt.value = result.markt;
-        combobox.value.reset();
-      });
-      exitEdit();
-    });
-  }
-}
+
 async function searchProduct() {
   const { valid } = await combobox.value.validate();
   if (valid) {
@@ -372,10 +333,16 @@ async function getProduct(name: string): Promise<void> {
   }
 }
 async function addPricetagEntry() {
-  prictageEntryEdit.date = Timestamp.now();
+  prictageEntryEdit.value.date = Timestamp.now();
   const { valid } = await addtagform.value.validate();
   if (valid) {
-    entries.value.push(prictageEntryEdit);
+    const entry = {
+      price: prictageEntryEdit.value.price,
+      location: prictageEntryEdit.value.location,
+      amount: prictageEntryEdit.value.amount,
+      date: Timestamp.now(),
+    }
+    entries.value.push(entry);
     const product = {
       productName: productname.value,
       description: description.value,
@@ -387,19 +354,20 @@ async function addPricetagEntry() {
       getProduct(product.productName);
       addtagform.value.reset();
     });
-    prictageEntryEdit = {
-      price: "",
-      date: Timestamp.now(),
-      amount: "",
-      location: "",
-    };
+    resetPricetagEntryEdit();
     tagform.value.reset();
   }
 }
 async function saveNewProduct() {
   console.log("saveNewProduct", productname.value, entries.value);
   const { valid } = await createform.value.validate();
-  entries.value.push(prictageEntryEdit);
+  const entry = {
+    price: prictageEntryEdit.value.price,
+    location: prictageEntryEdit.value.location,
+    amount: prictageEntryEdit.value.amount,
+    date: Timestamp.now(),
+  }
+  entries.value.push(entry);
   const product = {
     productName: productname.value,
     description: description.value,
@@ -407,19 +375,26 @@ async function saveNewProduct() {
   };
   if (valid) {
     PricetagServiceApi.saveNewPriceTag(product).then(() => {
-      getProduct(productname.value);
       toast.success("Produkt " + productname.value + " gespeichert");
       exitEdit();
     });
   } else {
-    toast.error("felder dürfen nicht leer sein");
+    console.log("error saveNewProduct", createform.value);
+    console.log("prictageEntryEdit", prictageEntryEdit, entries);
+    toast.error("felder dürfen nicht leer sein ");
   }
 }
 async function saveProduktUpdate() {
   const { valid: validname } = await editform.value.validate();
   console.log("saveProduktUpdate pricetagentry:", prictageEntryEdit);
   if (validname) {
-    entries.value.push(prictageEntryEdit);
+    const entry = {
+      price: prictageEntryEdit.value.price,
+      location: prictageEntryEdit.value.location,
+      amount: prictageEntryEdit.value.amount,
+      date: Timestamp.now(),
+    }
+    entries.value.push(entry);
     PricetagServiceApi.saveProductUpdate({
       productName: productname.value,
       description: description.value,

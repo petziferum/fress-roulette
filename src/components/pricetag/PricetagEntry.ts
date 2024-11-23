@@ -4,4 +4,5 @@ export default class PricetagEntry {
   price: "";
   date: Timestamp;
   location: "";
+  amount: "";
 }
