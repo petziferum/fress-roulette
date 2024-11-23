@@ -8,6 +8,8 @@ import Vue3Toastify, { type ToastContainerOptions } from "vue3-toastify";
 import "vue3-toastify/dist/index.css";
 import { getAuth } from "firebase/auth";
 import { useUserStore } from "@/stores/useUserStore";
+import Toast from 'vue-toastification';
+import 'vue-toastification/dist/index.css';
 
 const pinia = createPinia();
 loadFonts();
@@ -24,6 +26,7 @@ auth.onAuthStateChanged((user) => {
     };
     app.use(router);
     app.use(vuetify);
+    app.use(Toast);
     app.use(Vue3Toastify, {
       autoClose: 3000,
       theme: "colored",

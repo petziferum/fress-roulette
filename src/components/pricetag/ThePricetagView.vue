@@ -1,146 +1,153 @@
 <template>
   <v-container class="mt-12">
-    <v-row>
-      <v-col>
-        <v-card>
-          <v-card-title>Preisliste</v-card-title>
-          <v-card-subtitle
-            >searchname:{{ searchName }} productname:{{
-              productname
-            }}</v-card-subtitle
+    <v-card>
+      <v-card-title>Preisliste</v-card-title>
+      <v-row no-gutters>
+        <v-col cols="9">
+          <v-form ref="combobox">
+            <v-combobox
+              label="Produktname"
+              v-model="searchName"
+              :items="suggestedProductNames"
+              @input="findProductname"
+              clearable
+              @click:clear="clearResult"
+              :rules="required"
+            />
+          </v-form>
+        </v-col>
+        <v-col cols="3">
+          <v-btn block tile color="blue" height="70%" @click="searchProduct"
+            >Suchen</v-btn
           >
-          <v-row no-gutters>
-            <v-col cols="9">
-              <v-form ref="combobox">
-                <v-combobox
-                  label="Produktname"
-                  v-model="searchName"
-                  :items="suggestedProductNames"
-                  @input="findProductname"
-                  clearable
-                  @click:clear="clearResult"
-                  :rules="required"
-                />
-              </v-form>
-            </v-col>
-            <v-col cols="3">
-              <v-btn block tile color="blue" height="70%" @click="getProduct"
-                >Suchen</v-btn
-              >
-            </v-col>
-          </v-row>
-          <v-row v-if="lesemodus">
-            <v-col cols="12">
-              <v-card>
-                <v-card-title
-                  >{{ productname
-                  }}<v-btn
-                    position="rigth"
-                    flat
-                    icon="mdi-pencil"
-                    size="small"
-                    @click="editmode = true"
-                /></v-card-title>
-                <v-card-text>{{ description }}</v-card-text>
-                <v-card-text>
-                  Preise
-                  <div class="d-flex flex-column">
-                    <v-chip
-                      v-for="tag in entries"
-                      ripple
-                      class="mb-2 mx-2 d-flex"
-                      elevation="3"
-                      size="small"
-                      :key="tag.date"
-                    >
-                      <div
-                        class="d-inline-flex justify-space-between"
-                        style="width: 100%"
-                      >
-                        <div style="width: 100px">
-                          {{ tag.date.toDate().toLocaleDateString() }}
-                        </div>
-                        <div style="width: 100px">{{ tag.location }}</div>
-                        <div style="width: 100px; font-weight: bold">
-                          {{ tag.price }} €
-                        </div>
-                      </div>
-                    </v-chip>
+        </v-col>
+      </v-row>
+      <v-row v-if="lesemodus">
+        <v-col cols="12">
+          <v-card>
+            <v-card-title
+              >{{ productname
+              }}<v-btn
+                position="rigth"
+                flat
+                icon="mdi-pencil"
+                size="small"
+                @click="editmode = true"
+            /></v-card-title>
+            <v-card-text>{{ description }}</v-card-text>
+            <v-card-text>
+              Preise
+              <div class="d-flex flex-column">
+                <v-chip
+                  v-for="tag in entries"
+                  ripple
+                  class="mb-2 mx-2 d-flex"
+                  elevation="3"
+                  size="small"
+                  :key="tag.date"
+                >
+                  <div
+                    class="d-inline-flex justify-space-between"
+                    style="width: 100%"
+                  >
+                    <div style="width: 100px">
+                      {{ tag.date.toDate().toLocaleDateString() }}
+                    </div>
+                    <div style="width: 100px">{{ tag.location }}</div>
+                    <div style="width: 100px; font-weight: bold">
+                      {{ tag.price }} €
+                    </div>
                   </div>
-                </v-card-text>
-              </v-card>
-            </v-col>
-          </v-row>
-          <v-row v-if="creationMode">
-            <v-col cols="12" md="12">
-              Neues Produkt anlegen?
-              <v-form ref="tagform">
-                <v-text-field label="Name" v-model="productname" />
-                <v-text-field label="Beschreibung" v-model="description" />
-                <v-btn
-                  block
-                  color="red"
-                  variant="outlined"
-                  class="mb-3"
-                  @click="creationMode = false"
-                  text="Abbrechen"
-                />
-                <v-btn
-                  block
-                  variant="outlined"
-                  @click="saveProduktUpdate"
-                  text="Speichern"
-                />
-              </v-form>
-            </v-col>
-          </v-row>
-          <v-row v-if="editmode">
-            <v-col cols="12" md="12">
-              <v-form ref="editform">
-                <v-text-field label="Name" v-model="productname" />
-                <v-text-field label="Beschreibung" v-model="description" />
-                <v-btn
-                  block
-                  variant="outlined"
-                  class="mb-3"
-                  @click="saveProduktUpdate"
-                  text="Produkt speichern"
-                />
-              </v-form>
-              <v-form ref="prictagform">
-                <v-select
-                  :items="marktItems"
-                  label="Markt"
-                  v-model="pricetagEntry.location"
-                />
-                <v-text-field
-                  label="Preis"
-                  :rules="required"
-                  v-model="pricetagEntry.price"
-                />
-                <v-text-field label="datum" v-model="formattedDate" />
-                <v-btn
-                  block
-                  variant="outlined"
-                  class="mb-3"
-                  color="green"
-                  @click="addPricetag"
-                  text="Neuen Preis hinzufügen"
-                />
-                <v-btn
-                  block
-                  color="red"
-                  variant="outlined"
-                  class="mb-3"
-                  @click="exitEdit"
-                  text="Abbrechen"
-                />
-              </v-form>
-            </v-col>
-          </v-row>
-        </v-card>
-      </v-col>
-    </v-row>
+                </v-chip>
+              </div>
+            </v-card-text>
+          </v-card>
+        </v-col>
+      </v-row>
+      <v-row v-if="creationMode">
+        <v-col cols="12" md="12">
+          Neues Produkt anlegen?
+          <v-form ref="tagform">
+            <v-text-field
+              label="Name"
+              :rules="required"
+              v-model="productname"
+            />
+            <v-text-field label="Beschreibung" v-model="description" />
+            <v-select
+              :items="marktItems"
+              label="Markt"
+              v-model="pricetagEntry.location"
+            />
+            <v-text-field
+              label="Preis"
+              :rules="required"
+              v-model="pricetagEntry.price"
+            />
+            <v-text-field label="datum" v-model="formattedDate" />
+            <v-btn
+              block
+              color="red"
+              variant="outlined"
+              class="mb-3"
+              @click="creationMode = false"
+              text="Abbrechen"
+            />
+            <v-btn
+              block
+              variant="outlined"
+              @click="saveProduktUpdate"
+              text="Speichern"
+            />
+          </v-form>
+        </v-col>
+        <v-col cols="12"> </v-col>
+      </v-row>
+      <v-row v-if="editmode">
+        <v-col cols="12" md="12">
+          <v-form ref="editform">
+            <v-text-field label="Name" :rules="required" v-model="productname" />
+            <v-text-field label="Beschreibung" v-model="description" />
+            <v-btn
+              block
+              variant="outlined"
+              class="mb-3"
+              @click="saveProduktUpdate"
+              text="Produkt speichern"
+            />
+          </v-form>
+          <v-form ref="prictagform">
+            <v-select
+              :items="marktItems"
+              label="Markt"
+              v-model="pricetagEntry.location"
+            />
+            <v-text-field
+              label="Preis"
+              :rules="required"
+              v-model="pricetagEntry.price"
+            />
+            <v-text-field label="datum" v-model="formattedDate" />
+            <v-btn
+              block
+              variant="outlined"
+              class="mb-3"
+              color="green"
+              @click="addPricetag"
+              text="Neuen Preis hinzufügen"
+            />
+            <v-btn
+              block
+              color="red"
+              variant="outlined"
+              class="mb-3"
+              @click="exitEdit"
+              text="Abbrechen"
+            />
+          </v-form>
+        </v-col>
+      </v-row>
+    </v-card>
   </v-container>
 </template>
 <script setup lang="ts">
@@ -180,10 +187,11 @@ const selectedMarkt = ref("");
 const suggestedProductNames = ref<string[]>([]);
 const required = [(v) => !!v || "feld darf nicht leer sein"];
 const combobox = ref<HTMLFormElement>();
+const tagform = ref<HTMLFormElement>();
 const editform = ref<HTMLFormElement>();
 const prictagform = ref<HTMLFormElement>();
 const toast = useToast();
-const pricetagEntry = reactive({
+let pricetagEntry = reactive({
   price: "",
   date: new Date(),
   location: "",
@@ -233,7 +241,11 @@ function clearResult() {
 function exitEdit() {
   editmode.value = false;
   creationMode.value = false;
-  prictagform.value.reset();
+  pricetagEntry = {
+    price: "",
+    date: new Date(),
+    location: "",
+  };
 }
 async function addPricetag() {
   const { valid: validname } = await editform.value.validate();
@@ -269,13 +281,18 @@ async function addPricetag() {
     });
   }
 }
-async function getProduct(): Promise<void> {
-  entries.value = [];
+async function searchProduct() {
   const { valid } = await combobox.value.validate();
   console.log("getProduct valid", valid);
   if (valid) {
-    console.log("fetch Product", searchName.value);
-    PricetagServiceApi.getProduct(searchName.value)
+    getProduct(searchName.value);
+  }
+}
+async function getProduct(name: string): Promise<void> {
+  entries.value = [];
+  if (name) {
+    console.log("fetch Product", name);
+    PricetagServiceApi.getProduct(name)
       .then((result) => {
         price.value = result.price;
         productname.value = result.productName;
@@ -291,30 +308,33 @@ async function getProduct(): Promise<void> {
         }
         description.value = result.description;
         selectedMarkt.value = result.markt;
-        combobox.value.reset();
       })
       .catch(() => {
         editmode.value = false;
         creationMode.value = true;
         Object.assign(productname, searchName);
-        searchName.value = "";
       });
   } else {
     console.log("invalid");
   }
 }
 
-function saveProduktUpdate() {
-  console.log("saveProduktUpdate:", productname.value, description.value);
-  PricetagServiceApi.saveProductUpdate({
-    productName: productname.value,
-    description: description.value,
-    entries: entries.value,
-  }).then(() => {
-    editmode.value = false;
-    creationMode.value = false;
-    toast.success("Produkt " + productname.value + " gespeichert");
-  });
+async function saveProduktUpdate() {
+  const { valid: validname } = await tagform.value.validate();
+  if (validname) {
+    entries.value.push(pricetagEntry);
+    PricetagServiceApi.saveProductUpdate({
+      productName: productname.value,
+      description: description.value,
+      entries: entries.value,
+    }).then(() => {
+      getProduct(productname.value);
+      toast.success("Produkt " + productname.value + " gespeichert");
+      exitEdit();
+    });
+  } else {
+    toast.error("felder dürfen nicht leer sein");
+  }
 }
 </script>
 <style scoped></style>
