@@ -1,7 +1,7 @@
 <template>
   <v-app style="background-color: red">
     <app-header/>
-    <side-bar></side-bar>
+    <AppDrawer></AppDrawer>
     <v-main
       :style="{ 'background-image': 'url(' + stone + ')' }"
       class="background"
@@ -29,7 +29,7 @@
 </template>
 
 <script lang="ts" setup>
-import SideBar from "@/components/AppDrawer.vue";
+import AppDrawer from "@/components/AppDrawer.vue";
 import AppHeader from "@/components/AppHeader.vue";
 import { useUserStore } from "@/stores/useUserStore";
 

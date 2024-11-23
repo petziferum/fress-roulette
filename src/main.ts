@@ -34,5 +34,6 @@ auth.onAuthStateChanged((user) => {
   if (user) {
     userStore.setUserFirestoreData(user);
   } else {
-    console.log("User is signed out");}
+    console.log("User is signed out");
+  }
 });
