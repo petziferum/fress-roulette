@@ -1,6 +1,6 @@
 <template>
   <v-app style="background-color: red">
-    <app-header/>
+    <app-header />
     <AppDrawer></AppDrawer>
     <v-main
       :style="{ 'background-image': 'url(' + stone + ')' }"
