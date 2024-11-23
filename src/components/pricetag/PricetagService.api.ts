@@ -26,14 +26,15 @@ export default class PricetagServiceApi {
       console.error("Error adding document: ", error);
     }
   }
-  public static async getProduct(productName: string): Promise<Object> {
+  public static async getProduct(productName: string): Promise<Pricetag | null> {
     const docRef = doc(db, "pricetags", productName);
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
       console.log("Product geladen", docSnap.data());
-      return docSnap.data();
+      return docSnap.data() as Pricetag;
     } else {
       console.log("Nichts gefunden mit id: ", productName);
+      return null;
     }
   }
   public static saveProductUpdate(product: Pricetag): Promise<string> {
