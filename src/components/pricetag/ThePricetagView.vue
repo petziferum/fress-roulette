@@ -93,9 +93,7 @@
                       {{ tag.date.toDate().toLocaleDateString() }}
                     </div>
                     <div style="width: 50px">{{ tag.location }}</div>
-                    <div style="width: 50px">
-                      {{ tag.amount }}g
-                    </div>
+                    <div style="width: 50px">{{ tag.amount }}g</div>
                     <div style="width: 50px; font-weight: bold">
                       {{ tag.price }} €
                     </div>
@@ -107,6 +105,10 @@
               </div>
             </v-card-text>
           </v-card>
+        </v-col>
+        <v-col cols="12">
+          {{ productname }}<br>
+          {{ entries }}
         </v-col>
       </v-row>
       <v-row v-if="creationMode">
@@ -197,7 +199,7 @@ import {
 } from "firebase/firestore";
 import { useToast } from "vue-toastification";
 import PricetagEntry from "@/components/pricetag/PricetagEntry";
-import type Pricetag from "@/components/pricetag/Pricetag";
+import Pricetag from "@/components/pricetag/Pricetag";
 
 const searchName = ref("");
 const productname = ref("");
@@ -236,7 +238,9 @@ const editform = ref<HTMLFormElement>();
 const createform = ref<HTMLFormElement>();
 const prictagform = ref<HTMLFormElement>();
 const toast = useToast();
-let prictageEntryEdit = ref<PricetagEntry>(new PricetagEntry());
+let prictageEntryEdit = ref<PricetagEntry>(
+  PricetagEntry.createEmptyPricetagEntry()
+);
 const entries = ref([]);
 const formattedDate = computed(() => {
   return date.value.toLocaleString("de-DE", {
@@ -287,7 +291,7 @@ function clearResult() {
   prictagform.value.reset();
 }
 function resetPricetagEntryEdit() {
-  prictageEntryEdit.value = new PricetagEntry();
+  prictageEntryEdit.value = PricetagEntry.createEmptyPricetagEntry();
 }
 function exitEdit() {
   editmode.value = false;
@@ -307,7 +311,7 @@ async function getProduct(name: string): Promise<void> {
   if (name) {
     console.log("fetch Product", name);
     PricetagServiceApi.getProduct(name)
-      .then((result: Pricetag) => {
+      .then((result: Pricetag | any) => {
         productname.value = result.productName;
         if (result.entries) {
           entries.value = result.entries;
@@ -344,11 +348,10 @@ async function addPricetagEntry() {
       date: Timestamp.now(),
     };
     entries.value.push(entry);
-    const product = {
-      productName: productname.value,
-      description: description.value,
-      entries: entries.value,
-    };
+    const product = Pricetag.createEmptyPricetag()
+      .withEntries(entries.value)
+      .withProductName(productname.value)
+      .withDescription(description.value);
     PricetagServiceApi.saveProductUpdate(product).then(() => {
       toast.success("Eintrag hinzugefügt");
       addTagMode.value = false;
@@ -369,11 +372,10 @@ async function saveNewProduct() {
     date: Timestamp.now(),
   };
   entries.value.push(entry);
-  const product = {
-    productName: productname.value,
-    description: description.value,
-    entries: entries.value,
-  };
+  const product = Pricetag.createEmptyPricetag()
+    .withEntries(entries.value)
+    .withProductName(productname.value)
+    .withDescription(description.value);
   if (valid) {
     PricetagServiceApi.saveNewPriceTag(product).then(() => {
       toast.success("Produkt " + productname.value + " gespeichert");
@@ -389,18 +391,11 @@ async function saveProduktUpdate() {
   const { valid: validname } = await editform.value.validate();
   console.log("saveProduktUpdate pricetagentry:", prictageEntryEdit);
   if (validname) {
-    const entry = {
-      price: prictageEntryEdit.value.price,
-      location: prictageEntryEdit.value.location,
-      amount: prictageEntryEdit.value.amount,
-      date: Timestamp.now(),
-    };
-    entries.value.push(entry);
-    PricetagServiceApi.saveProductUpdate({
-      productName: productname.value,
-      description: description.value,
-      entries: entries.value,
-    }).then(() => {
+    const p = Pricetag.createEmptyPricetag()
+      .withDescription(description.value)
+      .withProductName(productname.value)
+      .withEntries(entries.value);
+    PricetagServiceApi.saveProductUpdate(p).then(() => {
       getProduct(productname.value);
       toast.success("Produkt " + productname.value + " gespeichert");
       exitEdit();

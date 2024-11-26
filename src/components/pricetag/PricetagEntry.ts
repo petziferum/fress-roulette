@@ -1,4 +1,5 @@
 import { Timestamp } from "firebase/firestore";
+import Pricetag from "@/components/pricetag/Pricetag";
 
 export default class PricetagEntry {
   price: string;

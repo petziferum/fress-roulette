@@ -2,24 +2,15 @@ import { COLLECTION_NAME, db } from "@/plugins/firebase";
 import { collection, doc, getDoc, getDocs, setDoc } from "firebase/firestore";
 import type PricetagEntry from "@/components/pricetag/PricetagEntry";
 import type Pricetag from "@/components/pricetag/Pricetag";
+import { pricetagConverter } from "@/components/pricetag/Pricetag";
 
 export default class PricetagServiceApi {
-  public static async saveNewPriceTag({
-    productName,
-    description,
-    entries,
-  }: {
-    productName: string;
-    description: string;
-    entries: PricetagEntry[];
-  }) {
+  public static async saveNewPriceTag(pricetag: Pricetag): Promise<void> {
     try {
-      const ref = doc(db, "pricetags", productName);
-      return await setDoc(ref, {
-        productName,
-        description,
-        entries,
-      }).then(() => {
+      const ref = doc(db, "pricetags", pricetag.productName).withConverter(
+        pricetagConverter
+      );
+      return await setDoc(ref, pricetag).then(() => {
         console.log("Pricetag gespeichert");
       });
     } catch (error) {
@@ -38,7 +29,7 @@ export default class PricetagServiceApi {
     }
   }
   public static saveProductUpdate(product: Pricetag): Promise<string> {
-    const ref = doc(db, "pricetags", product.productName);
+    const ref = doc(db, "pricetags", product.productName).withConverter(pricetagConverter);
     return setDoc(ref, product).then(() => {
       return "Document successfully written!";
     });
