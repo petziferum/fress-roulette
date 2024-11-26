@@ -150,7 +150,7 @@
               text="Speichern"
             />
           </v-form>
-          {{prictageEntryEdit}}
+          {{ prictageEntryEdit }}
         </v-col>
         <v-col cols="12"> </v-col>
       </v-row>
@@ -185,7 +185,7 @@
   </v-container>
 </template>
 <script setup lang="ts">
-import { computed, reactive, ref } from "vue";
+import { computed, ref } from "vue";
 import PricetagServiceApi from "@/components/pricetag/PricetagService.api";
 import { db } from "@/plugins/firebase";
 import {
@@ -235,7 +235,7 @@ const editform = ref<HTMLFormElement>();
 const createform = ref<HTMLFormElement>();
 const prictagform = ref<HTMLFormElement>();
 const toast = useToast();
-let prictageEntryEdit = ref<PricetagEntry>(new PricetagEntry);
+let prictageEntryEdit = ref<PricetagEntry>(new PricetagEntry());
 const entries = ref([]);
 const formattedDate = computed(() => {
   return date.value.toLocaleString("de-DE", {
@@ -341,7 +341,7 @@ async function addPricetagEntry() {
       location: prictageEntryEdit.value.location,
       amount: prictageEntryEdit.value.amount,
       date: Timestamp.now(),
-    }
+    };
     entries.value.push(entry);
     const product = {
       productName: productname.value,
@@ -366,7 +366,7 @@ async function saveNewProduct() {
     location: prictageEntryEdit.value.location,
     amount: prictageEntryEdit.value.amount,
     date: Timestamp.now(),
-  }
+  };
   entries.value.push(entry);
   const product = {
     productName: productname.value,
@@ -393,7 +393,7 @@ async function saveProduktUpdate() {
       location: prictageEntryEdit.value.location,
       amount: prictageEntryEdit.value.amount,
       date: Timestamp.now(),
-    }
+    };
     entries.value.push(entry);
     PricetagServiceApi.saveProductUpdate({
       productName: productname.value,
