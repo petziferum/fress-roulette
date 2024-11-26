@@ -197,6 +197,7 @@ import {
 } from "firebase/firestore";
 import { useToast } from "vue-toastification";
 import PricetagEntry from "@/components/pricetag/PricetagEntry";
+import type Pricetag from "@/components/pricetag/Pricetag";
 
 const searchName = ref("");
 const productname = ref("");
@@ -306,17 +307,17 @@ async function getProduct(name: string): Promise<void> {
   if (name) {
     console.log("fetch Product", name);
     PricetagServiceApi.getProduct(name)
-      .then((result) => {
-        price.value = result.price;
+      .then((result: Pricetag) => {
         productname.value = result.productName;
         if (result.entries) {
           entries.value = result.entries;
         } else {
-          const newEntry = {
-            date: result.date,
-            location: result.markt,
-            price: result.price,
-          };
+          const newEntry = PricetagEntry.createEmptyPricetagEntry()
+            .withPrice(result.price)
+            .withDate(result.date)
+            .withLocation(result.markt)
+            .withAmount(result.amount);
+
           entries.value.push(newEntry);
         }
         description.value = result.description;
