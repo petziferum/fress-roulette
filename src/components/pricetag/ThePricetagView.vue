@@ -26,7 +26,7 @@
         <v-col cols="12">
           <v-card>
             <v-card-title
-              >{{ productname
+              >{{ pricetag.productName
               }}<v-btn
                 position="rigth"
                 flat
@@ -107,8 +107,9 @@
           </v-card>
         </v-col>
         <v-col cols="12">
-          {{ productname }}<br>
-          {{ entries }}
+          <v-card-text>
+            <div class="text-caption">Hier könnten ähnliche Produkte angezeigt werden.</div>
+          </v-card-text>
         </v-col>
       </v-row>
       <v-row v-if="creationMode">
@@ -118,9 +119,9 @@
             <v-text-field
               label="Name"
               :rules="required"
-              v-model="productname"
+              v-model="pricetag.productName"
             />
-            <v-text-field label="Beschreibung" v-model="description" />
+            <v-text-field label="Beschreibung" v-model="pricetag.description" />
             <v-select
               :items="marktItems"
               label="Markt"
@@ -152,7 +153,6 @@
               text="Speichern"
             />
           </v-form>
-          {{ prictageEntryEdit }}
         </v-col>
         <v-col cols="12"> </v-col>
       </v-row>
@@ -162,9 +162,9 @@
             <v-text-field
               label="Name"
               :rules="required"
-              v-model="productname"
+              v-model="pricetag.productName"
             />
-            <v-text-field label="Beschreibung" v-model="description" />
+            <v-text-field label="Beschreibung" v-model="pricetag.description" />
             <v-btn
               block
               variant="outlined"
@@ -202,6 +202,7 @@ import PricetagEntry from "@/components/pricetag/PricetagEntry";
 import Pricetag from "@/components/pricetag/Pricetag";
 
 const searchName = ref("");
+const pricetag = ref<Pricetag | null>(null);
 const productname = ref("");
 const price = ref("");
 const date = ref(new Date(Date.now()));
@@ -252,14 +253,15 @@ const formattedDate = computed(() => {
   });
 });
 const lesemodus = computed(() => {
-  return !editmode.value && !creationMode.value && productname.value;
+  return !editmode.value && !creationMode.value && pricetag.value;
 });
 
 function getKiloPreis(gramm: string, preis: string): string {
-  const p = parseFloat(preis.replace(",", "."));
-  const g = parseFloat(gramm);
-  console.log("getKiloPreis", p, g);
-  return (p / g) * 1000 + " €/kg";
+  if (gramm) {
+    const p = parseFloat(preis.replace(",", "."));
+    const g = parseFloat(gramm);
+    return ((p / g) * 1000).toFixed(2) + " €/kg";
+  } else return "- €/kg";
 }
 async function findProductname() {
   if (!searchName.value) return;
@@ -274,9 +276,6 @@ async function findProductname() {
   suggestedProductNames.value = querySnapshot.docs.map(
     (doc) => doc.data().productName
   );
-  /*.filter((name) =>
-      name.toLowerCase().startsWith(searchName.value.toLowerCase())
-    );*/
 }
 
 function clearResult() {
@@ -312,7 +311,7 @@ async function getProduct(name: string): Promise<void> {
     console.log("fetch Product", name);
     PricetagServiceApi.getProduct(name)
       .then((result: Pricetag | any) => {
-        productname.value = result.productName;
+        pricetag.value = result;
         if (result.entries) {
           entries.value = result.entries;
         } else {
@@ -331,7 +330,7 @@ async function getProduct(name: string): Promise<void> {
         toast.info("Neues Produkt anlegen");
         editmode.value = false;
         creationMode.value = true;
-        Object.assign(productname, searchName);
+        pricetag.value = Pricetag.createEmptyPricetag().withProductName(searchName.value);
       });
   } else {
     toast.error("Kein Produktname angegeben");
@@ -341,7 +340,7 @@ async function addPricetagEntry() {
   prictageEntryEdit.value.date = Timestamp.now();
   const { valid } = await addtagform.value.validate();
   if (valid) {
-    const entry = {
+    /*const entry = {
       price: prictageEntryEdit.value.price,
       location: prictageEntryEdit.value.location,
       amount: prictageEntryEdit.value.amount,
@@ -351,8 +350,9 @@ async function addPricetagEntry() {
     const product = Pricetag.createEmptyPricetag()
       .withEntries(entries.value)
       .withProductName(productname.value)
-      .withDescription(description.value);
-    PricetagServiceApi.saveProductUpdate(product).then(() => {
+      .withDescription(description.value);*/
+    pricetag.value.entries.push(prictageEntryEdit.value);
+    PricetagServiceApi.saveProductUpdate(pricetag.value).then(() => {
       toast.success("Eintrag hinzugefügt");
       addTagMode.value = false;
       getProduct(product.productName);
@@ -372,13 +372,10 @@ async function saveNewProduct() {
     date: Timestamp.now(),
   };
   entries.value.push(entry);
-  const product = Pricetag.createEmptyPricetag()
-    .withEntries(entries.value)
-    .withProductName(productname.value)
-    .withDescription(description.value);
+  pricetag.value.withEntries(entries.value);
   if (valid) {
-    PricetagServiceApi.saveNewPriceTag(product).then(() => {
-      toast.success("Produkt " + productname.value + " gespeichert");
+    PricetagServiceApi.saveNewPriceTag(pricetag.value).then(() => {
+      toast.success("Produkt " + pricetag.value.productName + " gespeichert");
       exitEdit();
     });
   } else {
@@ -389,14 +386,10 @@ async function saveNewProduct() {
 }
 async function saveProduktUpdate() {
   const { valid: validname } = await editform.value.validate();
-  console.log("saveProduktUpdate pricetagentry:", prictageEntryEdit);
+  console.log("saveProduktUpdate pricetagentry:", prictageEntryEdit.value);
   if (validname) {
-    const p = Pricetag.createEmptyPricetag()
-      .withDescription(description.value)
-      .withProductName(productname.value)
-      .withEntries(entries.value);
-    PricetagServiceApi.saveProductUpdate(p).then(() => {
-      getProduct(productname.value);
+    PricetagServiceApi.saveProductUpdate(pricetag.value).then(() => {
+      getProduct(pricetag.value.productName);
       toast.success("Produkt " + productname.value + " gespeichert");
       exitEdit();
     });
