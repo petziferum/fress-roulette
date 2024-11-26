@@ -340,17 +340,6 @@ async function addPricetagEntry() {
   prictageEntryEdit.value.date = Timestamp.now();
   const { valid } = await addtagform.value.validate();
   if (valid) {
-    /*const entry = {
-      price: prictageEntryEdit.value.price,
-      location: prictageEntryEdit.value.location,
-      amount: prictageEntryEdit.value.amount,
-      date: Timestamp.now(),
-    };
-    entries.value.push(entry);
-    const product = Pricetag.createEmptyPricetag()
-      .withEntries(entries.value)
-      .withProductName(productname.value)
-      .withDescription(description.value);*/
     pricetag.value.entries.push(prictageEntryEdit.value);
     PricetagServiceApi.saveProductUpdate(pricetag.value).then(() => {
       toast.success("Eintrag hinzugefügt");
