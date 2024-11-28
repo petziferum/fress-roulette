@@ -7,11 +7,11 @@
           <v-form ref="combobox">
             <v-combobox
               label="Produktname"
-              v-model="searchName"
-              :items="suggestedProductNames"
-              @input="findProductname"
+              v-model="store.searchName"
+              :items="store.suggestedProductNames"
+              @input="store.findProductname"
               clearable
-              @click:clear="clearResult"
+              @click:clear="clearResult()"
               :rules="required"
             />
           </v-form>
@@ -26,44 +26,44 @@
         <v-col cols="12">
           <v-card>
             <v-card-title
-              >{{ pricetag.productName
+              >{{ store.pricetag.productName
               }}<v-btn
                 flat
                 icon="mdi-pencil"
                 size="small"
-                @click="editmode = true"
+                @click="store.editmode = true"
             /></v-card-title>
-            <v-card-text>{{ description }}</v-card-text>
+            <v-card-text>{{ store.pricetag.description }}</v-card-text>
             <v-card-text>
               <v-btn
                 color="#000000"
                 append-icon="mdi-plus"
                 text="Tag hinzufügen"
                 class="my-4"
-                v-show="!addTagMode"
-                @click="addTagMode = true"
+                v-show="!store.addTagMode"
+                @click="store.addTagMode = true"
               />
-              <template v-if="addTagMode">
+              <template v-if="store.addTagMode">
                 <v-form ref="addtagform">
                   <v-select
                     :items="store.marktItems"
                     label="Markt"
-                    v-model="prictageEntryEdit.location"
+                    v-model="store.pricetagEntryEdit.location"
                   />
                   <v-text-field
                     label="Menge in g"
-                    v-model="prictageEntryEdit.amount"
+                    v-model="store.pricetagEntryEdit.amount"
                     suffix="g"
                   />
                   <v-text-field
                     label="Preis"
                     :rules="required"
-                    v-model="prictageEntryEdit.price"
+                    v-model="store.pricetagEntryEdit.price"
                   />
                   <v-btn
                     class="my-4"
                     color="error"
-                    @click="addTagMode = false"
+                    @click="store.addTagMode = false"
                     text="abbrechen"
                   />
                   <v-btn
@@ -76,7 +76,7 @@
               </template>
               <div class="d-flex flex-column">
                 <v-chip
-                  v-for="tag in entries"
+                  v-for="tag in store.pricetag.entries"
                   ripple
                   class="mb-2 mx-1 d-flex"
                   elevation="3"
@@ -113,38 +113,38 @@
           </v-card-text>
         </v-col>
       </v-row>
-      <v-row v-if="creationMode">
+      <v-row v-if="store.creationMode">
         <v-col cols="12" md="12">
           Neues Produkt anlegen?
           <v-form ref="createform">
             <v-text-field
               label="Name"
               :rules="required"
-              v-model="pricetag.productName"
+              v-model="store.pricetag.productName"
             />
-            <v-text-field label="Beschreibung" v-model="pricetag.description" />
+            <v-text-field label="Beschreibung" v-model="store.pricetag.description" />
             <v-select
               :items="marktItems"
               label="Markt"
-              v-model="prictageEntryEdit.location"
+              v-model="store.pricetagEntryEdit.location"
             />
             <v-text-field
               label="Menge in g"
-              v-model="prictageEntryEdit.amount"
+              v-model="store.pricetagEntryEdit.amount"
               suffix="g"
             />
             <v-text-field
               label="Preis"
               :rules="required"
-              v-model="prictageEntryEdit.price"
+              v-model="store.pricetagEntryEdit.price"
             />
-            <v-text-field label="datum" v-model="formattedDate" />
+            <v-text-field label="datum" v-model="store.formattedDate" />
             <v-btn
               block
               color="red"
               variant="outlined"
               class="mb-3"
-              @click="creationMode = false"
+              @click="store.creationMode = false"
               text="Abbrechen"
             />
             <v-btn
@@ -157,15 +157,15 @@
         </v-col>
         <v-col cols="12"> </v-col>
       </v-row>
-      <v-row v-if="editmode">
+      <v-row v-if="store.editmode">
         <v-col cols="12" md="12">
           <v-form ref="editform">
             <v-text-field
               label="Name"
               :rules="required"
-              v-model="pricetag.productName"
+              v-model="store.pricetag.productName"
             />
-            <v-text-field label="Beschreibung" v-model="pricetag.description" />
+            <v-text-field label="Beschreibung" v-model="store.pricetag.description" />
             <v-btn
               block
               variant="outlined"
@@ -178,7 +178,7 @@
               color="red"
               variant="outlined"
               class="mb-3"
-              @click="exitEdit"
+              @click="store.exitEdit()"
               text="Abbrechen"
             />
           </v-form>
@@ -189,32 +189,11 @@
 </template>
 <script setup lang="ts">
 import { computed, ref } from "vue";
-import PricetagServiceApi from "@/components/pricetag/PricetagService.api";
-import { db } from "@/plugins/firebase";
-import {
-  collection,
-  getDocs,
-  query,
-  Timestamp,
-  where,
-} from "firebase/firestore";
 import { useToast } from "vue-toastification";
 import PricetagEntry from "@/components/pricetag/PricetagEntry";
-import Pricetag from "@/components/pricetag/Pricetag";
 import { usePricetagStore } from "@/stores/PricetagStore";
 
 const store = usePricetagStore();
-const searchName = ref("");
-const pricetag = ref<Pricetag | null>(null);
-const productname = ref("");
-const price = ref("");
-const date = ref(new Date(Date.now()));
-const description = ref("");
-const editmode = ref(false);
-const addTagMode = ref(false);
-const creationMode = ref(false);
-const selectedMarkt = ref("");
-const suggestedProductNames = ref<string[]>([]);
 const required = [(v) => !!v || "feld darf nicht leer sein"];
 const combobox = ref<HTMLFormElement>();
 const tagform = ref<HTMLFormElement>();
@@ -227,17 +206,8 @@ let prictageEntryEdit = ref<PricetagEntry>(
   PricetagEntry.createEmptyPricetagEntry()
 );
 const entries = ref([]);
-const formattedDate = computed(() => {
-  return date.value.toLocaleString("de-DE", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-});
 const lesemodus = computed(() => {
-  return !editmode.value && !creationMode.value && pricetag.value;
+  return !store.editmode && !store.creationMode && store.pricetag;
 });
 
 function getKiloPreis(gramm: string, preis: string): string {
@@ -247,112 +217,32 @@ function getKiloPreis(gramm: string, preis: string): string {
     return ((p / g) * 1000).toFixed(2) + " €/kg";
   } else return "- €/kg";
 }
-async function findProductname() {
-  if (!searchName.value) return;
-  const productsRef = collection(db, "pricetags");
-  const q = query(
-    productsRef,
-    where("productName", ">=", productname.value.toLowerCase()),
-    where("productName", "<=", productname.value.toLowerCase() + "\uf8ff")
-  );
-  const querySnapshot = await getDocs(q);
-
-  suggestedProductNames.value = querySnapshot.docs.map(
-    (doc) => doc.data().productName
-  );
-}
 
 function clearResult() {
-  productname.value = "";
-  price.value = "";
-  description.value = "";
-  entries.value = [];
-  editmode.value = false;
-  creationMode.value = false;
+  store.clearResult();
   combobox.value.reset();
   editform.value.reset();
   prictagform.value.reset();
-}
-function resetPricetagEntryEdit() {
-  prictageEntryEdit.value = PricetagEntry.createEmptyPricetagEntry();
-}
-function exitEdit() {
-  editmode.value = false;
-  creationMode.value = false;
-  creationMode.value = false;
-  resetPricetagEntryEdit();
 }
 
 async function searchProduct() {
   const { valid } = await combobox.value.validate();
   if (valid) {
-    await getProduct(searchName.value);
-  }
-}
-async function getProduct(name: string): Promise<void> {
-  entries.value = [];
-  if (name) {
-    console.log("fetch Product", name);
-    PricetagServiceApi.getProduct(name)
-      .then((result: Pricetag | any) => {
-        pricetag.value = result;
-        if (result.entries) {
-          entries.value = result.entries;
-        } else {
-          const newEntry = PricetagEntry.createEmptyPricetagEntry()
-            .withPrice(result.price)
-            .withDate(result.date)
-            .withLocation(result.markt)
-            .withAmount(result.amount);
-
-          entries.value.push(newEntry);
-        }
-        description.value = result.description;
-        selectedMarkt.value = result.markt;
-      })
-      .catch(() => {
-        toast.info("Neues Produkt anlegen");
-        editmode.value = false;
-        creationMode.value = true;
-        pricetag.value = Pricetag.createEmptyPricetag().withProductName(
-          searchName.value
-        );
-      });
-  } else {
-    toast.error("Kein Produktname angegeben");
+    await store.getProduct();
   }
 }
 async function addPricetagEntry() {
-  prictageEntryEdit.value.date = Timestamp.now();
   const { valid } = await addtagform.value.validate();
   if (valid) {
-    pricetag.value.entries.push(prictageEntryEdit.value);
-    PricetagServiceApi.saveProductUpdate(pricetag.value).then(() => {
-      toast.success("Eintrag hinzugefügt");
-      addTagMode.value = false;
-      getProduct(pricetag.value.productName);
-      addtagform.value.reset();
-    });
-    resetPricetagEntryEdit();
+    await store.addPricetagEntry();
+    addtagform.value.reset();
     tagform.value.reset();
   }
 }
 async function saveNewProduct() {
-  console.log("saveNewProduct", productname.value, entries.value);
   const { valid } = await createform.value.validate();
-  const entry = {
-    price: prictageEntryEdit.value.price,
-    location: prictageEntryEdit.value.location,
-    amount: prictageEntryEdit.value.amount,
-    date: Timestamp.now(),
-  };
-  entries.value.push(entry);
-  pricetag.value.withEntries(entries.value);
   if (valid) {
-    PricetagServiceApi.saveNewPriceTag(pricetag.value).then(() => {
-      toast.success("Produkt " + pricetag.value.productName + " gespeichert");
-      exitEdit();
-    });
+    await store.saveNewProduct();
   } else {
     console.log("error saveNewProduct", createform.value);
     console.log("prictageEntryEdit", prictageEntryEdit, entries);
@@ -361,13 +251,8 @@ async function saveNewProduct() {
 }
 async function saveProduktUpdate() {
   const { valid: validname } = await editform.value.validate();
-  console.log("saveProduktUpdate pricetagentry:", prictageEntryEdit.value);
   if (validname) {
-    PricetagServiceApi.saveProductUpdate(pricetag.value).then(() => {
-      getProduct(pricetag.value.productName);
-      toast.success("Produkt " + productname.value + " gespeichert");
-      exitEdit();
-    });
+    await store.saveProductUpdate();
   } else {
     toast.error("felder dürfen nicht leer sein");
   }
