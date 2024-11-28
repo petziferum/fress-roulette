@@ -39,4 +39,7 @@ export const usePricetagStore = defineStore("pricetagStore", {
       entries: [],
     };
   },
+  actions: {
+
+  }
 });

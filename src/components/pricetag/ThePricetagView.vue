@@ -46,7 +46,7 @@
               <template v-if="addTagMode">
                 <v-form ref="addtagform">
                   <v-select
-                    :items="marktItems"
+                    :items="store.marktItems"
                     label="Markt"
                     v-model="prictageEntryEdit.location"
                   />
@@ -201,7 +201,9 @@ import {
 import { useToast } from "vue-toastification";
 import PricetagEntry from "@/components/pricetag/PricetagEntry";
 import Pricetag from "@/components/pricetag/Pricetag";
+import { usePricetagStore } from "@/stores/PricetagStore";
 
+const store = usePricetagStore();
 const searchName = ref("");
 const pricetag = ref<Pricetag | null>(null);
 const productname = ref("");
@@ -211,25 +213,6 @@ const description = ref("");
 const editmode = ref(false);
 const addTagMode = ref(false);
 const creationMode = ref(false);
-const marktItems = ref([
-  "Aldi",
-  "Lidl",
-  "Rewe",
-  "Edeka",
-  "Dm",
-  "Rossmann",
-  "Müller",
-  "H&M",
-  "Asia-Markt Riemarcaden",
-  "IShop",
-  "Penny",
-  "Netto",
-  "Kaufland",
-  "Rischart",
-  "McDonalds",
-  "Hasis",
-  "Traublinger",
-]);
 const selectedMarkt = ref("");
 const suggestedProductNames = ref<string[]>([]);
 const required = [(v) => !!v || "feld darf nicht leer sein"];
