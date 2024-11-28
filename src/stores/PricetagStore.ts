@@ -1,6 +1,4 @@
-import { computed, ref } from "vue";
 import type Pricetag from "@/components/pricetag/Pricetag";
-import { useToast } from "vue-toastification";
 import PricetagEntry from "@/components/pricetag/PricetagEntry";
 import { defineStore } from "pinia";
 

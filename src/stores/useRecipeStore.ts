@@ -57,7 +57,7 @@ export const useRecipeStore = defineStore("recipeStore", () => {
       .catch((err) => {
         console.error("Es ist gerade ein Fehler aufgetreten:\n", err);
       })
-      .finally(() => setTimeout(() => (recipesLoading.value = false), 100));
+      .then(() => setTimeout(() => (recipesLoading.value = false), 100));
   }
 
   function loadEditRecipe(id: string): void {
