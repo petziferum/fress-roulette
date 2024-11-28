@@ -28,7 +28,6 @@
             <v-card-title
               >{{ pricetag.productName
               }}<v-btn
-                position="rigth"
                 flat
                 icon="mdi-pencil"
                 size="small"
@@ -108,7 +107,9 @@
         </v-col>
         <v-col cols="12">
           <v-card-text>
-            <div class="text-caption">Hier könnten ähnliche Produkte angezeigt werden.</div>
+            <div class="text-caption">
+              Hier könnten ähnliche Produkte angezeigt werden.
+            </div>
           </v-card-text>
         </v-col>
       </v-row>
@@ -330,7 +331,9 @@ async function getProduct(name: string): Promise<void> {
         toast.info("Neues Produkt anlegen");
         editmode.value = false;
         creationMode.value = true;
-        pricetag.value = Pricetag.createEmptyPricetag().withProductName(searchName.value);
+        pricetag.value = Pricetag.createEmptyPricetag().withProductName(
+          searchName.value
+        );
       });
   } else {
     toast.error("Kein Produktname angegeben");
