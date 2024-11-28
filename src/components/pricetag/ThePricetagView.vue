@@ -347,7 +347,7 @@ async function addPricetagEntry() {
     PricetagServiceApi.saveProductUpdate(pricetag.value).then(() => {
       toast.success("Eintrag hinzugefügt");
       addTagMode.value = false;
-      getProduct(product.productName);
+      getProduct(pricetag.value.productName);
       addtagform.value.reset();
     });
     resetPricetagEntryEdit();
