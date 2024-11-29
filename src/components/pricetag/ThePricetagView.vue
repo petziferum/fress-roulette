@@ -5,15 +5,18 @@
       <v-row no-gutters>
         <v-col cols="9">
           <v-form ref="combobox">
-            <v-chip v-for="item in suggestedProductNames" :key="item" @click="getProductByName(item)">
+            <v-chip v-for="item in store.suggestedProductNames" :key="item" @click="getProductByName(item)" elevation="3">
               {{ item }}
             </v-chip>
             <v-combobox
               label="Produktname"
               v-model="store.searchName"
-              :items="suggestedProductNames"
+              :items="store.suggestedProductNames"
+              item-title="productName"
+              return-object
               @change="store.findProductname"
               @input="store.findProductname"
+              auto-select-first
               clearable
               @click:clear="clearResult()"
               :rules="required"
@@ -128,7 +131,7 @@
             />
             <v-text-field label="Beschreibung" v-model="store.pricetag.description" />
             <v-select
-              :items="marktItems"
+              :items="store.marktItems"
               label="Markt"
               v-model="store.pricetagEntryEdit.location"
             />
@@ -212,9 +215,6 @@ let prictageEntryEdit = ref<PricetagEntry>(
 const entries = ref([]);
 const lesemodus = computed(() => {
   return !store.editmode && !store.creationMode && store.pricetag;
-});
-const suggestedProductNames = computed(() => {
-  return store.getSuggestedProductNames;
 });
 function getKiloPreis(gramm: string, preis: string): string {
   if (gramm) {

@@ -69,22 +69,17 @@ export const usePricetagStore = defineStore("pricetagStore", {
       const searchTerm = this.searchName.toLowerCase();
       const filteredProducts = this.allProducts.filter((product) => {
         if (Array.isArray(product.searchKeys)) {
-          // Suche in `searchKeys`
-          console.log("searchKeys", searchTerm);
-          console.log("searchKeys", product.searchKeys);
           return product.searchKeys.some((key) => key.includes(searchTerm));
         }
-        // Falls keine `searchKeys` vorhanden, Suche im `productName`
         if (product.productName) {
-          console.log("productName", searchTerm);
           return product.productName.toLowerCase().includes(searchTerm);
         }
-        // Weder `searchKeys` noch `productName` vorhanden
         return false;
       });
+      console.log("filteredProducts", filteredProducts);
       this.suggestedProductNames = filteredProducts.map((product) => product.productName);
       await nextTick(() => {
-        console.log("UI aktualisiert.");
+        console.log("suggestedProductNames", this.suggestedProductNames);
       });
     },
     clearResult() {
