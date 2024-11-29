@@ -5,10 +5,14 @@
       <v-row no-gutters>
         <v-col cols="9">
           <v-form ref="combobox">
+            <v-chip v-for="item in suggestedProductNames" :key="item" @click="getProductByName(item)">
+              {{ item }}
+            </v-chip>
             <v-combobox
               label="Produktname"
               v-model="store.searchName"
-              :items="store.suggestedProductNames"
+              :items="suggestedProductNames"
+              @change="store.findProductname"
               @input="store.findProductname"
               clearable
               @click:clear="clearResult()"
@@ -209,7 +213,9 @@ const entries = ref([]);
 const lesemodus = computed(() => {
   return !store.editmode && !store.creationMode && store.pricetag;
 });
-
+const suggestedProductNames = computed(() => {
+  return store.getSuggestedProductNames;
+});
 function getKiloPreis(gramm: string, preis: string): string {
   if (gramm) {
     const p = parseFloat(preis.replace(",", "."));
@@ -230,6 +236,10 @@ async function searchProduct() {
   if (valid) {
     await store.getProduct();
   }
+}
+async function getProductByName(item: string) {
+  store.searchName = item;
+  await store.getProduct();
 }
 async function addPricetagEntry() {
   const { valid } = await addtagform.value.validate();
@@ -257,5 +267,8 @@ async function saveProduktUpdate() {
     toast.error("felder dürfen nicht leer sein");
   }
 }
+
+//Lade initiativ alle Produkte
+store.loadAllProducts();
 </script>
 <style scoped></style>

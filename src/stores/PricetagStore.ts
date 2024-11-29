@@ -2,15 +2,16 @@ import Pricetag from "@/components/pricetag/Pricetag";
 import PricetagEntry from "@/components/pricetag/PricetagEntry";
 import { defineStore } from "pinia";
 import {
-  collection,
+  collection, doc,
   getDocs,
   query,
-  Timestamp,
-  where,
+  Timestamp, updateDoc,
+  where
 } from "firebase/firestore";
 import { db } from "@/plugins/firebase";
 import PricetagServiceApi from "@/components/pricetag/PricetagService.api";
 import { useToast } from "vue-toastification";
+import { nextTick } from "vue";
 
 const toast = useToast();
 
@@ -48,22 +49,43 @@ export const usePricetagStore = defineStore("pricetagStore", {
       suggestedProductNames: [] as string[],
       pricetagEntryEdit: PricetagEntry.createEmptyPricetagEntry(),
       entries: [],
+      allProducts: [] as Pricetag[],
     };
   },
   actions: {
-    async findProductname() {
-      console.log("search", this.searchName);
-      if (!this.searchName) return;
+    async loadAllProducts() {
+      this.allProducts = [];
       const productsRef = collection(db, "pricetags");
-      const q = query(
-        productsRef,
-        where("productName", ">=", this.searchName.toLowerCase()),
-        where("productName", "<=", this.searchName.toLowerCase() + "\uf8ff")
-      );
-      const querySnapshot = await getDocs(q);
-      this.suggestedProductNames = querySnapshot.docs.map(
-        (doc) => doc.data().productName
-      );
+      const querySnapshot = await getDocs(productsRef);
+      querySnapshot.forEach((doc) => {
+        this.allProducts.push(doc.data() as Pricetag);
+      });
+    },
+    async findProductname() {
+      if (!this.searchName) {
+        console.log("Kein Suchbegriff eingegeben.");
+        return;
+      }
+      const searchTerm = this.searchName.toLowerCase();
+      const filteredProducts = this.allProducts.filter((product) => {
+        if (Array.isArray(product.searchKeys)) {
+          // Suche in `searchKeys`
+          console.log("searchKeys", searchTerm);
+          console.log("searchKeys", product.searchKeys);
+          return product.searchKeys.some((key) => key.includes(searchTerm));
+        }
+        // Falls keine `searchKeys` vorhanden, Suche im `productName`
+        if (product.productName) {
+          console.log("productName", searchTerm);
+          return product.productName.toLowerCase().includes(searchTerm);
+        }
+        // Weder `searchKeys` noch `productName` vorhanden
+        return false;
+      });
+      this.suggestedProductNames = filteredProducts.map((product) => product.productName);
+      await nextTick(() => {
+        console.log("UI aktualisiert.");
+      });
     },
     clearResult() {
       this.price = "";
@@ -87,8 +109,9 @@ export const usePricetagStore = defineStore("pricetagStore", {
         console.log("fetch Product", this.searchName);
         PricetagServiceApi.getProduct(this.searchName)
           .then((result: Pricetag | any) => {
-            this.pricetag = result;
+            this.pricetag = result as Pricetag;
             this.selectedMarkt = result.markt;
+            ;
           })
           .catch(() => {
             toast.info("Neues Produkt anlegen");
@@ -112,6 +135,8 @@ export const usePricetagStore = defineStore("pricetagStore", {
       this.resetPricetagEntryEdit();
     },
     async saveProductUpdate() {
+      this.pricetag.withSearchKeys(this.pricetag.generateSearchKeys(this.pricetag.productName, this.pricetag.description));
+      console.log("saveProductUpdate", this.pricetag);
       PricetagServiceApi.saveProductUpdate(this.pricetag).then(() => {
         this.getProduct();
         toast.success("Produkt " + this.pricetag.productName + " gespeichert");
@@ -124,6 +149,48 @@ export const usePricetagStore = defineStore("pricetagStore", {
         toast.success("Produkt " + this.pricetag.productName + " gespeichert");
         this.exitEdit();
       });
+    },
+    async generateAndSaveSearchKeys(): Promise<void> {
+      try {
+        const productsRef = collection(db, "pricetags"); // Ersetze "pricetags" durch den Namen deiner Sammlung
+        const querySnapshot = await getDocs(productsRef);
+
+        // Alle Produkte durchlaufen und `searchKeys` generieren
+        querySnapshot.forEach(async (document) => {
+          const product = document.data();
+          const productId = document.id;
+
+          // Generiere `searchKeys` aus `productName` und `description`
+          const searchKeys = new Set();
+
+          if (product.productName) {
+            product.productName
+              .toLowerCase()
+              .split(/\s+/) // Zerlege in einzelne Wörter
+              .forEach((word) => searchKeys.add(word));
+          }
+
+          if (product.description) {
+            product.description
+              .toLowerCase()
+              .split(/\s+/) // Zerlege in einzelne Wörter
+              .forEach((word) => searchKeys.add(word));
+          }
+
+          // Suche aktualisieren
+          const searchKeysArray = Array.from(searchKeys);
+
+          // Produkt in Firebase aktualisieren
+          const productDocRef = doc(productsRef, productId);
+          await updateDoc(productDocRef, { searchKeys: searchKeysArray });
+
+          console.log(`Produkt ${productId} aktualisiert mit searchKeys:`, searchKeysArray);
+        });
+
+        console.log("Alle Produkte wurden erfolgreich aktualisiert.");
+      } catch (error) {
+        console.error("Fehler beim Generieren und Speichern von searchKeys:", error);
+      }
     },
   },
   getters: {
@@ -139,5 +206,8 @@ export const usePricetagStore = defineStore("pricetagStore", {
     lesemodus: (state) => {
       return !state.editmode && !state.creationMode && state.pricetag;
     },
+    getSuggestedProductNames: (state) => {
+      return state.suggestedProductNames;
+    }
   },
 });

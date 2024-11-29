@@ -4,6 +4,7 @@ import { Timestamp } from "firebase/firestore";
 export default class Pricetag {
   public productName: string;
   public description: string;
+  public searchKeys: string[];
   public entries: PricetagEntry[];
 
   constructor(
@@ -14,6 +15,18 @@ export default class Pricetag {
     this.productName = productName;
     this.description = description;
     this.entries = entries;
+  }
+
+  generateSearchKeys(productName, description) {
+    return [
+      ...productName.toLowerCase().split(" "),
+      ...description.toLowerCase().split(" "),
+    ];
+  }
+
+  withSearchKeys(searchKeys: string[]): Pricetag {
+    this.searchKeys = searchKeys;
+    return this;
   }
 
   withProductName(productName: string): Pricetag {
@@ -41,6 +54,7 @@ export const pricetagConverter = {
     return {
       productName: pricetag.productName,
       description: pricetag.description,
+      searchKeys: pricetag.searchKeys || [],
       entries: pricetag.entries.map((entry) => {
         return {
           price: entry.price ?? "",
@@ -56,6 +70,7 @@ export const pricetagConverter = {
     return Pricetag.createEmptyPricetag()
       .withProductName(data.productName)
       .withDescription(data.description)
+      .withSearchKeys(data.searchKeys)
       .withEntries(data.entries);
   },
 };
