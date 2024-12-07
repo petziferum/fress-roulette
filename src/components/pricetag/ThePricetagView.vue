@@ -5,7 +5,12 @@
       <v-row no-gutters>
         <v-col cols="9">
           <v-form ref="combobox">
-            <v-chip v-for="item in store.suggestedProductNames" :key="item" @click="getProductByName(item)" elevation="3">
+            <v-chip
+              v-for="item in store.suggestedProductNames"
+              :key="item"
+              @click="getProductByName(item)"
+              elevation="3"
+            >
               {{ item }}
             </v-chip>
             <v-combobox
@@ -82,32 +87,26 @@
                 </v-form>
               </template>
               <div class="d-flex flex-column">
-                <v-chip
-                  v-for="tag in store.pricetag.entries"
-                  ripple
-                  class="mb-2 mx-1 d-flex"
-                  elevation="3"
-                  tile
-                  size="small"
-                  :key="tag.date"
-                >
-                  <div
-                    class="d-inline-flex justify-space-between"
-                    style="width: 100%"
-                  >
-                    <div style="width: 80px">
-                      {{ tag.date.toDate().toLocaleDateString() }}
-                    </div>
-                    <div style="width: 50px">{{ tag.location }}</div>
-                    <div style="width: 50px">{{ tag.amount }}g</div>
-                    <div style="width: 50px; font-weight: bold">
-                      {{ tag.price }} €
-                    </div>
-                    <div style="width: 90px">
-                      {{ getKiloPreis(tag.amount, tag.price) }}
-                    </div>
-                  </div>
-                </v-chip>
+                <v-table density="compact">
+                  <thead>
+                    <tr>
+                      <th class="text-left">Datum</th>
+                      <th class="text-left">Markt</th>
+                      <th class="text-left">Menge</th>
+                      <th class="text-left">Preis</th>
+                      <th class="text-left">Preis/kg</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="tag in store.pricetag.entries" :key="tag.date">
+                      <td>{{ tag.date.toDate().toLocaleDateString() }}</td>
+                      <td>{{ tag.location }}</td>
+                      <td>{{ tag.amount }}g</td>
+                      <td>{{ tag.price }}</td>
+                      <td>{{ getKiloPreis(tag.amount, tag.price) }}</td>
+                    </tr>
+                  </tbody>
+                </v-table>
               </div>
             </v-card-text>
           </v-card>
@@ -129,7 +128,10 @@
               :rules="required"
               v-model="store.pricetag.productName"
             />
-            <v-text-field label="Beschreibung" v-model="store.pricetag.description" />
+            <v-text-field
+              label="Beschreibung"
+              v-model="store.pricetag.description"
+            />
             <v-select
               :items="store.marktItems"
               label="Markt"
@@ -172,7 +174,10 @@
               :rules="required"
               v-model="store.pricetag.productName"
             />
-            <v-text-field label="Beschreibung" v-model="store.pricetag.description" />
+            <v-text-field
+              label="Beschreibung"
+              v-model="store.pricetag.description"
+            />
             <v-btn
               block
               variant="outlined"
@@ -220,8 +225,8 @@ function getKiloPreis(gramm: string, preis: string): string {
   if (gramm) {
     const p = parseFloat(preis.replace(",", "."));
     const g = parseFloat(gramm);
-    return ((p / g) * 1000).toFixed(2) + " €/kg";
-  } else return "- €/kg";
+    return ((p / g) * 1000).toFixed(2);
+  } else return "-";
 }
 
 function clearResult() {
