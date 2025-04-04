@@ -259,8 +259,6 @@ async function saveNewProduct() {
   if (valid) {
     await store.saveNewProduct();
   } else {
-    console.log("error saveNewProduct", createform.value);
-    console.log("prictageEntryEdit", prictageEntryEdit, entries);
     toast.error("felder dürfen nicht leer sein ");
   }
 }

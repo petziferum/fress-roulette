@@ -23,9 +23,10 @@ import UserState from "@/stores/types/UserState.class";
 
 export const COLLECTION_NAME = "recipes";
 const firebaseConfig = {
-  apiKey: "AIzaSyCPt03Bp5UBVXn72EVSWNAhvt4u0NI2m5M",
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
   authDomain: "recipes-petzi.firebaseapp.com",
-  databaseURL: "https://recipes-petzi-default-rtdb.europe-west1.firebasedatabase.app",
+  databaseURL:
+    "https://recipes-petzi-default-rtdb.europe-west1.firebasedatabase.app",
   projectId: "recipes-petzi",
   storageBucket: "recipes-petzi.appspot.com",
   messagingSenderId: "214936827568",

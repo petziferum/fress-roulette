@@ -2,11 +2,11 @@ import Pricetag from "@/components/pricetag/Pricetag";
 import PricetagEntry from "@/components/pricetag/PricetagEntry";
 import { defineStore } from "pinia";
 import {
-  collection, doc,
+  collection,
+  doc,
   getDocs,
-  query,
-  Timestamp, updateDoc,
-  where
+  Timestamp,
+  updateDoc,
 } from "firebase/firestore";
 import { db } from "@/plugins/firebase";
 import PricetagServiceApi from "@/components/pricetag/PricetagService.api";
@@ -63,7 +63,7 @@ export const usePricetagStore = defineStore("pricetagStore", {
     },
     async findProductname() {
       if (!this.searchName) {
-        console.log("Kein Suchbegriff eingegeben.");
+        toast.info("Kein Suchbegriff eingegeben.");
         return;
       }
       const searchTerm = this.searchName.toLowerCase();
@@ -76,11 +76,9 @@ export const usePricetagStore = defineStore("pricetagStore", {
         }
         return false;
       });
-      console.log("filteredProducts", filteredProducts);
-      this.suggestedProductNames = filteredProducts.map((product) => product.productName);
-      await nextTick(() => {
-        console.log("suggestedProductNames", this.suggestedProductNames);
-      });
+      this.suggestedProductNames = filteredProducts.map(
+        (product) => product.productName
+      );
     },
     clearResult() {
       this.price = "";
@@ -101,12 +99,10 @@ export const usePricetagStore = defineStore("pricetagStore", {
     async getProduct(): Promise<void> {
       this.entries = [];
       if (this.searchName) {
-        console.log("fetch Product", this.searchName);
         PricetagServiceApi.getProduct(this.searchName)
           .then((result: Pricetag | any) => {
             this.pricetag = result as Pricetag;
             this.selectedMarkt = result.markt;
-            ;
           })
           .catch(() => {
             toast.info("Neues Produkt anlegen");
@@ -121,17 +117,29 @@ export const usePricetagStore = defineStore("pricetagStore", {
       }
     },
     async addPricetagEntry() {
-      this.pricetagEntryEdit.date = Timestamp.now();
-      this.pricetag.entries.push(this.pricetagEntryEdit);
-      await this.saveProductUpdate().then(() => {
+      try {
+        const newEntry = {
+          ...this.pricetagEntryEdit,
+          date: Timestamp.now(),
+        };
+
+        this.pricetag.entries = [...(this.pricetag.entries || []), newEntry];
+
+        await this.saveProductUpdate();
         toast.success("Eintrag hinzugefügt");
         this.addTagMode = false;
-      });
-      this.resetPricetagEntryEdit();
+        this.resetPricetagEntryEdit();
+      } catch (error) {
+        toast.error("Eintrag konnte nicht hinzugefügt werden");
+      }
     },
     async saveProductUpdate() {
-      this.pricetag.withSearchKeys(this.pricetag.generateSearchKeys(this.pricetag.productName, this.pricetag.description));
-      console.log("saveProductUpdate", this.pricetag);
+      this.pricetag.withSearchKeys(
+        this.pricetag.generateSearchKeys(
+          this.pricetag.productName,
+          this.pricetag.description
+        )
+      );
       PricetagServiceApi.saveProductUpdate(this.pricetag).then(() => {
         this.getProduct();
         toast.success("Produkt " + this.pricetag.productName + " gespeichert");
@@ -179,12 +187,18 @@ export const usePricetagStore = defineStore("pricetagStore", {
           const productDocRef = doc(productsRef, productId);
           await updateDoc(productDocRef, { searchKeys: searchKeysArray });
 
-          console.log(`Produkt ${productId} aktualisiert mit searchKeys:`, searchKeysArray);
+          console.log(
+            `Produkt ${productId} aktualisiert mit searchKeys:`,
+            searchKeysArray
+          );
         });
 
         console.log("Alle Produkte wurden erfolgreich aktualisiert.");
       } catch (error) {
-        console.error("Fehler beim Generieren und Speichern von searchKeys:", error);
+        console.error(
+          "Fehler beim Generieren und Speichern von searchKeys:",
+          error
+        );
       }
     },
   },
@@ -203,6 +217,6 @@ export const usePricetagStore = defineStore("pricetagStore", {
     },
     getSuggestedProductNames: (state) => {
       return state.suggestedProductNames;
-    }
+    },
   },
 });

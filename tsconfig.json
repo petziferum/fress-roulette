@@ -5,6 +5,7 @@
     "baseUrl": ".",
     "noImplicitAny": false,
     "strictNullChecks": false,
+    "types": ["node"],
     "paths": {
       "@/*": ["./src/*"]
     }
