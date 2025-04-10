@@ -6,11 +6,6 @@
     :image="barImg"
     class="align-content-center text-white"
   >
-    <v-app-bar-nav-icon
-      variant="tonal"
-      style="position: relative; z-index: 30"
-      @click.stop="drawer = !drawer"
-    />
     <img
       alt="titleImg"
       :src="titleImg"
@@ -18,16 +13,17 @@
       @click="router.push({ name: 'home' })"
     />
     <div class="subtitleContainer">
-    <div class="subtitle">
-      Das Rad entscheidet,<br />
-      was wir als nächstes fressen!
-    </div>
+      <div class="subtitle">
+        Das Rad entscheidet,<br />
+        was wir als nächstes fressen!
+      </div>
     </div>
     <v-spacer />
     <template v-slot:extension>
       <v-toolbar style="z-index: 0">
         <v-toolbar-items>
           <v-btn @click="$router.push({ name: 'Home' })"> Home </v-btn>
+          <v-btn @click="router.push({ name: 'Pricetag' })"> Pricetag </v-btn>
           <v-btn
             v-if="userLoggedIn"
             @click="router.push({ name: 'userdashboard' })"
@@ -43,6 +39,13 @@
         </v-toolbar-items>
       </v-toolbar>
     </template>
+    <v-app-bar-nav-icon
+      variant="elevated"
+      color="black"
+      class="glowing-icon"
+      style="margin-right: 1em; z-index: 30"
+      @click.stop="drawer = !drawer"
+    />
   </v-app-bar>
 </template>
 
@@ -99,7 +102,8 @@ const mobile = computed(() => {
 }
 @media (max-width: 600px) {
   .titleImg {
-    width: 300px;
+    width: 250px;
+    right: -20px;
   }
 }
 .subtitleContainer {
@@ -124,5 +128,17 @@ const mobile = computed(() => {
     font-size: 1rem;
     align-self: flex-end;
   }
+}
+.glowing-icon {
+  margin-right: 1em;
+  z-index: 30;
+  transition: box-shadow 0.3s ease-in-out;
+  box-shadow: 0 0 15px 10px rgba(255, 255, 255, 1),
+    0 0 50px 20px rgba(255, 255, 255, 1);
+}
+
+.glowing-icon:hover {
+  box-shadow: 0 0 25px 10px rgba(255, 255, 255, 1),
+  0 0 20px 40px rgba(255, 255, 255, 1);
 }
 </style>
