@@ -1,7 +1,7 @@
 <template>
   <div class="mx-2">
     <v-row justify="center">
-      <v-col cols="4"> <div class="text-h1">Dev Test View</div></v-col>
+      <v-col cols="4"> <div class="text-h1" style="text-shadow: 0 0 11px rgba(255, 255, 255, 1)">Dev Test View</div></v-col>
     </v-row>
     <v-row class="my-2">
       <v-col>
@@ -9,6 +9,9 @@
       </v-col>
     </v-row>
     <v-expansion-panels v-model="panels">
+      <wrapper-panel title="Pricetag Test">
+        <pricetag-test-component />
+      </wrapper-panel>
       <wrapper-panel title="Dialog Test">
         <dialog-test-component />
       </wrapper-panel>
@@ -157,6 +160,7 @@ import ThePhotoUploadComponent from "@/components/componenttest/ThePhotoUploadCo
 import FilterChipTestComponent from "@/components/componenttest/FilterChipTestComponent.vue";
 import HoverCardEffect from "@/components/componenttest/HoverCardEffect.vue";
 import DialogTestComponent from "@/components/componenttest/DialogTestComponent.vue";
+import PricetagTestComponent from "@/components/componenttest/PricetagTestComponent.vue";
 
 const dialog = ref(false);
 const panels = ref([0]);
