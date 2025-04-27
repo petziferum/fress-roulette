@@ -11,7 +11,6 @@ import {
 import { db } from "@/plugins/firebase";
 import PricetagServiceApi from "@/components/pricetag/PricetagService.api";
 import { useToast } from "vue-toastification";
-import { nextTick } from "vue";
 
 const toast = useToast();
 
@@ -58,7 +57,14 @@ export const usePricetagStore = defineStore("pricetagStore", {
       const productsRef = collection(db, "pricetags");
       const querySnapshot = await getDocs(productsRef);
       querySnapshot.forEach((doc) => {
-        this.allProducts.push(doc.data() as Pricetag);
+        const product = doc.data() as Pricetag;
+        if (product.searchKeys.length == 0) {
+          product.searchKeys = Pricetag.generateSearchKeys(
+            product.productName,
+            product.description
+          );
+        }
+        this.allProducts.push(product);
       });
     },
     async findProductname() {
@@ -135,7 +141,7 @@ export const usePricetagStore = defineStore("pricetagStore", {
     },
     async saveProductUpdate() {
       this.pricetag.withSearchKeys(
-        this.pricetag.generateSearchKeys(
+        Pricetag.generateSearchKeys(
           this.pricetag.productName,
           this.pricetag.description
         )
@@ -148,6 +154,12 @@ export const usePricetagStore = defineStore("pricetagStore", {
     },
     async saveNewProduct() {
       this.pricetag.withEntries([this.pricetagEntryEdit]);
+      this.pricetag.withSearchKeys(
+        Pricetag.generateSearchKeys(
+          this.pricetag.productName,
+          this.pricetag.description
+        )
+      );
       PricetagServiceApi.saveNewPriceTag(this.pricetag).then(() => {
         toast.success("Produkt " + this.pricetag.productName + " gespeichert");
         this.exitEdit();

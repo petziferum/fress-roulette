@@ -17,7 +17,7 @@ export default class Pricetag {
     this.entries = entries;
   }
 
-  generateSearchKeys(productName, description) {
+  static generateSearchKeys(productName, description) {
     return [
       ...productName.toLowerCase().split(" "),
       ...description.toLowerCase().split(" "),
