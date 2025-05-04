@@ -9,8 +9,9 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { db } from "@/plugins/firebase";
-import PricetagServiceApi from "@/components/pricetag/PricetagService.api";
+import PricetagServiceApi, { type UploadStatus } from "@/components/pricetag/PricetagService.api";
 import { useToast } from "vue-toastification";
+import { ref } from "vue";
 
 const toast = useToast();
 
@@ -49,9 +50,20 @@ export const usePricetagStore = defineStore("pricetagStore", {
       pricetagEntryEdit: PricetagEntry.createEmptyPricetagEntry(),
       entries: [],
       allProducts: [] as Pricetag[],
+      uploadStatus: {} as UploadStatus,
+      pricetagImage: null,
+      loading: false,
     };
   },
   actions: {
+    async uploadImage(file: File) {
+      this.loading = true;
+      PricetagServiceApi.uploadPhoto(file)
+        .then((res) => {
+          this.pricetag.imageUrl = res;
+        })
+        .finally(() => (this.loading = false));
+    },
     async loadAllProducts() {
       this.allProducts = [];
       const productsRef = collection(db, "pricetags");

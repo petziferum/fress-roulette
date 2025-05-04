@@ -1,8 +1,17 @@
-import { COLLECTION_NAME, db } from "@/plugins/firebase";
-import { collection, doc, getDoc, getDocs, setDoc } from "firebase/firestore";
-import type PricetagEntry from "@/components/pricetag/PricetagEntry";
+import { db, fireBucket } from "@/plugins/firebase";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 import type Pricetag from "@/components/pricetag/Pricetag";
 import { pricetagConverter } from "@/components/pricetag/Pricetag";
+import { ref } from "vue";
+import { getDownloadURL, ref as fireRef, uploadBytes } from "firebase/storage";
+import { usePricetagStore } from "@/stores/PricetagStore";
+
+export const MAX_FILE_SIZE = 8 * 1024 * 1024; // 10MB
+const IMAGE_FOLDER = "pricetags/";
+export interface UploadStatus {
+  type: string;
+  message: string;
+}
 
 export default class PricetagServiceApi {
   public static async saveNewPriceTag(pricetag: Pricetag): Promise<void> {
@@ -15,6 +24,33 @@ export default class PricetagServiceApi {
       });
     } catch (error) {
       console.error("Error adding document: ", error);
+    }
+  }
+  public static async uploadPhoto(file: File): Promise<string> {
+    const pricetagStore = usePricetagStore();
+    if (file.size > MAX_FILE_SIZE) {
+      pricetagStore.uploadStatus = {
+        type: "error",
+        message: "File too large!",
+      };
+      return;
+    } else {
+      const storageRef = fireRef(fireBucket, IMAGE_FOLDER + file.name);
+      try {
+        const snapshot = await uploadBytes(storageRef, file);
+        const downloadUrl = await getDownloadURL(snapshot.ref);
+        console.log("Uploaded a blob or file!", downloadUrl);
+        pricetagStore.uploadStatus = {
+          type: "success",
+          message: `File selected with size: ${(
+            file.size /
+            (1024 * 1024)
+          ).toFixed(2)} MB`,
+        };
+        return downloadUrl;
+      } catch (error) {
+        console.log("Fehler: ", error);
+      }
     }
   }
   public static async getProduct(productName: string): Promise<Pricetag | null> {
