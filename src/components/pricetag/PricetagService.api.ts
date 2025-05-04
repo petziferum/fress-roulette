@@ -53,7 +53,9 @@ export default class PricetagServiceApi {
       }
     }
   }
-  public static async getProduct(productName: string): Promise<Pricetag | null> {
+  public static async getProduct(
+    productName: string
+  ): Promise<Pricetag | null> {
     const docRef = doc(db, "pricetags", productName).withConverter(pricetagConverter);
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {

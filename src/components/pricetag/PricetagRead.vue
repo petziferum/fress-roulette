@@ -111,8 +111,14 @@
 </template>
 <script setup lang="ts">
 import ImageOverlay from "@/components/commons/ImageOverlay.vue";
-import { usePricetagStore } from "@/stores/PricetagStore";
-
-const store = usePricetagStore();
+import { usePricetagLogic } from "@/components/pricetag/PricetagLogic";
+const {
+  store,
+  getKiloPreis,
+  required,
+  addPricetagEntry,
+  imageOverlay,
+  openImageOverlay,
+} = usePricetagLogic();
 </script>
 <style scoped></style>
