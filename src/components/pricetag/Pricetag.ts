@@ -5,15 +5,18 @@ export default class Pricetag {
   public productName: string;
   public description: string;
   public searchKeys: string[];
+  public imageUrl: string;
   public entries: PricetagEntry[];
 
   constructor(
     productName: string,
     description: string,
+    imageUrl: string,
     entries: PricetagEntry[]
   ) {
     this.productName = productName;
     this.description = description;
+    this.imageUrl = imageUrl;
     this.entries = entries;
   }
 
@@ -39,13 +42,18 @@ export default class Pricetag {
     return this;
   }
 
+  withImageUrl(imageUrl: string): this {
+    this.imageUrl = imageUrl;
+    return this;
+  }
+
   withEntries(entries: PricetagEntry[]): Pricetag {
     this.entries = entries;
     return this;
   }
 
   static createEmptyPricetag() {
-    return new Pricetag("", "", []);
+    return new Pricetag("", "", "", []);
   }
 }
 export const pricetagConverter = {
@@ -54,6 +62,7 @@ export const pricetagConverter = {
     return {
       productName: pricetag.productName,
       description: pricetag.description,
+      imageUrl: pricetag.imageUrl,
       searchKeys: pricetag.searchKeys || [],
       entries: pricetag.entries.map((entry) => {
         return {
@@ -70,6 +79,7 @@ export const pricetagConverter = {
     return Pricetag.createEmptyPricetag()
       .withProductName(data.productName)
       .withDescription(data.description)
+      .withImageUrl(data.imageUrl)
       .withSearchKeys(data.searchKeys)
       .withEntries(data.entries);
   },

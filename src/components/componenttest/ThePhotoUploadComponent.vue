@@ -49,6 +49,7 @@
 </template>
 <script setup lang="ts">
 import { toast } from "vue3-toastify";
+import { MAX_FILE_SIZE} from "@/components/pricetag/PricetagService.api";
 
 interface UploadStatus {
   type: string;
@@ -70,7 +71,7 @@ const storage = getStorage();
 const uploadStatus = ref<UploadStatus | null>(null);
 const loading = ref(false);
 const imgsrc = ref("");
-const MAX_FILE_SIZE = 8 * 1024 * 1024; // 10MB
+
 const folder = "recipes/";
 const recipeStore = useRecipeStore();
 const onFileInput = () => {
