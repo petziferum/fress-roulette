@@ -126,7 +126,10 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr v-for="tag in store.pricetag.entries" :key="tag.date">
+                      <tr
+                        v-for="(tag, index) in store.pricetag.entries"
+                        :key="index"
+                      >
                         <td>{{ tag.date.toDate().toLocaleDateString() }}</td>
                         <td>{{ tag.location }}</td>
                         <td>{{ tag.amount }}g</td>
@@ -180,9 +183,8 @@
                 label="datum"
                 v-model="store.formattedDate"
               />
-              <v-file-upload density="compact" v-model="photo"></v-file-upload>
-              <v-btn @click="uploadFile">upload</v-btn>
-              <p v-if="pricetagImage">photoURL: {{ pricetagImage }}</p>
+              <v-text-field readonly :value="store.pricetag.imageUrl" />
+              <pricetag-image-upload />
               <v-btn
                 block
                 color="red"
@@ -199,39 +201,40 @@
               />
             </v-form>
           </v-col>
-          <v-col cols="12"> </v-col>
+        </v-row>
+        <v-row v-if="store.editmode">
+          <v-col cols="12" md="12">
+            <v-form ref="editform">
+              <v-text-field
+                label="Name"
+                :rules="required"
+                v-model="store.pricetag.productName"
+              />
+              <v-text-field
+                label="Beschreibung"
+                v-model="store.pricetag.description"
+              />
+              <v-text-field readonly :value="store.pricetag.imageUrl" />
+              <pricetag-image-upload />
+              <v-btn
+                block
+                variant="outlined"
+                class="mb-3"
+                @click="saveProduktUpdate"
+                text="Produkt speichern"
+              />
+              <v-btn
+                block
+                color="red"
+                variant="outlined"
+                class="mb-3"
+                @click="store.exitEdit()"
+                text="Abbrechen"
+              />
+            </v-form>
+          </v-col>
         </v-row>
       </v-card-text>
-      <v-row v-if="store.editmode">
-        <v-col cols="12" md="12">
-          <v-form ref="editform">
-            <v-text-field
-              label="Name"
-              :rules="required"
-              v-model="store.pricetag.productName"
-            />
-            <v-text-field
-              label="Beschreibung"
-              v-model="store.pricetag.description"
-            />
-            <v-btn
-              block
-              variant="outlined"
-              class="mb-3"
-              @click="saveProduktUpdate"
-              text="Produkt speichern"
-            />
-            <v-btn
-              block
-              color="red"
-              variant="outlined"
-              class="mb-3"
-              @click="store.exitEdit()"
-              text="Abbrechen"
-            />
-          </v-form>
-        </v-col>
-      </v-row>
     </v-card>
   </v-container>
 </template>
@@ -242,9 +245,9 @@ import PricetagEntry from "@/components/pricetag/PricetagEntry";
 import { usePricetagStore } from "@/stores/PricetagStore";
 import PricetagServiceApi from "@/components/pricetag/PricetagService.api";
 import ImageOverlay from "@/components/commons/ImageOverlay.vue";
+import PricetagImageUpload from "@/components/pricetag/PricetagImageUpload.vue";
 
 const store = usePricetagStore();
-const photo = ref<File>();
 const required = [(v) => !!v || "feld darf nicht leer sein"];
 const combobox = ref<HTMLFormElement>();
 const tagform = ref<HTMLFormElement>();
@@ -252,7 +255,6 @@ const addtagform = ref<HTMLFormElement>();
 const editform = ref<HTMLFormElement>();
 const createform = ref<HTMLFormElement>();
 const prictagform = ref<HTMLFormElement>();
-const pricetagImage = ref<string | null>(null);
 const toast = useToast();
 const imageOverlay = ref(null);
 
@@ -279,22 +281,6 @@ function clearResult() {
   combobox.value.reset();
   editform.value.reset();
   prictagform.value.reset();
-}
-async function uploadFile() {
-  if (
-    photo.value != undefined &&
-    (photo.value.type == "image/jpeg" ||
-      photo.value.type == "image/png" ||
-      photo.value.type == "image/webp")
-  ) {
-    await PricetagServiceApi.uploadPhoto(photo.value).then((imageUrl) => {
-      pricetagImage.value = imageUrl;
-    });
-  } else {
-    console.error("falscher Dateityp", photo.value.type);
-    photo.value = null;
-    return;
-  }
 }
 async function searchProduct() {
   const { valid } = await combobox.value.validate();
