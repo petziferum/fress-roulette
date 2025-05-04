@@ -148,6 +148,7 @@
               v-model="store.pricetagEntryEdit.price"
             />
             <v-text-field label="datum" v-model="store.formattedDate" />
+            <v-file-input />
             <v-btn
               block
               color="red"
