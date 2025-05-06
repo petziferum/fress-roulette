@@ -7,11 +7,31 @@
         </v-btn>
       </v-card-title>
       <v-card-text>
+        Berechne Betriebsdauer der Kühlbox mit einer 12 Volt Batterie: <br />
+        <v-text-field label="Betteriegrösse in Ah" v-model="ah"></v-text-field><br />
+        <p>Bei {{ usableCapacityPercent }}% Batterieentladung.</p>
+        <p>
+          <v-btn @click="calculateOperationTime" class="mt-3" color="red">Berechne</v-btn>
+        </p>
+          <div style="display: inline-flex; height: 50px; align-items: center; align-content: center; margin: 10px">
+            <span class="mr-4">Betriebsdauer:</span>
+          <div class="text-blue-accent-2 text-h4" v-if="!loading">
+            {{ loading ? '...' : betriebsdauer }}
+          </div>
+            <div class="text-blue-accent-2 text-h6" v-else>
+              <v-icon>mdi-loading mdi-spin</v-icon>
+            </div>
+            <span class="text-blue-accent-2 text-h4 ml-2">Std</span>
+          </div>
+      </v-card-text>
+      <v-card-text>
         <ul>
           <li v-for="(item, index) in pricetagList" :key="index">
             <v-list-item>
               <v-list-item-title>{{ item.productName }}</v-list-item-title>
-              <v-list-item-subtitle>{{ item.description }}</v-list-item-subtitle>
+              <v-list-item-subtitle>{{
+                item.description
+              }}</v-list-item-subtitle>
             </v-list-item>
           </li>
         </ul>
@@ -26,6 +46,12 @@ import Pricetag from "@/components/pricetag/Pricetag";
 
 const store = useDevStore();
 const pricetagList = ref([]);
+const ah = ref(0);
+const batteryVoltage = 12.8;
+const averagePowerWatts = 13.33; //durchschnittlicher Verbrauch bei 40W/15min für 5min.
+const loading = ref(false);
+const betriebsdauer = ref(0);
+const usableCapacityPercent = ref(90);
 
 const loadPricetagList = () => {
   pricetagList.value = Array.from({ length: 10 }, (_, i) =>
@@ -34,5 +60,15 @@ const loadPricetagList = () => {
       .withDescription("test" + i)
   );
 };
+function calculateOperationTime() {
+  const batteryWh = ah.value * batteryVoltage * (usableCapacityPercent.value / 100);
+  betriebsdauer.value = 0;
+  const operationTimeHours = batteryWh / averagePowerWatts;
+  loading.value = true;
+  setTimeout(() => {
+    loading.value = false;
+    betriebsdauer.value = Math.floor(operationTimeHours);
+  }, 1000);
+}
 </script>
 <style scoped></style>
