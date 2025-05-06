@@ -6,6 +6,7 @@
         <v-row no-gutters>
           <v-col cols="9">
             <v-form ref="combobox">
+              <template v-if="store.suggestedProductNames.length > 0">
               <v-chip
                 v-for="item in store.suggestedProductNames"
                 :key="item"
@@ -14,6 +15,7 @@
               >
                 {{ item }}
               </v-chip>
+              </template>
               <v-combobox
                 label="Produktname"
                 v-model="store.searchName"
@@ -38,6 +40,8 @@
         <PricetagRead v-if="lesemodus" />
         <PricetagCreate v-if="store.creationMode" />
         <PricetagEdit v-if="store.editmode" />
+      </v-card-text>
+      <v-card-text>
       </v-card-text>
     </v-card>
   </v-container>

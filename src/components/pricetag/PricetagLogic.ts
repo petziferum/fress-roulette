@@ -59,8 +59,8 @@ export function usePricetagLogic() {
   }
 
   async function addPricetagEntry() {
-    const { valid } = await addtagform.value?.validate();
-    if (valid) {
+    const result = await addtagform.value?.validate();
+    if (result.valid) {
       await store.addPricetagEntry();
       addtagform.value?.reset();
       tagform.value?.reset();
@@ -68,17 +68,22 @@ export function usePricetagLogic() {
   }
 
   async function saveNewProduct() {
-    const { valid } = await createform.value?.validate();
-    if (valid) {
-      await store.saveNewProduct();
-    } else {
-      toast.error("felder dürfen nicht leer sein ");
+    const result = await createform.value?.validate();
+    try {
+      if (result.valid) {
+        await store.saveNewProduct();
+      } else {
+        toast.error("felder dürfen nicht leer sein ");
+      }
+    } catch (e) {
+      console.error("Fehler beim speichern: " + e);
+      toast.error("Fehler beim speichern aufgetreten: " + e);
     }
   }
 
   async function saveProduktUpdate() {
-    const { valid: validname } = await editform.value?.validate();
-    if (validname) {
+    const result = await editform.value?.validate();
+    if (result.valid) {
       await store.saveProductUpdate();
     } else {
       toast.error("felder dürfen nicht leer sein");

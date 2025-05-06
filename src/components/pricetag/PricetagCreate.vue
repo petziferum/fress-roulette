@@ -51,6 +51,6 @@
 <script setup lang="ts">
 import PricetagImageUpload from "@/components/pricetag/PricetagImageUpload.vue";
 import { usePricetagLogic } from "@/components/pricetag/PricetagLogic";
-const { store, saveNewProduct, required } = usePricetagLogic();
+const { store, saveNewProduct, createform, required } = usePricetagLogic();
 </script>
 <style scoped></style>

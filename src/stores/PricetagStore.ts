@@ -84,6 +84,7 @@ export const usePricetagStore = defineStore("pricetagStore", {
         toast.info("Kein Suchbegriff eingegeben.");
         return;
       }
+      this.suggestedProductNames = [];
       const searchTerm = this.searchName.toLowerCase();
       const filteredProducts = this.allProducts.filter((product) => {
         if (Array.isArray(product.searchKeys)) {
@@ -94,16 +95,18 @@ export const usePricetagStore = defineStore("pricetagStore", {
         }
         return false;
       });
-      this.suggestedProductNames = filteredProducts.map(
-        (product) => product.productName
+      this.suggestedProductNames = Array.from(
+        new Set(filteredProducts.map((product) => product.productName))
       );
     },
     clearResult() {
       this.price = "";
+      this.searchName = null;
       this.description = "";
       this.entries = [];
       this.editmode = false;
       this.creationMode = false;
+      this.suggestedProductNames = [];
     },
     resetPricetagEntryEdit() {
       this.pricetagEntryEdit = PricetagEntry.createEmptyPricetagEntry();
