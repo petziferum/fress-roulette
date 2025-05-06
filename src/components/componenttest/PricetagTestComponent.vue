@@ -8,21 +8,32 @@
       </v-card-title>
       <v-card-text>
         Berechne Betriebsdauer der Kühlbox mit einer 12 Volt Batterie: <br />
-        <v-text-field label="Betteriegrösse in Ah" v-model="ah"></v-text-field><br />
+        <v-text-field label="Betteriegrösse in Ah" v-model="ah"></v-text-field
+        ><br />
         <p>Bei {{ usableCapacityPercent }}% Batterieentladung.</p>
         <p>
-          <v-btn @click="calculateOperationTime" class="mt-3" color="red">Berechne</v-btn>
+          <v-btn @click="calculateOperationTime" class="mt-3" color="red"
+            >Berechne</v-btn
+          >
         </p>
-          <div style="display: inline-flex; height: 50px; align-items: center; align-content: center; margin: 10px">
-            <span class="mr-4">Betriebsdauer:</span>
+        <div
+          style="
+            display: inline-flex;
+            height: 50px;
+            align-items: center;
+            align-content: center;
+            margin: 10px;
+          "
+        >
+          <span class="mr-4">Betriebsdauer:</span>
           <div class="text-blue-accent-2 text-h4" v-if="!loading">
-            {{ loading ? '...' : betriebsdauer }}
+            {{ loading ? "..." : betriebsdauer }}
           </div>
-            <div class="text-blue-accent-2 text-h6" v-else>
-              <v-icon>mdi-loading mdi-spin</v-icon>
-            </div>
-            <span class="text-blue-accent-2 text-h4 ml-2">Std</span>
+          <div class="text-blue-accent-2 text-h6" v-else>
+            <v-icon>mdi-loading mdi-spin</v-icon>
           </div>
+          <span class="text-blue-accent-2 text-h4 ml-2">Std</span>
+        </div>
       </v-card-text>
       <v-card-text>
         <ul>
@@ -61,7 +72,8 @@ const loadPricetagList = () => {
   );
 };
 function calculateOperationTime() {
-  const batteryWh = ah.value * batteryVoltage * (usableCapacityPercent.value / 100);
+  const batteryWh =
+    ah.value * batteryVoltage * (usableCapacityPercent.value / 100);
   betriebsdauer.value = 0;
   const operationTimeHours = batteryWh / averagePowerWatts;
   loading.value = true;
