@@ -1,7 +1,7 @@
 <template>
   <v-row v-if="store.creationMode">
     <v-col cols="12" md="12">
-      Neues Produkt anlegen?
+      <v-card-title class="text-h4">Neues Produkt</v-card-title>
       <v-form ref="createform">
         <v-text-field
           label="Name"

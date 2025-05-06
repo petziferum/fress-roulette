@@ -21,7 +21,7 @@ export function usePricetagLogic() {
   );
   const entries = ref([]);
   const lesemodus = computed(() => {
-    return !store.editmode && !store.creationMode && store.pricetag;
+    return !store.editmode && !store.creationMode && store.pricetag !== null;
   });
 
   function openImageOverlay() {
@@ -83,10 +83,15 @@ export function usePricetagLogic() {
 
   async function saveProduktUpdate() {
     const result = await editform.value?.validate();
-    if (result.valid) {
-      await store.saveProductUpdate();
-    } else {
-      toast.error("felder dürfen nicht leer sein");
+    try {
+      if (result.valid) {
+        await store.saveProductUpdate();
+      } else {
+        toast.error("felder dürfen nicht leer sein");
+      }
+    } catch (e) {
+      console.error("Fehler beim Update: " + e);
+      toast.error("Fehler beim Update aufgetreten: " + e);
     }
   }
 

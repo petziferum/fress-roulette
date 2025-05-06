@@ -9,7 +9,9 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { db } from "@/plugins/firebase";
-import PricetagServiceApi, { type UploadStatus } from "@/components/pricetag/PricetagService.api";
+import PricetagServiceApi, {
+  type UploadStatus,
+} from "@/components/pricetag/PricetagService.api";
 import { useToast } from "vue-toastification";
 import { ref } from "vue";
 
@@ -23,6 +25,7 @@ export const usePricetagStore = defineStore("pricetagStore", {
       price: "",
       date: new Date(Date.now()),
       description: "",
+      readMode: true,
       editmode: false,
       addTagMode: false,
       creationMode: false,
@@ -80,6 +83,10 @@ export const usePricetagStore = defineStore("pricetagStore", {
       });
     },
     async findProductname() {
+      this.pricetag = null;
+      this.readMode = true;
+      this.editmode = false;
+      this.creationMode = false;
       if (!this.searchName) {
         toast.info("Kein Suchbegriff eingegeben.");
         return;
@@ -100,6 +107,7 @@ export const usePricetagStore = defineStore("pricetagStore", {
       );
     },
     clearResult() {
+      this.pricetag = null;
       this.price = "";
       this.searchName = null;
       this.description = "";
@@ -176,10 +184,9 @@ export const usePricetagStore = defineStore("pricetagStore", {
           this.pricetag.description
         )
       );
-      PricetagServiceApi.saveNewPriceTag(this.pricetag).then(() => {
-        toast.success("Produkt " + this.pricetag.productName + " gespeichert");
-        this.exitEdit();
-      });
+      await PricetagServiceApi.saveNewPriceTag(this.pricetag);
+      toast.success("Produkt " + this.pricetag.productName + " gespeichert");
+      this.exitEdit();
     },
     async generateAndSaveSearchKeys(): Promise<void> {
       try {

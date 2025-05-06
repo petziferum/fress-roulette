@@ -114,6 +114,7 @@ import ImageOverlay from "@/components/commons/ImageOverlay.vue";
 import { usePricetagLogic } from "@/components/pricetag/PricetagLogic";
 const {
   store,
+  addtagform,
   getKiloPreis,
   required,
   addPricetagEntry,

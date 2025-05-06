@@ -7,14 +7,14 @@
           <v-col cols="9">
             <v-form ref="combobox">
               <template v-if="store.suggestedProductNames.length > 0">
-              <v-chip
-                v-for="item in store.suggestedProductNames"
-                :key="item"
-                @click="getProductByName(item)"
-                elevation="3"
-              >
-                {{ item }}
-              </v-chip>
+                <v-chip
+                  v-for="item in store.suggestedProductNames"
+                  :key="item"
+                  @click="getProductByName(item)"
+                  elevation="3"
+                >
+                  {{ item }}
+                </v-chip>
               </template>
               <v-combobox
                 label="Produktname"
@@ -41,7 +41,9 @@
         <PricetagCreate v-if="store.creationMode" />
         <PricetagEdit v-if="store.editmode" />
       </v-card-text>
-      <v-card-text>
+      <v-card-text v-if="!lesemodus && !store.editmode && !store.creationMode">
+        Suche nach einem Produkt.
+        <v-skeleton-loader type="paragraph" />
       </v-card-text>
     </v-card>
   </v-container>
