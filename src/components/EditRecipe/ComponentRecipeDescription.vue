@@ -3,25 +3,25 @@
     <v-col>
       <v-sheet v-for="(step, i) in recipe.recipeDescription" :key="step.nr">
         <v-row :key="i">
-          <v-col cols="9">
+          <v-col cols="12">
             <v-textarea
               background-color="white"
               height="100px"
-              outlined
+              variant="outlined"
               :label="step.nr + '. Schritt'"
               v-model="step.text"
               :rules="filledRule"
               prepend-icon="mdi-minus"
-              @click:prepend="deleteStep(i)"
               append-inner-icon="mdi-pencil"
+              @click:prepend="deleteStep(i)"
             ></v-textarea>
             <v-btn
               v-if="step.nr !== recipe.recipeDescription.length"
-              color="white"
-              height="18px"
+              color="blue-accent-1"
+              height="20px"
               class="rounded-b-pill"
               tile
-              style="position: relative; top: -35px; left: 45%"
+              style="position: relative; top: -22px; left: 45%"
               @click="addStepBetween(step.nr)"
               :key="`${i}+addStep`"
               >+
