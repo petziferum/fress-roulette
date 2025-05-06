@@ -1,95 +1,94 @@
 <template>
-  <v-row>
-    <v-col cols="12" md="6">
-      <v-table class="text-justify" density="comfortable">
-        <tr>
-          <th class="py-5">Menge</th>
-          <th class="py-5">Zutat</th>
-        </tr>
-        <tr v-for="(ingredient, i) in recipe.ingredients" :key="ingredient.nr">
-          <th>
-            <template v-if="editItem === i">
-              <v-form ref="editIngredient" @submit.prevent="editItem = null">
-                <v-text-field
-                  class="mr-1"
-                  label="Name"
-                  variant="outlined"
-                  density="compact"
-                  v-model="recipe.ingredients[i].menge"
-                />
-              </v-form>
-            </template>
-            <template v-else>{{ ingredient.menge }} </template>
-          </th>
-          <td>
-            <template v-if="editItem == i">
-              <v-form ref="editIngredient" @submit.prevent="editItem = null">
-                <v-text-field
-                  label="Name"
-                  variant="outlined"
-                  density="compact"
-                  v-model="recipe.ingredients[i].name"
-                  @click:append.prevent="editItem = null"
-                  append-icon="mdi-content-save"
-                />
-              </v-form>
-            </template>
-            <template v-else>
-              {{ ingredient.name }}
-            </template>
-          </td>
-          <td>
-            <template v-if="editItem != i">
-              <v-btn variant="text" @click="editItem = i">
-                <v-icon small>mdi-pencil</v-icon>
-              </v-btn>
-            </template>
-            <template v-else>
-              <v-btn variant="text" @click="editItem = null">
-                <v-icon small>mdi-cancel</v-icon>
-              </v-btn>
-            </template>
-          </td>
-        </tr>
-      </v-table>
-    </v-col>
-    <v-col cols="12" md="6">
-      <v-form @submit.prevent="addIngredient" ref="zutatForm">
-        <v-row>
-          <v-col cols="1">
-            <v-icon left size="large">mdi-tag-plus</v-icon>
-          </v-col>
-          <v-col cols="2">
-            <v-text-field
-              id="menge"
-              ref="mengeField"
-              variant="outlined"
-              label="Menge"
-              :rules="filledRule"
-              name="quantity"
-              :placeholder="$vuetify.display.mdAndDown ? '' : 'Menge'"
-            ></v-text-field>
-          </v-col>
-          <v-col cols="7">
-            <v-text-field
-              id="name"
-              variant="outlined"
-              label="Zutat"
-              class="mx-2"
-              name="zutat"
-              :rules="filledRule"
-              placeholder="Zutat"
-            />
-          </v-col>
-          <v-col cols="2">
-            <v-btn variant="outlined" type="submit" height="70%"
-              ><v-icon>mdi-plus</v-icon></v-btn
-            >
-          </v-col>
-        </v-row>
-      </v-form>
-    </v-col>
-  </v-row>
+  <v-container>
+    <v-row>
+      <v-col cols="12" md="6">
+        <v-table class="text-justify" density="comfortable">
+          <tr>
+            <th class="py-5">Menge</th>
+            <th class="py-5">Zutat</th>
+          </tr>
+          <tr
+            v-for="(ingredient, i) in recipe.ingredients"
+            :key="ingredient.nr"
+          >
+            <th>
+              <template v-if="editItem === i">
+                <v-form ref="editIngredient" @submit.prevent="editItem = null">
+                  <v-text-field
+                    class="mr-1"
+                    label="Name"
+                    variant="outlined"
+                    density="compact"
+                    v-model="recipe.ingredients[i].menge"
+                  />
+                </v-form>
+              </template>
+              <template v-else>{{ ingredient.menge }} </template>
+            </th>
+            <td>
+              <template v-if="editItem == i">
+                <v-form ref="editIngredient" @submit.prevent="editItem = null">
+                  <v-text-field
+                    label="Name"
+                    variant="outlined"
+                    density="compact"
+                    v-model="recipe.ingredients[i].name"
+                    @click:append.prevent="editItem = null"
+                    append-icon="mdi-content-save"
+                  />
+                </v-form>
+              </template>
+              <template v-else>
+                {{ ingredient.name }}
+              </template>
+            </td>
+            <td>
+              <template v-if="editItem != i">
+                <v-btn variant="text" @click="editItem = i">
+                  <v-icon small>mdi-pencil</v-icon>
+                </v-btn>
+              </template>
+              <template v-else>
+                <v-btn variant="text" @click="editItem = null">
+                  <v-icon small>mdi-cancel</v-icon>
+                </v-btn>
+              </template>
+            </td>
+          </tr>
+        </v-table>
+      </v-col>
+    </v-row>
+    <v-form @submit.prevent="addIngredient" ref="zutatForm">
+      <v-row no-gutters class="mt-8">
+        <v-col cols="4" xs="2" sm="2" lg="3">
+          <v-text-field
+            id="menge"
+            ref="mengeField"
+            variant="outlined"
+            label="Menge"
+            name="quantity"
+            :placeholder="$vuetify.display.mdAndDown ? '' : 'Menge'"
+          />
+        </v-col>
+        <v-col cols="8" xs="10" sm="10" lg="7">
+          <v-text-field
+            id="name"
+            variant="outlined"
+            label="Zutat"
+            class="mx-2"
+            name="zutat"
+            :rules="filledRule"
+            placeholder="Zutat"
+          />
+        </v-col>
+        <v-col cols="12" xs="12" sm="12" lg="2" class="pb-2">
+          <v-btn elevation="6" color="blue" height="60px" type="submit" block
+            ><v-icon>mdi-plus</v-icon></v-btn
+          >
+        </v-col>
+      </v-row>
+    </v-form>
+  </v-container>
 </template>
 
 <script setup lang="ts">
