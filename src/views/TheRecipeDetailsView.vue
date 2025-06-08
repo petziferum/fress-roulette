@@ -71,6 +71,14 @@
               <div class="text-center">
                 <span class="text-h6 mx-4">{{ recipe.recipeName }}</span>
               </div>
+              <v-spacer />
+              <v-toolbar-items>
+              <v-btn @click="editRecipe" v-if="isUserRecipe">
+                <v-icon>
+                  mdi-pencil
+                </v-icon>
+              </v-btn>
+              </v-toolbar-items>
             </v-toolbar>
             <v-card-subtitle>
               <div class="subtitle-row">Autor: {{ recipe.createdBy.name }}</div>
@@ -206,6 +214,13 @@ function openImage() {
 function cancel() {
   editItemNumber.value = null;
   editItemText.value = "";
+}
+function editRecipe(): void {
+  const editRoute = "/recipe/edit/";
+  router.push(editRoute + id.value);
+}
+function isUserRecipe() {
+  return true;
 }
 </script>
 <style scoped>
