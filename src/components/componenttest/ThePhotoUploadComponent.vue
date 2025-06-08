@@ -49,7 +49,7 @@
 </template>
 <script setup lang="ts">
 import { toast } from "vue3-toastify";
-import { MAX_FILE_SIZE} from "@/components/pricetag/PricetagService.api";
+import { MAX_FILE_SIZE } from "@/components/pricetag/PricetagService.api";
 
 interface UploadStatus {
   type: string;

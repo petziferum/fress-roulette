@@ -8,8 +8,8 @@ import Vue3Toastify, { type ToastContainerOptions } from "vue3-toastify";
 import "vue3-toastify/dist/index.css";
 import { getAuth } from "firebase/auth";
 import { useUserStore } from "@/stores/useUserStore";
-import Toast from 'vue-toastification';
-import 'vue-toastification/dist/index.css';
+import Toast from "vue-toastification";
+import "vue-toastification/dist/index.css";
 
 const pinia = createPinia();
 loadFonts();

@@ -11,7 +11,6 @@
           label="Beschreibung"
           v-model="store.pricetag.description"
         />
-        <v-text-field readonly :value="store.pricetag.imageUrl" />
         <pricetag-image-upload />
         <v-btn
           block
@@ -35,6 +34,6 @@
 <script setup lang="ts">
 import PricetagImageUpload from "@/components/pricetag/PricetagImageUpload.vue";
 import { usePricetagLogic } from "@/components/pricetag/PricetagLogic";
-const { store, required,editform, saveProduktUpdate } = usePricetagLogic();
+const { store, required, editform, saveProduktUpdate } = usePricetagLogic();
 </script>
 <style scoped></style>

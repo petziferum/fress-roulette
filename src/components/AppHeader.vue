@@ -139,6 +139,6 @@ const mobile = computed(() => {
 
 .glowing-icon:hover {
   box-shadow: 0 0 25px 10px rgba(255, 255, 255, 1),
-  0 0 20px 40px rgba(255, 255, 255, 1);
+    0 0 20px 40px rgba(255, 255, 255, 1);
 }
 </style>

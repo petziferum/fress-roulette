@@ -1,7 +1,14 @@
 <template>
   <div class="mx-2">
     <v-row justify="center">
-      <v-col cols="4"> <div class="text-h1" style="text-shadow: 0 0 11px rgba(255, 255, 255, 1)">Dev Test View</div></v-col>
+      <v-col cols="4">
+        <div
+          class="text-h1"
+          style="text-shadow: 0 0 11px rgba(255, 255, 255, 1)"
+        >
+          Dev Test View
+        </div></v-col
+      >
     </v-row>
     <v-row class="my-2">
       <v-col>

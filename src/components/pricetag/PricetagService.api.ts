@@ -56,7 +56,9 @@ export default class PricetagServiceApi {
   public static async getProduct(
     productName: string
   ): Promise<Pricetag | null> {
-    const docRef = doc(db, "pricetags", productName).withConverter(pricetagConverter);
+    const docRef = doc(db, "pricetags", productName).withConverter(
+      pricetagConverter
+    );
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
       console.log("Product geladen", docSnap.data());
@@ -67,7 +69,9 @@ export default class PricetagServiceApi {
     }
   }
   public static saveProductUpdate(product: Pricetag): Promise<string> {
-    const ref = doc(db, "pricetags", product.productName).withConverter(pricetagConverter);
+    const ref = doc(db, "pricetags", product.productName).withConverter(
+      pricetagConverter
+    );
     return setDoc(ref, product).then(() => {
       return "Document successfully written!";
     });

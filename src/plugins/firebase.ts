@@ -31,7 +31,7 @@ const firebaseConfig = {
   storageBucket: "recipes-petzi.appspot.com",
   messagingSenderId: "214936827568",
   appId: "1:214936827568:web:345c47274d065fe45c6d75",
-  measurementId: "G-15T3BLM6BP"
+  measurementId: "G-15T3BLM6BP",
 };
 
 const firebaseApp = initializeApp(firebaseConfig);
