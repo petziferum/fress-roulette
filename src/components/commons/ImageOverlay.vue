@@ -1,5 +1,12 @@
 <template>
-  <v-dialog v-model="isOpen" width="100%" max-width="100vw" max-height="100vh">
+  <v-dialog
+    v-model="isOpen"
+    close-on-back
+    close-on-content-click
+    width="100%"
+    max-width="100vw"
+    max-height="100vh"
+  >
     <div
       class="d-flex justify-center align-center"
       style="height: 100vh; overflow: hidden"
