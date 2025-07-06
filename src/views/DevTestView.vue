@@ -16,6 +16,9 @@
       </v-col>
     </v-row>
     <v-expansion-panels v-model="panels">
+      <wrapper-panel title="getWeather">
+        <weather-component />
+      </wrapper-panel>
       <wrapper-panel title="Pricetag Test">
         <pricetag-test-component />
       </wrapper-panel>
@@ -168,6 +171,7 @@ import FilterChipTestComponent from "@/components/componenttest/FilterChipTestCo
 import HoverCardEffect from "@/components/componenttest/HoverCardEffect.vue";
 import DialogTestComponent from "@/components/componenttest/DialogTestComponent.vue";
 import PricetagTestComponent from "@/components/componenttest/PricetagTestComponent.vue";
+import WeatherComponent from "@/components/componenttest/WeatherComponent.vue";
 
 const dialog = ref(false);
 const panels = ref([0]);
