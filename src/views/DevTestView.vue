@@ -174,7 +174,7 @@ import PricetagTestComponent from "@/components/componenttest/PricetagTestCompon
 import WeatherComponent from "@/components/componenttest/WeatherComponent.vue";
 
 const dialog = ref(false);
-const panels = ref([0]);
+const panels = ref([1]);
 const store = useDevStore();
 const recipe = reactive({
   recipeName: "rezept 1",

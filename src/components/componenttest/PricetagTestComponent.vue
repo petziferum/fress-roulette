@@ -2,8 +2,9 @@
   <v-container>
     <v-card>
       <v-card-title>
-        <v-btn icon @click="loadPricetagList">
+        <v-btn @click="loadPricetagList">
           <v-icon>mdi-refresh</v-icon>
+          Load Products
         </v-btn>
       </v-card-title>
       <v-card-text>
@@ -36,16 +37,29 @@
         </div>
       </v-card-text>
       <v-card-text>
-        <ul>
-          <li v-for="(item, index) in pricetagList" :key="index">
-            <v-list-item>
-              <v-list-item-title>{{ item.productName }}</v-list-item-title>
-              <v-list-item-subtitle>{{
-                item.description
-              }}</v-list-item-subtitle>
-            </v-list-item>
-          </li>
-        </ul>
+        <v-row v-for="(item, index) in pricetagList" :key="index">
+          <v-col cols="5">
+            <tr>
+              <th style="text-align: left; min-width: 200px;">Name</th>
+              <td>{{ item.productName }}</td>
+            </tr>
+            <tr>
+              <th style="text-align: left">Beschreibung</th>
+              <td>{{ item.description }}</td>
+            </tr>
+            <tr>
+              <th style="text-align: left">Preise</th>
+              <td>
+                <div class="d-flex">
+                  <v-chip v-for="(e, i) in item.entries" :key="i" class="mx-1">
+                    {{ getDate(e.date) }} {{ e.amount }}g {{ e.location }}
+                    {{ e.price }}â‚¬
+                  </v-chip>
+                </div>
+              </td>
+            </tr></v-col
+          >
+        </v-row>
       </v-card-text>
     </v-card>
   </v-container>
@@ -54,8 +68,12 @@
 import { useDevStore } from "@/components/componenttest/devStore";
 import { ref } from "vue";
 import Pricetag from "@/components/pricetag/Pricetag";
+import { usePricetagStore } from "@/stores/PricetagStore";
+import { format } from "date-fns";
+import { de } from "date-fns/locale";
 
-const store = useDevStore();
+const devStore = useDevStore();
+const pricetagStore = usePricetagStore();
 const pricetagList = ref([]);
 const ah = ref(0);
 const batteryVoltage = 12.8;
@@ -63,13 +81,12 @@ const averagePowerWatts = 13.33; //durchschnittlicher Verbrauch bei 40W/15min fÃ
 const loading = ref(false);
 const betriebsdauer = ref(0);
 const usableCapacityPercent = ref(90);
+const DEFAULT_DATE_FORMAT = "dd.MM.yyyy";
 
 const loadPricetagList = () => {
-  pricetagList.value = Array.from({ length: 10 }, (_, i) =>
-    Pricetag.createEmptyPricetag()
-      .withProductName("Test" + i)
-      .withDescription("test" + i)
-  );
+  pricetagStore.loadAllProducts().then(() => {
+    pricetagList.value = pricetagStore.getAllProducts;
+  });
 };
 function calculateOperationTime() {
   const batteryWh =
@@ -82,5 +99,10 @@ function calculateOperationTime() {
     betriebsdauer.value = Math.floor(operationTimeHours);
   }, 1000);
 }
+
+const getDate = (timestamp: { seconds: number }): string => {
+  const date = new Date(timestamp.seconds * 1000); // Firebase Timestamp zu Date konvertieren
+  return format(date, DEFAULT_DATE_FORMAT, { locale: de });
+};
 </script>
 <style scoped></style>

@@ -253,5 +253,8 @@ export const usePricetagStore = defineStore("pricetagStore", {
     getSuggestedProductNames: (state) => {
       return state.suggestedProductNames;
     },
+    getAllProducts: (state) => {
+      return state.allProducts;
+    },
   },
 });
