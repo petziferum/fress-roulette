@@ -2,11 +2,18 @@
   <v-container>
     <v-card>
       <v-card-title>
-        <v-btn @click="loadPricetagList">
+        <v-btn @click="loadPricetagList" class="mr-2">
           <v-icon>mdi-refresh</v-icon>
           Load Products
         </v-btn>
+        <v-btn @click="testSorting" color="success">
+          <v-icon>mdi-check</v-icon>
+          Test Sorting
+        </v-btn>
       </v-card-title>
+      <v-card-subtitle v-if="sortingTestResult" :class="sortingTestPassed ? 'text-success' : 'text-error'">
+        {{ sortingTestResult }}
+      </v-card-subtitle>
       <v-card-text>
         Berechne Betriebsdauer der Kühlbox mit einer 12 Volt Batterie: <br />
         <v-text-field label="Betteriegrösse in Ah" v-model="ah"></v-text-field
@@ -63,7 +70,7 @@
       </v-card-text>
     </v-card>
   </v-container>
-</template>
+</template>I
 <script setup lang="ts">
 import { useDevStore } from "@/components/componenttest/devStore";
 import { ref } from "vue";
@@ -82,6 +89,8 @@ const loading = ref(false);
 const betriebsdauer = ref(0);
 const usableCapacityPercent = ref(90);
 const DEFAULT_DATE_FORMAT = "dd.MM.yyyy";
+const sortingTestResult = ref('');
+const sortingTestPassed = ref(false);
 
 const loadPricetagList = () => {
   pricetagStore.loadAllProducts().then(() => {
@@ -103,6 +112,41 @@ function calculateOperationTime() {
 const getDate = (timestamp: { seconds: number }): string => {
   const date = new Date(timestamp.seconds * 1000); // Firebase Timestamp zu Date konvertieren
   return format(date, DEFAULT_DATE_FORMAT, { locale: de });
+};
+
+const testSorting = async () => {
+  // First load the products
+  await pricetagStore.loadAllProducts();
+
+  // Get the products from the store
+  const products = pricetagStore.getAllProducts;
+
+  // Check if products array is not empty
+  if (!products || products.length === 0) {
+    sortingTestResult.value = 'Test failed: No products found';
+    sortingTestPassed.value = false;
+    return;
+  }
+
+  // Check if products are sorted alphabetically by productName
+  let isSorted = true;
+  for (let i = 0; i < products.length - 1; i++) {
+    if (products[i].productName.localeCompare(products[i + 1].productName) > 0) {
+      isSorted = false;
+      sortingTestResult.value = `Test failed: "${products[i].productName}" should come after "${products[i + 1].productName}"`;
+      break;
+    }
+  }
+
+  if (isSorted) {
+    sortingTestResult.value = 'Test passed: Products are sorted alphabetically';
+    sortingTestPassed.value = true;
+
+    // Update the displayed list with the sorted products
+    pricetagList.value = products;
+  } else {
+    sortingTestPassed.value = false;
+  }
 };
 </script>
 <style scoped></style>

@@ -12,6 +12,9 @@
                   :key="item"
                   @click="getProductByName(item)"
                   elevation="3"
+                  :rounded="false"
+                  density="compact"
+                  class="mb-2"
                 >
                   {{ item }}
                 </v-chip>

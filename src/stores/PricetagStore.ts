@@ -254,7 +254,9 @@ export const usePricetagStore = defineStore("pricetagStore", {
       return state.suggestedProductNames;
     },
     getAllProducts: (state) => {
-      return state.allProducts;
+      return [...state.allProducts].sort((a, b) => 
+        a.productName.localeCompare(b.productName)
+      );
     },
   },
 });
