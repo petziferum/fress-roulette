@@ -95,6 +95,23 @@ export function usePricetagLogic() {
     }
   }
 
+  function startEditEntry(index: number) {
+    store.startEditEntry(index);
+  }
+
+  async function saveEditedEntry() {
+    // Direct validation of the price field
+    if (store.pricetagEntryEdit.price && store.pricetagEntryEdit.price.trim() !== '') {
+      await store.saveEditedEntry();
+    } else {
+      toast.error("Preis darf nicht leer sein");
+    }
+  }
+
+  function cancelEditEntry() {
+    store.cancelEditEntry();
+  }
+
   // Direkt initialisieren
   store.loadAllProducts();
 
@@ -120,5 +137,8 @@ export function usePricetagLogic() {
     addPricetagEntry,
     saveNewProduct,
     saveProduktUpdate,
+    startEditEntry,
+    saveEditedEntry,
+    cancelEditEntry,
   };
 }

@@ -84,15 +84,77 @@
                   <th class="text-left">Menge</th>
                   <th class="text-left">Preis</th>
                   <th class="text-left">Preis/kg</th>
+                  <th class="text-left"></th>
                 </tr>
               </thead>
               <tbody>
                 <tr v-for="(tag, index) in store.pricetag.entries" :key="index">
                   <td>{{ tag.date.toDate().toLocaleDateString() }}</td>
                   <td>{{ tag.location }}</td>
-                  <td>{{ tag.amount }}g</td>
-                  <td>{{ tag.price }}</td>
-                  <td>{{ getKiloPreis(tag.amount, tag.price) }}</td>
+                  <td>
+                    <template v-if="store.editEntryMode && store.editEntryIndex === index">
+                      <v-text-field
+                        v-model="store.pricetagEntryEdit.amount"
+                        density="compact"
+                        hide-details
+                        suffix="g"
+                      />
+                    </template>
+                    <template v-else>
+                      {{ tag.amount }}g
+                    </template>
+                  </td>
+                  <td>
+                    <template v-if="store.editEntryMode && store.editEntryIndex === index">
+                      <v-text-field
+                        v-model="store.pricetagEntryEdit.price"
+                        density="compact"
+                        :rules="required"
+                      />
+                    </template>
+                    <template v-else>
+                      {{ tag.price }}
+                    </template>
+                  </td>
+                  <td>
+                    <template v-if="store.editEntryMode && store.editEntryIndex === index">
+                      {{ getKiloPreis(store.pricetagEntryEdit.amount, store.pricetagEntryEdit.price) }}
+                    </template>
+                    <template v-else>
+                      {{ getKiloPreis(tag.amount, tag.price) }}
+                    </template>
+                  </td>
+                  <td>
+                    <template
+                      v-if="
+                        store.editEntryMode && store.editEntryIndex === index
+                      "
+                    >
+                      <v-btn
+                        prepend-icon="mdi-check"
+                        size="small"
+                        color="success"
+                        class="mr-1"
+                        @click="saveEditedEntry"
+                      />
+                      <v-btn
+                        prepend-icon="mdi-close"
+                        size="small"
+                        color="error"
+                        @click="cancelEditEntry"
+                      />
+                    </template>
+                    <template v-else>
+                      <v-btn
+                        prepend-icon="mdi-pencil"
+                        density="compact"
+                        variant="elevated"
+                        text="edit"
+                        size="small"
+                        @click="startEditEntry(index)"
+                      />
+                    </template>
+                  </td>
                 </tr>
               </tbody>
             </v-table>
@@ -120,6 +182,9 @@ const {
   addPricetagEntry,
   imageOverlay,
   openImageOverlay,
+  startEditEntry,
+  saveEditedEntry,
+  cancelEditEntry,
 } = usePricetagLogic();
 </script>
 <style scoped></style>

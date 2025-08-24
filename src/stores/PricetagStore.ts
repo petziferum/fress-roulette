@@ -28,6 +28,8 @@ export const usePricetagStore = defineStore("pricetagStore", {
       readMode: true,
       editmode: false,
       addTagMode: false,
+      editEntryMode: false,
+      editEntryIndex: -1,
       creationMode: false,
       marktItems: [
         "Aldi",
@@ -122,7 +124,48 @@ export const usePricetagStore = defineStore("pricetagStore", {
     exitEdit() {
       this.editmode = false;
       this.creationMode = false;
-      this.creationMode = false;
+      this.editEntryMode = false;
+      this.editEntryIndex = -1;
+      this.resetPricetagEntryEdit();
+    },
+    startEditEntry(index: number) {
+      const entry = this.pricetag.entries[index];
+      this.pricetagEntryEdit = new PricetagEntry(
+        entry.price,
+        entry.date,
+        entry.location,
+        entry.amount
+      );
+      this.editEntryMode = true;
+      this.editEntryIndex = index;
+      this.addTagMode = false;
+    },
+    saveEditedEntry() {
+      if (this.editEntryIndex >= 0 && this.editEntryMode) {
+        try {
+          // Create a new array with the updated entry
+          const updatedEntries = [...this.pricetag.entries];
+          updatedEntries[this.editEntryIndex] = {
+            ...this.pricetagEntryEdit,
+            date: this.pricetag.entries[this.editEntryIndex].date // Keep the original date
+          };
+          
+          this.pricetag.entries = updatedEntries;
+          
+          // Save the updated product
+          this.saveProductUpdate();
+          toast.success("Eintrag aktualisiert");
+          this.editEntryMode = false;
+          this.editEntryIndex = -1;
+          this.resetPricetagEntryEdit();
+        } catch (error) {
+          toast.error("Eintrag konnte nicht aktualisiert werden");
+        }
+      }
+    },
+    cancelEditEntry() {
+      this.editEntryMode = false;
+      this.editEntryIndex = -1;
       this.resetPricetagEntryEdit();
     },
     async getProduct(): Promise<void> {

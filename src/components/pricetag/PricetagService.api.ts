@@ -73,7 +73,7 @@ export default class PricetagServiceApi {
       pricetagConverter
     );
     return setDoc(ref, product).then(() => {
-      return "Document successfully written!";
+      return "Pricetag Update erfolgreich gespeichert!";
     });
   }
 }
