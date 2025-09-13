@@ -59,12 +59,12 @@ export default class Pricetag {
 export const pricetagConverter = {
   toFirestore: (pricetag: Pricetag) => {
     console.log("toFirestore converter gestartet", pricetag);
-    return {
+    // Avoid sending undefined to Firestore. Remove fields that are undefined/null.
+    const data: any = {
       productName: pricetag.productName,
       description: pricetag.description,
-      imageUrl: pricetag.imageUrl,
       searchKeys: pricetag.searchKeys || [],
-      entries: pricetag.entries.map((entry) => {
+      entries: (pricetag.entries || []).map((entry) => {
         return {
           price: entry.price ?? "",
           date: entry.date ?? Timestamp.now(),
@@ -73,14 +73,19 @@ export const pricetagConverter = {
         };
       }),
     };
+    if (pricetag.imageUrl !== undefined) {
+      // include imageUrl only if defined; allow empty string to intentionally clear
+      data.imageUrl = pricetag.imageUrl;
+    }
+    return data;
   },
   fromFirestore: (snapshot, options) => {
-    const data = snapshot.data(options);
+    const data = snapshot.data(options) || {};
     return Pricetag.createEmptyPricetag()
-      .withProductName(data.productName)
-      .withDescription(data.description)
-      .withImageUrl(data.imageUrl)
-      .withSearchKeys(data.searchKeys)
-      .withEntries(data.entries);
+      .withProductName(data.productName ?? "")
+      .withDescription(data.description ?? "")
+      .withImageUrl(data.imageUrl ?? "")
+      .withSearchKeys(data.searchKeys ?? [])
+      .withEntries(data.entries ?? []);
   },
 };

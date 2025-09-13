@@ -41,6 +41,7 @@ export const usePricetagStore = defineStore("pricetagStore", {
         "Müller",
         "H&M",
         "Asia-Markt Riemarcaden",
+        "Asia-Shop",
         "IShop",
         "Penny",
         "Netto",
@@ -49,6 +50,7 @@ export const usePricetagStore = defineStore("pricetagStore", {
         "McDonalds",
         "Hasis",
         "Traublinger",
+        "Sonstiger",
       ],
       selectedMarkt: "",
       suggestedProductNames: [] as string[],
@@ -230,54 +232,6 @@ export const usePricetagStore = defineStore("pricetagStore", {
       await PricetagServiceApi.saveNewPriceTag(this.pricetag);
       toast.success("Produkt " + this.pricetag.productName + " gespeichert");
       this.exitEdit();
-    },
-    async generateAndSaveSearchKeys(): Promise<void> {
-      try {
-        const productsRef = collection(db, "pricetags"); // Ersetze "pricetags" durch den Namen deiner Sammlung
-        const querySnapshot = await getDocs(productsRef);
-
-        // Alle Produkte durchlaufen und `searchKeys` generieren
-        querySnapshot.forEach(async (document) => {
-          const product = document.data();
-          const productId = document.id;
-
-          // Generiere `searchKeys` aus `productName` und `description`
-          const searchKeys = new Set();
-
-          if (product.productName) {
-            product.productName
-              .toLowerCase()
-              .split(/\s+/) // Zerlege in einzelne Wörter
-              .forEach((word) => searchKeys.add(word));
-          }
-
-          if (product.description) {
-            product.description
-              .toLowerCase()
-              .split(/\s+/) // Zerlege in einzelne Wörter
-              .forEach((word) => searchKeys.add(word));
-          }
-
-          // Suche aktualisieren
-          const searchKeysArray = Array.from(searchKeys);
-
-          // Produkt in Firebase aktualisieren
-          const productDocRef = doc(productsRef, productId);
-          await updateDoc(productDocRef, { searchKeys: searchKeysArray });
-
-          console.log(
-            `Produkt ${productId} aktualisiert mit searchKeys:`,
-            searchKeysArray
-          );
-        });
-
-        console.log("Alle Produkte wurden erfolgreich aktualisiert.");
-      } catch (error) {
-        console.error(
-          "Fehler beim Generieren und Speichern von searchKeys:",
-          error
-        );
-      }
     },
   },
   getters: {

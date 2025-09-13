@@ -19,7 +19,7 @@ export default class PricetagServiceApi {
       const ref = doc(db, "pricetags", pricetag.productName).withConverter(
         pricetagConverter
       );
-      return await setDoc(ref, pricetag).then(() => {
+      return await setDoc(ref, pricetag, { merge: true }).then(() => {
         console.log("Pricetag gespeichert");
       });
     } catch (error) {
@@ -69,10 +69,12 @@ export default class PricetagServiceApi {
     }
   }
   public static saveProductUpdate(product: Pricetag): Promise<string> {
+    // When updating, avoid overwriting existing fields (like imageUrl) with undefined/empty values
+    // by using Firestore merge option. This way, if product.imageUrl is missing, the stored one is preserved.
     const ref = doc(db, "pricetags", product.productName).withConverter(
       pricetagConverter
     );
-    return setDoc(ref, product).then(() => {
+    return setDoc(ref, product, { merge: true }).then(() => {
       return "Pricetag Update erfolgreich gespeichert!";
     });
   }
