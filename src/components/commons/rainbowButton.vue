@@ -4,7 +4,7 @@
 <script setup lang="ts"></script>
 <style scoped>
 .rainbowbutton {
-  height: 50px;
+  height: 100px;
   width: 100px;
   position: relative;
   margin-left: 50px;
@@ -16,7 +16,7 @@
   overflow: hidden;
   &:before {
     content: "";
-    height: 230%;
+    height: 200%;
     width: 200%;
     position: absolute;
     background: conic-gradient(
@@ -37,10 +37,10 @@
     position: absolute;
     cursor: pointer;
     background-image: linear-gradient(45deg, #dcfffa, #6763ef);
-    height: 85%;
-    width: 92%;
+    height: 86%;
+    width: 86%;
     top: 7%;
-    left: 4%;
+    left: 7%;
     border-radius: 5px;
     color: #ffffff;
     font-size: 30px;

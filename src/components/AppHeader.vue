@@ -4,13 +4,13 @@
     order="1"
     height="200"
     :image="barImg"
-    class="align-content-center text-white"
+    class="align-content-center text-white myTitleBar"
+    style="border: 2px solid red"
   >
     <img
       alt="titleImg"
       :src="titleImg"
       class="pa-10 ma-10 titleImg"
-      @click="router.push({ name: 'home' })"
     />
     <div class="subtitleContainer">
       <div class="subtitle">
@@ -91,13 +91,12 @@ const mobile = computed(() => {
 }
 .titleImg {
   position: fixed;
-  cursor: pointer;
   top: -35%;
   right: -50px;
   transform: rotate(20deg);
   padding: 0;
   margin: 0;
-  z-index: 10;
+  z-index: 1;
   width: 400px;
 }
 @media (max-width: 600px) {

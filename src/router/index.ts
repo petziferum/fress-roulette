@@ -36,7 +36,10 @@ const router = createRouter({
               next();
             }
           })
-          .catch((error) => console.log(error));
+          .catch((error) => {
+            console.log(error);
+            next();
+          });
       },
     },
     {
@@ -46,7 +49,7 @@ const router = createRouter({
     },
     {
       path: "/recipe/edit/:id",
-      name: "newRecipe",
+      name: "editRecipe",
       component: () => import("@/views/EditRecipeView.vue"),
       meta: {
         requiresAuth: true,
@@ -115,18 +118,25 @@ const getCurrentUser = () => {
   });
 };
 
-router.beforeEach(async (to, from, next) => {
+router.beforeEach((to, from, next) => {
   if (to.matched.some((record) => record.meta.requiresAuth)) {
-    getCurrentUser().then((user) => {
-      if (user) {
-        console.info("jupp kannst rein...");
-        next();
-      } else {
-        alert("Nicht angemeldet");
+    getCurrentUser()
+      .then((user) => {
+        if (user) {
+          console.info("jupp kannst rein...");
+          next();
+        } else {
+          alert("Nicht angemeldet");
+          next("/login");
+        }
+      })
+      .catch((error) => {
+        console.error("Auth check failed:", error);
         next("/login");
-      }
-    });
-  } else next();
+      });
+  } else {
+    next();
+  }
 });
 
 export default router;

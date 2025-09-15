@@ -1,13 +1,13 @@
 <template>
   <v-container fluid class="pa-0 mx-4">
-    <v-toolbar style="text-align: center">
+    <v-toolbar density="prominent" style="text-align: center">
       <v-toolbar-title>User Dashboard</v-toolbar-title>
       <v-toolbar-items>
+        <add-recipe-dialog :user="user" />
         <v-btn variant="outlined" class="mr-5" size="small" @click="logOut"
           >logout</v-btn
         >
         <v-spacer />
-        <add-recipe-dialog :user="user" />
       </v-toolbar-items>
     </v-toolbar>
     <v-row class="mt-12" justify="center">
@@ -124,6 +124,7 @@ function fetchRecipes(): void {
   getUserRecipe().then((recipes) => (userRecipes.value = recipes));
 }
 function editRecipe(id: string): void {
+  console.log("id: ", id, " route: ", editRoute.value);
   router.push(editRoute.value + id);
 }
 

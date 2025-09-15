@@ -1,7 +1,7 @@
 <template>
   <v-dialog v-model="isOpen">
     <template v-slot:activator="{ props }">
-      <rainbow-button v-bind="props" />
+      <rainbow-button style="z-index: 100" v-bind="props" />
     </template>
     <v-card v-if="!loading">
       <v-card-title>Möchtest du ein neues Rezept erstellen?</v-card-title>
