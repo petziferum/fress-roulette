@@ -19,7 +19,6 @@
         entspricht.</v-card-subtitle
       >
       <v-card-text>
-        {{ userStore.userFirestoreData }}
         <v-alert
           v-if="errorMessage"
           type="error"
