@@ -54,6 +54,8 @@ export function logOut() {
 export const user = computed(() => {
   const currentUser = fireAuth.currentUser;
   if (currentUser) {
+    const userstore = useUserStore();
+    userstore.setUserFirestoreData(currentUser);
     console.log("user eingelogged", currentUser.uid);
     return currentUser;
   } else {

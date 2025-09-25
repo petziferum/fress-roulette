@@ -19,6 +19,7 @@
         entspricht.</v-card-subtitle
       >
       <v-card-text>
+        {{ userStore.userFirestoreData }}
         <v-alert
           v-if="errorMessage"
           type="error"
@@ -74,6 +75,7 @@ import {
 } from "@/api/Recipeconverter.service.api";
 import { useUserStore } from "@/stores/useUserStore";
 import { slugifyString } from "@/common/scripts";
+import { useRecipeStore } from "@/stores/useRecipeStore";
 
 const isOpen = ref(false);
 const jsonText = ref<string>("");
@@ -108,6 +110,7 @@ const recipeJson = ref({
 });
 const copied = ref(false);
 const copying = ref(false);
+const recipeStore = useRecipeStore();
 
 async function copyToClipboard() {
   try {
@@ -129,18 +132,18 @@ async function onSave() {
   try {
     saving.value = true;
     let recipe = convertRecipe(jsonText.value);
-    if (!recipe.createdBy && userStore?.user) {
-      recipe.createdBy = {
-        id: userStore.user.uid,
-        name: userStore.user.displayName ?? "",
-      } as any;
-    }
+    recipe.createdBy = {
+      id: userStore.userFirestoreData.uid,
+      name: userStore.userFirestoreData.displayName ?? "",
+    };
     if (!recipe.time) {
       recipe.time = new Date();
     }
     const id = slugifyString(recipe.recipeName.substring(0, 128));
     recipe.id = id;
-    await saveRecipeToFirestore(recipe);
+
+    await recipeStore.createNewRecipe(recipe);
+
     isOpen.value = false;
     jsonText.value = "";
   } catch (e: any) {

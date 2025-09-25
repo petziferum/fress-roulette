@@ -42,6 +42,11 @@
             <v-text-field label="Rezept Name" v-model="recipe.recipeName" />
           </v-col>
         </v-row>
+        <v-row>
+          <v-col>
+            <v-text-field label="Beschreibung" v-model="recipe.description" />
+          </v-col>
+        </v-row>
       </v-form>
       <v-card-text>
         <tags-select v-model="recipe" />

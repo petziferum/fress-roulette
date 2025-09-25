@@ -10,6 +10,7 @@ export interface stateInterface {
     lastName: string;
     lastLogin: Date;
     recipes: string[];
+    uid: string;
     id: string;
     userName: string;
   };
