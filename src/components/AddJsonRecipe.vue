@@ -73,6 +73,7 @@ import {
   saveRecipeToFirestore,
 } from "@/api/Recipeconverter.service.api";
 import { useUserStore } from "@/stores/useUserStore";
+import { slugifyString } from "@/common/scripts";
 
 const isOpen = ref(false);
 const jsonText = ref<string>("");
@@ -137,6 +138,8 @@ async function onSave() {
     if (!recipe.time) {
       recipe.time = new Date();
     }
+    const id = slugifyString(recipe.recipeName.substring(0, 128));
+    recipe.id = id;
     await saveRecipeToFirestore(recipe);
     isOpen.value = false;
     jsonText.value = "";

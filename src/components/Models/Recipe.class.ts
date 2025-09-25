@@ -177,6 +177,7 @@ export const recipeConverter = {
       time: recipe.time,
       active: recipe.active,
       ingredients: recipe.ingredients ? recipe.ingredients : [],
+      description: recipe.description,
       recipeDescription: recipe.recipeDescription
         ? recipe.recipeDescription
         : [],

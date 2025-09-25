@@ -79,7 +79,6 @@ export default class RecipeServiceApi {
     }
     const id = slugifyString(recipe.recipeName.substring(0, 128));
     recipe.id = id;
-    console.log("srecipeServiceApi recipe = ", recipe);
     try {
       const ref = doc(db, COLLECTION_NAME, id).withConverter(recipeConverter);
       await setDoc(ref, recipe)
