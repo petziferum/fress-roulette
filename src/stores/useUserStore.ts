@@ -32,7 +32,6 @@ export const useUserStore = defineStore("userStore", () => {
 
   function setUserFirestoreData(data) {
     userFirestoreData.value = data;
-    console.log("USER ID", data.uid);
     getUserStateFromFirebase(data.uid).then((user) => {
       userState.value = user;
     });

@@ -143,7 +143,6 @@ export async function getUserRecipe(): Promise<Recipe[]> {
 }
 
 export async function getUserStateFromFirebase(id: string): Promise<UserState> {
-  console.log("hole User state aus Firebase für User: ", id);
   const docRef = doc(db, "users", id);
   const docSnap = await getDoc(docRef);
   if (docSnap.exists()) {

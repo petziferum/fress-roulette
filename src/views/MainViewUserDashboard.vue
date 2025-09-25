@@ -3,6 +3,7 @@
     <v-toolbar density="prominent" style="text-align: center">
       <v-toolbar-title>User Dashboard</v-toolbar-title>
       <v-toolbar-items>
+        <AddJsonRecipe />
         <add-recipe-dialog :user="user" />
         <v-btn variant="outlined" class="mr-5" size="small" @click="logOut"
           >logout</v-btn
@@ -95,6 +96,7 @@ import { getUserRecipe, user, logOut } from "@/plugins/firebase";
 import type Recipe from "@/components/Models/Recipe.class";
 import { useRouter } from "vue-router";
 import AddRecipeDialog from "@/components/AddRecipeDialog.vue";
+import AddJsonRecipe from "@/components/AddJsonRecipe.vue";
 import { useUserStore } from "@/stores/useUserStore";
 import RecipeDataTable from "@/components/RecipeDataTable.vue";
 const router = useRouter();
