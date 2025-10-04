@@ -5,9 +5,10 @@ import "vuetify/styles";
 // Vuetify
 import { createVuetify } from "vuetify";
 import { VFileUpload } from "vuetify/labs/VFileUpload";
+import { VCalendar } from "vuetify/labs/VCalendar";
 
 export default createVuetify({
-  components: { VFileUpload },
+  components: { VFileUpload, VCalendar },
   defaults: {
     VCard: {
       outlined: true,

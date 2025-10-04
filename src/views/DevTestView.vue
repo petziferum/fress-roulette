@@ -16,6 +16,14 @@
       </v-col>
     </v-row>
     <v-expansion-panels v-model="panels">
+      <wrapper-panel title="datum test">
+        v-calendar
+        <v-card v-if="clickedDate" color="blue" :title="formattedDate">
+          clickedDate: {{ clickedDate }} <br />
+          formatedDate: {{ formattedDate }}
+        </v-card>
+        <v-calendar @click:date="clickDate"></v-calendar>
+      </wrapper-panel>
       <wrapper-panel title="getWeather">
         <weather-component />
       </wrapper-panel>
@@ -157,7 +165,7 @@
 
 <script setup lang="ts">
 import TagsSelect from "@/components/componenttest/TagsSelect.vue";
-import { ref, reactive, onBeforeMount } from "vue";
+import { ref, reactive, onBeforeMount, computed } from "vue";
 import RecipesView from "@/components/componenttest/RecipesView.vue";
 import RecipePreviewCard from "@/components/RecipePreviewCard.vue";
 import imgUrl from "@/assets/whisky.jpg";
@@ -172,9 +180,10 @@ import HoverCardEffect from "@/components/componenttest/HoverCardEffect.vue";
 import DialogTestComponent from "@/components/componenttest/DialogTestComponent.vue";
 import PricetagTestComponent from "@/components/componenttest/PricetagTestComponent.vue";
 import WeatherComponent from "@/components/componenttest/WeatherComponent.vue";
+import { format, parse } from "date-fns";
 
 const dialog = ref(false);
-const panels = ref([1]);
+const panels = ref([0]);
 const store = useDevStore();
 const recipe = reactive({
   recipeName: "rezept 1",
@@ -183,11 +192,19 @@ const recipe = reactive({
   tags: ["Abendessen", "Deftig"],
 });
 const recipeArray = ref([recipe]);
+const clickedDate = ref<string | null>(null);
+const formattedDate = computed(() =>
+  clickedDate.value ? format(new Date(clickedDate.value), "dd.MM.yyyy") : ""
+);
 
 const closePanels = () => {
   panels.value = [];
 };
-
+function clickDate(nativeEvent, { date }) {
+  console.log("clickDate", nativeEvent);
+  console.log("date", date);
+  clickedDate.value = date;
+}
 onBeforeMount(() => store.initRecipes());
 </script>
 
