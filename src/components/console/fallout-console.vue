@@ -7,36 +7,41 @@
         <div class="version">V{{ version }}</div>
       </div>
 
-      <div ref="outputRef" class="output" role="log" aria-label="console output"></div>
+      <div
+        ref="outputRef"
+        class="output"
+        role="log"
+        aria-label="console output"
+      ></div>
 
       <div class="input-line">
         <span class="prompt">&gt; </span>
         <input
-            ref="inputRef"
-            v-model="input"
-            type="text"
-            class="inputfield"
-            @keydown.enter="handleCommand"
-            autocomplete="off"
+          ref="inputRef"
+          v-model="input"
+          type="text"
+          class="inputfield"
+          @keydown.enter="handleCommand"
+          autocomplete="off"
         />
       </div>
 
       <div class="console-footer">
         <div>FALLOUT-OS © 3077</div>
-        <div class="status">status: <span>{{ status }}</span></div>
+        <div class="status">
+          status: <span>{{ status }}</span>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { useConsole } from "@/components/console/logic";
 
-import {useConsole} from "@/features/console/logic";
-
-const { version, handleCommand, status, input, outputRef, inputRef } = useConsole();
-
+const { version, handleCommand, status, input, outputRef, inputRef } =
+  useConsole();
 </script>
-
 
 <style>
 :root {
@@ -53,7 +58,11 @@ const { version, handleCommand, status, input, outputRef, inputRef } = useConsol
   width: min(1100px, 95vw);
   height: 65vh;
   max-height: 720px;
-  background: radial-gradient(ellipse at top left, var(--console-bg) 10%, var(--bg-rad) 70%);
+  background: radial-gradient(
+    ellipse at top left,
+    var(--console-bg) 10%,
+    var(--bg-rad) 70%
+  );
   border-radius: 8px;
   box-shadow: 0 0 80px rgba(0, 255, 102, 0.2), inset 0 0 200px rgba(0, 0, 0, 1);
   position: relative;
@@ -68,11 +77,11 @@ const { version, handleCommand, status, input, outputRef, inputRef } = useConsol
   inset: 0;
   pointer-events: none;
   background-image: repeating-linear-gradient(
-      0deg,
-      rgba(0, 255, 102, 0.02) 0px,
-      rgba(0, 255, 102, 0.02) 1px,
-      transparent 2px,
-      transparent 3px
+    0deg,
+    rgba(0, 255, 102, 0.02) 0px,
+    rgba(0, 255, 102, 0.02) 1px,
+    transparent 2px,
+    transparent 3px
   );
   opacity: 0.4;
 }
@@ -159,7 +168,8 @@ const { version, handleCommand, status, input, outputRef, inputRef } = useConsol
 .output span.line {
   display: block;
   color: var(--glow);
-  text-shadow: 0 0 2px var(--glow), 0 0 6px var(--glow), 0 0 30px rgba(0, 255, 102, 0.5);
+  text-shadow: 0 0 2px var(--glow), 0 0 6px var(--glow),
+    0 0 30px rgba(0, 255, 102, 0.5);
 }
 
 /* Cursor */
@@ -173,8 +183,14 @@ const { version, handleCommand, status, input, outputRef, inputRef } = useConsol
 }
 
 @keyframes blink {
-  0%, 49% { opacity: 1; }
-  50%, 100% { opacity: 0; }
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
 }
 
 /* Flicker */
@@ -182,9 +198,15 @@ const { version, handleCommand, status, input, outputRef, inputRef } = useConsol
   animation: flicker 6s infinite;
 }
 @keyframes flicker {
-  0% { opacity: 1; }
-  10% { opacity: 0.9; }
-  100% { opacity: 1; }
+  0% {
+    opacity: 1;
+  }
+  10% {
+    opacity: 0.9;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 /* Footer */
@@ -196,4 +218,5 @@ const { version, handleCommand, status, input, outputRef, inputRef } = useConsol
   font-family: monospace;
 }
 </style>
-updatesslcertificate.bat C:\Zertifikate\2025\cert_bgsdswik001_2025_key.pfx BAU_ITV_ZERT_bgsdswik001 cert_bgsdswik001_2025
+updatesslcertificate.bat C:\Zertifikate\2025\cert_bgsdswik001_2025_key.pfx
+BAU_ITV_ZERT_bgsdswik001 cert_bgsdswik001_2025

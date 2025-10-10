@@ -16,6 +16,9 @@
       </v-col>
     </v-row>
     <v-expansion-panels v-model="panels">
+      <wrapper-panel title="Fallout Console">
+        <fallout-console />
+      </wrapper-panel>
       <wrapper-panel title="datum test">
         v-calendar
         <v-card v-if="clickedDate" color="blue" :title="formattedDate">
@@ -180,7 +183,8 @@ import HoverCardEffect from "@/components/componenttest/HoverCardEffect.vue";
 import DialogTestComponent from "@/components/componenttest/DialogTestComponent.vue";
 import PricetagTestComponent from "@/components/componenttest/PricetagTestComponent.vue";
 import WeatherComponent from "@/components/componenttest/WeatherComponent.vue";
-import { format, parse } from "date-fns";
+import { format } from "date-fns";
+import FalloutConsole from "@/components/console/fallout-console.vue";
 
 const dialog = ref(false);
 const panels = ref([0]);
