@@ -82,6 +82,7 @@
 <script setup lang="ts">
 import Recipe from "@/components/Models/Recipe.class";
 
+defineEmits(["viewRecipe"]);
 defineProps({ recipe: Recipe });
 const image = "src/assets/whisky.jpg";
 </script>

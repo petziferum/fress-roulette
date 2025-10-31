@@ -1,56 +1,54 @@
 <template>
-  <v-app-bar
-    flat
-    order="1"
-    height="200"
-    :image="barImg"
-    class="align-content-center text-white myTitleBar"
-    style="border: 2px solid red"
-  >
-    <img
-      alt="titleImg"
-      :src="titleImg"
-      class="pa-10 ma-10 titleImg"
-    />
+  <v-toolbar class="toolb" :image="barImg">
     <div class="subtitleContainer">
       <div class="subtitle">
         Das Rad entscheidet,<br />
         was wir als nächstes fressen!
       </div>
     </div>
-    <v-spacer />
     <template v-slot:extension>
-      <v-toolbar style="z-index: 0">
-        <v-toolbar-items>
-          <v-btn @click="$router.push({ name: 'Home' })"> Home </v-btn>
-          <v-btn @click="router.push({ name: 'Pricetag' })"> Pricetag </v-btn>
-          <v-btn
-            v-if="userLoggedIn"
-            @click="router.push({ name: 'userdashboard' })"
-            ><v-icon color="green">mdi-account</v-icon></v-btn
-          >
-          <v-btn
-            v-else
-            @click="router.push({ name: 'login' })"
-            color="red"
-            append-icon="mdi-robot-dead"
-            >login</v-btn
-          >
-        </v-toolbar-items>
-      </v-toolbar>
+      <v-toolbar-items>
+        <v-btn
+          @click="$router.push({ name: 'Home' })"
+          style="opacity: 0.5"
+          variant="flat"
+        >
+          Home
+        </v-btn>
+        <v-btn
+          @click="router.push({ name: 'Pricetag' })"
+          style="opacity: 0.5"
+          variant="flat"
+        >
+          Pricetag
+        </v-btn>
+        <v-btn
+          v-if="userLoggedIn"
+          @click="router.push({ name: 'userdashboard' })"
+          style="opacity: 0.5"
+          variant="flat"
+          ><v-icon color="green" style="opacity: 1">mdi-account</v-icon></v-btn
+        >
+        <v-btn
+          v-else
+          @click="router.push({ name: 'login' })"
+          color="red"
+          append-icon="mdi-robot-dead"
+          >login</v-btn
+        >
+      </v-toolbar-items>
     </template>
-    <v-app-bar-nav-icon
-      variant="elevated"
-      color="black"
-      class="glowing-icon"
-      style="margin-right: 1em; z-index: 30"
-      @click.stop="drawer = !drawer"
-    />
-  </v-app-bar>
+  </v-toolbar>
+  <img
+    alt="titleImg"
+    :src="titleImg"
+    :class="mobile ? 'mobilePizza' : 'pizza'"
+    @click.stop="drawer = !drawer"
+  />
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted, onUnmounted, ref } from "vue";
 import { useAppStore } from "@/stores/appStore";
 import { useDisplay } from "vuetify";
 import router from "@/router";
@@ -65,57 +63,74 @@ const userStore = useUserStore();
 const userLoggedIn = computed(() => {
   return userStore.userLoggedIn;
 });
-
 const drawer = computed({
   get: () => store.drawer,
   set: (value) => (store.drawer = value),
 });
-
 const mobile = computed(() => {
-  return store.mobile;
+  return store.mobile
 });
 </script>
 
 <style scoped>
-.myTitleBar {
-  vertical-align: middle;
-  padding: 12px;
-  text-align: center;
-  background-color: rgba(255, 255, 255, 0.5);
-  box-shadow: 7px 7px 20px rgba(252, 185, 15, 0.5);
-  border-radius: 10px;
-  margin: 0;
-  padding: 0;
-  font-weight: bolder;
-  overflow: visible;
+.toolb {
+  display: flex;
+  position: relative;
+  overflow: visible !important;
+  height: 200px;
+  border: 1px solid red;
 }
-.titleImg {
-  position: fixed;
-  top: -35%;
-  right: -50px;
+.toolb :deep(.v-toolbar__content) {
+  overflow: visible !important;
+}
+.mobilePizza {
+  position: absolute;
+  cursor:pointer;
+  top: 80px;
+  right: 1%;
   transform: rotate(20deg);
-  padding: 0;
-  margin: 0;
-  z-index: 1;
-  width: 400px;
+  transition: transform 0.2s ease-in-out;
+  z-index: 100;
+  width: 30%;
+  filter: drop-shadow(5px 5px 10px rgba(0, 0, 0, 0.5));
 }
+.pizza {
+  position: absolute;
+  cursor:pointer;
+  top: 1%;
+  right: 1%;
+  transform: rotate(20deg);
+  transition: transform 0.2s ease-in-out;
+  z-index: 100;
+  width: 200px;
+  filter: drop-shadow(5px 5px 10px rgba(0, 0, 0, 0.5));
+}
+.pizza:hover {
+  transform: rotate(-5deg) scale(1.1);
+  filter: drop-shadow(8px 8px 15px rgba(0, 0, 0, 0.7));
+}
+
 @media (max-width: 600px) {
   .titleImg {
     width: 250px;
     right: -20px;
   }
 }
+
 .subtitleContainer {
   position: absolute;
   display: flex;
-  z-index: 20;
+  align-items: center;
+  justify-content: center;
+  padding-top: 1%;
+  z-index: 200;
   width: 100%;
   height: 100%;
   text-align: center;
 }
 .subtitle {
   position: relative;
-  z-index: 20;
+  z-index: 200;
   transform: translate(0, 0);
   font-size: 1.5rem;
   font-weight: bolder;
