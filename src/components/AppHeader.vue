@@ -78,7 +78,6 @@ const mobile = computed(() => {
   position: relative;
   overflow: visible !important;
   height: 200px;
-  border: 1px solid red;
 }
 .toolb :deep(.v-toolbar__content) {
   overflow: visible !important;
