@@ -88,8 +88,8 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="(tag, index) in store.pricetag.entries" :key="index">
-                  <td>{{ tag.date.toDate().toLocaleDateString() }}</td>
+                <tr v-for="(tag, index) in store.getProductWithSortedEntries" :key="index">
+                  <td>{{ PricetagEntry.formatTimestamp(tag.date) }}</td>
                   <td>{{ tag.location }}</td>
                   <td>
                     <template v-if="store.editEntryMode && store.editEntryIndex === index">
@@ -165,6 +165,7 @@
     <v-col cols="12">
       <v-card-text>
         <div class="text-caption">
+          {{ store.getProductWithSortedEntries }}
           Hier könnten ähnliche Produkte angezeigt werden.
         </div>
       </v-card-text>
@@ -174,6 +175,8 @@
 <script setup lang="ts">
 import ImageOverlay from "@/components/commons/ImageOverlay.vue";
 import { usePricetagLogic } from "@/components/pricetag/PricetagLogic";
+import { format } from "date-fns";
+import PricetagEntry from "@/components/pricetag/PricetagEntry";
 const {
   store,
   addtagform,

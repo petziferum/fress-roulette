@@ -1,19 +1,10 @@
 import Pricetag from "@/components/pricetag/Pricetag";
 import PricetagEntry from "@/components/pricetag/PricetagEntry";
 import { defineStore } from "pinia";
-import {
-  collection,
-  doc,
-  getDocs,
-  Timestamp,
-  updateDoc,
-} from "firebase/firestore";
+import { collection, getDocs, Timestamp } from "firebase/firestore";
 import { db } from "@/plugins/firebase";
-import PricetagServiceApi, {
-  type UploadStatus,
-} from "@/components/pricetag/PricetagService.api";
+import PricetagServiceApi, { type UploadStatus } from "@/components/pricetag/PricetagService.api";
 import { useToast } from "vue-toastification";
-import { ref } from "vue";
 
 const toast = useToast();
 
@@ -149,11 +140,11 @@ export const usePricetagStore = defineStore("pricetagStore", {
           const updatedEntries = [...this.pricetag.entries];
           updatedEntries[this.editEntryIndex] = {
             ...this.pricetagEntryEdit,
-            date: this.pricetag.entries[this.editEntryIndex].date // Keep the original date
+            date: this.pricetag.entries[this.editEntryIndex].date, // Keep the original date
           };
-          
+
           this.pricetag.entries = updatedEntries;
-          
+
           // Save the updated product
           this.saveProductUpdate();
           toast.success("Eintrag aktualisiert");
@@ -250,12 +241,13 @@ export const usePricetagStore = defineStore("pricetagStore", {
       return state.suggestedProductNames;
     },
     getAllProducts: (state) => {
-      return [...state.allProducts].sort((a, b) => 
+      return [...state.allProducts].sort((a, b) =>
         a.productName.localeCompare(b.productName)
       );
     },
     getProductWithSortedEntries: (state) => {
-      return
-    }
+      if (!state.pricetag) return null;
+      return state.pricetag.entries.sort((a, b) => b.date.toMillis() - a.date.toMillis());
+    },
   },
 });

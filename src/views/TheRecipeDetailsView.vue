@@ -83,7 +83,7 @@
             <v-card-subtitle>
               <div class="subtitle-row">Autor: {{ recipe.createdBy.name }}</div>
               <div class="subtitle-row">
-                erstellt am: {{ new Date(recipe.time).toLocaleString() }}
+                erstellt am: {{ recipe.time.toLocaleDateString() }}
               </div>
               <div class="d-flex align-center flex-column my-auto">
                 Rating

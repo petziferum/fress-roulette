@@ -1,5 +1,6 @@
 import type { Difficulty } from "@/components/Models/Difficulty";
 import { useUserStore } from "@/stores/useUserStore";
+import { Timestamp } from "firebase/firestore";
 
 export interface Description {
   nr: number;
@@ -174,7 +175,7 @@ export const recipeConverter = {
     return {
       recipeName: recipe.recipeName,
       createdBy: recipe.createdBy,
-      time: recipe.time,
+      time: recipe.time ? Timestamp.fromDate(recipe.time) : Timestamp.now(),
       active: recipe.active,
       ingredients: recipe.ingredients ? recipe.ingredients : [],
       description: recipe.description,
@@ -211,11 +212,23 @@ export const recipeConverter = {
         changedBy: userState.userFirestoreData.email,
       };
     }
+    let recipeTime: Date;
+    if (recipe.time instanceof Timestamp) {
+      recipeTime = recipe.time.toDate();
+    } else if (recipe.time && typeof recipe.time === 'object' && 'seconds' in recipe.time) {
+      // Falls es ein Plain Object ist
+      recipeTime = new Date(recipe.time.seconds * 1000);
+    } else if (recipe.time instanceof Date) {
+      recipeTime = recipe.time;
+    } else {
+      recipeTime = new Date(Date.now());
+    }
+
     return Recipe.createEmptyRecipe()
       .withId(snapshot.id)
       .withCreatedBy(cb)
       .withRecipeName(recipe.recipeName)
-      .withTime(recipe.time ?? new Date(Date.now()))
+      .withTime(recipeTime)
       .withIngredients(recipe.ingredients)
       .withImageSrc(recipe.imageSrc)
       .withAdditionalImages(recipe.additionalImages)
