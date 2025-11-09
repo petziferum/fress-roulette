@@ -185,16 +185,18 @@ import PricetagTestComponent from "@/components/componenttest/PricetagTestCompon
 import WeatherComponent from "@/components/componenttest/WeatherComponent.vue";
 import { format } from "date-fns";
 import FalloutConsole from "@/components/console/fallout-console.vue";
+import Recipe from "@/components/Models/Recipe.class";
 
 const dialog = ref(false);
 const panels = ref([0]);
 const store = useDevStore();
-const recipe = reactive({
-  recipeName: "rezept 1",
-  img: imgUrl,
-  createdBy: "Petzi",
-  tags: ["Abendessen", "Deftig"],
-});
+const recipe = ref(
+  Recipe.createEmptyRecipe()
+    .withRecipeName("Erbsensuppe")
+    .withDescription("Erbsen die in Suppe schwimmen. Igitt!")
+    .withRating(2.1)
+    .withTags(["Erbsen", "Suppe"])
+);
 const recipeArray = ref([recipe]);
 const clickedDate = ref<string | null>(null);
 const formattedDate = computed(() =>

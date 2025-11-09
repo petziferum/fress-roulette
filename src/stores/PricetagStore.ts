@@ -173,7 +173,6 @@ export const usePricetagStore = defineStore("pricetagStore", {
     async getProduct(): Promise<void> {
       this.entries = [];
       if (this.searchName) {
-        console.log("searchName", this.searchName);
         PricetagServiceApi.getProduct(this.searchName)
           .then((result: Pricetag | any) => {
             this.pricetag = result as Pricetag;
@@ -255,5 +254,8 @@ export const usePricetagStore = defineStore("pricetagStore", {
         a.productName.localeCompare(b.productName)
       );
     },
+    getProductWithSortedEntries: (state) => {
+      return
+    }
   },
 });
