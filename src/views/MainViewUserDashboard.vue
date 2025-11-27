@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid class="pa-0 mx-4">
+  <v-container fluid class="pa-0 mx-0">
     <v-toolbar density="prominent" style="text-align: center">
       <v-toolbar-title>User Dashboard</v-toolbar-title>
       <v-toolbar-items>
@@ -16,32 +16,14 @@
         <v-card elevation="6" color="secondary">
           <v-card-subtitle class="pa-5"
             >{{ user.displayName }} - Eingelogged:
-            {{ userState.userLoggedIn }}}<br />
+            {{ userState.userLoggedIn }}<br />
             <p>userError: {{ userState.userError }}</p>
-            <v-btn @click="checkIfTextfieldIsValid" variant="tonal"
-              >Validate Textfield</v-btn
-            >
             <v-btn class="mx-2" @click="logOut" variant="tonal"
               >logout</v-btn
             ></v-card-subtitle
           >
           <v-card-subtitle v-if="alert">{{ alertMessage }}</v-card-subtitle>
           <v-row>
-            <v-col cols="4">
-              <template v-if="user">
-                <v-btn @click="logOut" variant="text">logout</v-btn>
-              </template>
-              <template v-else>
-                <v-list>
-                  <v-list-item>
-                    <v-list-item-title>User Login</v-list-item-title>
-                    <v-list-item-subtitle
-                      >passwort eingeben</v-list-item-subtitle
-                    >
-                  </v-list-item>
-                </v-list>
-              </template>
-            </v-col>
             <v-col cols="8">
               <div>
                 <v-alert height="50%">angemeldet als {{ user.email }}</v-alert>
@@ -110,16 +92,6 @@ const userState = useUserStore();
 const required = computed(() => {
   return (v: string) => !!v || "Darf nicht leer sein.";
 });
-
-async function checkIfTextfieldIsValid() {
-  const valid = await passField.value.validate();
-  console.log("valid?", valid[0]);
-  if (!valid[0]) {
-    console.log("Valide");
-  } else {
-    console.log("Nicht valide");
-  }
-}
 
 function fetchRecipes(): void {
   userRecipes.value = [];
