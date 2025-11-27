@@ -5,9 +5,6 @@
       <v-toolbar-items>
         <AddJsonRecipe />
         <add-recipe-dialog :user="user" />
-        <v-btn variant="outlined" class="mr-5" size="small" @click="logOut"
-          >logout</v-btn
-        >
         <v-spacer />
       </v-toolbar-items>
     </v-toolbar>
@@ -18,9 +15,7 @@
             >{{ user.displayName }} - Eingelogged:
             {{ userState.userLoggedIn }}<br />
             <p>userError: {{ userState.userError }}</p>
-            <v-btn class="mx-2" @click="logOut" variant="tonal"
-              >logout</v-btn
-            ></v-card-subtitle
+            </v-card-subtitle
           >
           <v-card-subtitle v-if="alert">{{ alertMessage }}</v-card-subtitle>
           <v-row>
@@ -28,6 +23,11 @@
               <div>
                 <v-alert height="50%">angemeldet als {{ user.email }}</v-alert>
               </div>
+            </v-col>
+            <v-col>
+              <v-btn class="mx-2" @click="logOut" variant="tonal" block height="100%"
+              >logout</v-btn
+              >
             </v-col>
           </v-row>
           <v-row ref="Userdaten">
@@ -61,11 +61,24 @@
       <v-col cols="12" md="6">
         <v-card>
           <v-card-title>
-            Deine Rezepte
-            <v-spacer />
-            <v-btn @click="fetchRecipes">Lade Rezepte</v-btn></v-card-title
+            Rezepte
+          </v-card-title
           >
-          <RecipeDataTable :items="userRecipes" @editRecipe="editRecipe" />
+          <v-card-subtitle class="pa-5">
+            <v-btn @click="fetchRecipes">Lade Rezepte</v-btn>
+            <v-text-field
+              id="rezeptsuche"
+              v-model="searchQuery"
+              label="Rezeptsuche"
+              placeholder="z.B. Burrito, Carbonara ..."
+              clearable
+              hide-details
+            ></v-text-field>
+          </v-card-subtitle>
+          <RecipeDataTable
+            :userRecipes="filteredRecipes"
+            @editRecipe="editRecipe"
+          />
         </v-card>
       </v-col>
     </v-row>
@@ -86,11 +99,29 @@ const alert = ref(false);
 const alertMessage = ref<string | null>(null);
 const passField = ref();
 const userRecipes = ref<Recipe[]>([]);
+const searchQuery = ref("");
 const editRoute = ref("/recipe/edit/");
 const userState = useUserStore();
 
 const required = computed(() => {
   return (v: string) => !!v || "Darf nicht leer sein.";
+});
+
+const filteredRecipes = computed<Recipe[]>(() => {
+  const q = searchQuery.value.trim().toLowerCase();
+  if (!q) return userRecipes.value;
+  return userRecipes.value.filter((r) => {
+    try {
+      const name = (r as any).recipeName?.toString().toLowerCase() ?? "";
+      const author = (r as any).createdBy?.name?.toString().toLowerCase() ?? "";
+      const tags = Array.isArray((r as any).tags)
+        ? ((r as any).tags as string[]).join(" ").toLowerCase()
+        : "";
+      return name.includes(q) || author.includes(q) || tags.includes(q);
+    } catch (_) {
+      return false;
+    }
+  });
 });
 
 function fetchRecipes(): void {
